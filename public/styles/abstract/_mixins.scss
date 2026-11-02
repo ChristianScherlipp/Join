@@ -1,0 +1,15 @@
+// Skaliert einen Wert linear zwischen $min-vw und $max-vw (Standard: 320px - 1440px).
+// Unterhalb/oberhalb der Range bleibt der Wert bei $min bzw. $max stehen (clamp).
+@function fluid($min, $max, $min-vw: 320, $max-vw: 1440) {
+    $slope: ($max - $min) / ($max-vw - $min-vw);
+    $intersection: $min - $slope * $min-vw;
+    @return clamp(#{$min}px, #{$intersection}px + #{$slope * 100}vw, #{$max}px);
+}
+
+// Struktureller Breakpoint fuer Layoutwechsel (Zeile -> Spalte), wo reines
+// Skalieren nicht mehr ausreicht.
+@mixin respond-below($breakpoint) {
+    @media (max-width: $breakpoint) {
+        @content;
+    }
+}
