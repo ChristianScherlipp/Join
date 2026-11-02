@@ -1,0 +1,132 @@
+<dialog
+  #dialog
+  aria-labelledby="dialog-title"
+  (cancel)="onCancel($event)"
+  (close)="isOpen.set(false)"
+>
+  <div class="dialog-layout">
+    <div class="intro">
+      <img
+        class="logo"
+        src="/assets/icons/join-logo-white.svg"
+        alt="JOIN"
+      />
+
+      <h2 id="dialog-title">Add contact</h2>
+      <p>Tasks are better with a team!</p>
+      <span class="intro-line" aria-hidden="true"></span>
+    </div>
+
+    <div class="content">
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Dialog schließen"
+        [disabled]="contactService.saving()"
+        (click)="close()"
+      >
+        ×
+      </button>
+
+      <div
+        class="avatar"
+        [style.background-color]="
+          newContact.name.trim() ? avatarColor : '#d1d1d1'
+        "
+        aria-hidden="true"
+      >
+        @if (newContact.name.trim()) {
+          {{ getInitials(newContact.name) }}
+        } @else {
+          <img src="/assets/icons/person.svg" alt="" />
+        }
+      </div>
+
+      <form #contactForm="ngForm" (ngSubmit)="save()">
+        <label class="visually-hidden" for="contact-name">
+          Name
+        </label>
+
+        <div class="input-wrapper">
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            placeholder="Name"
+            autocomplete="name"
+            [(ngModel)]="newContact.name"
+            required
+          />
+          <img src="/assets/icons/person.svg" alt="" />
+        </div>
+
+        <label class="visually-hidden" for="contact-email">
+          E-Mail
+        </label>
+
+        <div class="input-wrapper">
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            autocomplete="email"
+            [(ngModel)]="newContact.email"
+            required
+            email
+          />
+          <img src="/assets/icons/mail.svg" alt="" />
+        </div>
+
+        <label class="visually-hidden" for="contact-phone">
+          Telefon (optional)
+        </label>
+
+        <div class="input-wrapper">
+          <input
+            id="contact-phone"
+            name="phone"
+            type="tel"
+            placeholder="Phone"
+            autocomplete="tel"
+            [(ngModel)]="newContact.phone"
+          />
+          <img src="/assets/icons/call.svg" alt="" />
+        </div>
+
+        @if (contactService.errorMessage()) {
+          <p class="error-message" role="alert">
+            {{ contactService.errorMessage() }}
+          </p>
+        }
+
+        <div class="actions">
+          <button
+            class="secondary-button"
+            type="button"
+            [disabled]="contactService.saving()"
+            (click)="close()"
+          >
+            Cancel ×
+          </button>
+
+          <button
+            class="primary-button"
+            type="submit"
+            [disabled]="
+              contactForm.invalid ||
+              !newContact.name.trim() ||
+              contactService.saving()
+            "
+          >
+            @if (contactService.saving()) {
+              Saving …
+            } @else {
+              Create contact ✓
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>

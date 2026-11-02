@@ -1,1 +1,21 @@
-<p>content-contacts works!</p>
+<div class="contacts-layout">
+  <app-namelist
+    [contacts]="contactService.sortedUsers()"
+    [loading]="contactService.loading()"
+    [selectedId]="selectedContact()?.id ?? null"
+    (contactSelected)="selectedContact.set($event)"
+    (addRequested)="addDialog.open()"
+  />
+
+  <div class="main-panel">
+    <app-main-view [contact]="selectedContact()" />
+
+    @if (contactService.errorMessage() && !addDialog.isOpen()) {
+      <p class="error-message" role="alert">
+        {{ contactService.errorMessage() }}
+      </p>
+    }
+  </div>
+</div>
+
+<app-add-contact #addDialog />

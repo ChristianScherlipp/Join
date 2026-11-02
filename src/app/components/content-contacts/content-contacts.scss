@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  font-family: 'Inter', Arial, sans-serif;
+  color: #2a3647;
+}
+
+.contacts-layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  min-height: 100dvh;
+  background: #f6f7f8;
+}
+
+.main-panel {
+  min-width: 0;
+  padding: 64px 44px;
+}
+
+.error-message {
+  padding: 16px;
+  border-radius: 10px;
+  background: #ffe8e8;
+  color: #a11919;
+}
+
+@media (max-width: 1000px) {
+  .contacts-layout {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  .main-panel {
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .contacts-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,31 +1,75 @@
-import { Service, signal, inject, computed } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { IUser } from '../interfaces/iuser';
-// import { User } from ' .. /components/models/user';
-// import { Toast, ToastType } from './toast';
 import { Supabase } from './supabase';
-// import { TasksService } from './tasks-service';
 
-@Service()
+@Injectable({
+  providedIn: 'root',
+})
 export class ContactService {
-    supabase = inject(Supabase).supabase;
-    // toastService = inject(Toast);
-    // taskService = inject(TasksService);
-    userList: IUser[] = [];
+  private readonly supabase = inject(Supabase).supabase;
 
-    users = signal<IUser[]>([]);
-    selectedUserID = signal<number | null>(null);
+  readonly users = signal<IUser[]>([]);
+  readonly loading = signal(false);
+  readonly saving = signal(false);
+  readonly errorMessage = signal('');
 
-    // constructor() {
-    //     this.getUsers();
+  readonly sortedUsers = computed(() =>
+    [...this.users()].sort((a, b) =>
+      a.name.localeCompare(b.name, 'de')
+    )
+  );
 
-    //     ngOnDestroy() {
-    //         this.supabase.removeChannel(this.channelUserInsert);
-    //         this.supabase.removeChannel(this.channelUserUpdate);
-    //         this.supabase.removeChannel(this.channelUserDelete);
+  async getUsers(): Promise<void> {
+    this.loading.set(true);
+    this.errorMessage.set('');
 
-    //         sortUsers() {
-    //             if (!this.userList) {
-    //                 return;
+    try {
+      const { data, error } = await this.supabase
+        .from('contacts')
+        .select('id, name, email, phone');
 
-    //                 this.userList.sort((a, b) => a.name.localeCompare(b.name));
+      if (error) {
+        throw error;
+      }
+
+      this.users.set(data ?? []);
+    } catch (error) {
+      console.error('Kontakte laden fehlgeschlagen:', error);
+      this.errorMessage.set(
+        'Die Kontakte konnten nicht geladen werden.'
+      );
+    } finally {
+      this.loading.set(false);
     }
+  }
+
+  async addContact(contact: Omit<IUser, 'id'>): Promise<boolean> {
+    this.saving.set(true);
+    this.errorMessage.set('');
+
+    try {
+      const { data, error } = await this.supabase
+        .from('contacts')
+        .insert(contact)
+        .select('id, name, email, phone')
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      this.users.update((users) => [...users, data]);
+
+      return true;
+    } catch (error) {
+      console.error('Kontakt speichern fehlgeschlagen:', error);
+      this.errorMessage.set(
+        'Der Kontakt konnte nicht gespeichert werden.'
+      );
+
+      return false;
+    } finally {
+      this.saving.set(false);
+    }
+  }
+}

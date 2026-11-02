@@ -1,11 +1,15 @@
-import { Service } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 
-@Service()
+@Injectable({
+  providedIn: 'root',
+})
 export class Supabase {
+  private supabaseUrl = 'https://sunoqfhbaaynuihtjtkc.supabase.co';
+  private supabaseKey = 'sb_publishable_0VhGDb9ZyrbyzO6jthywRw_O1TfyOjY';
 
-  supabaseUrl = 'https://sunoqfhbaaynuihtjtkc.supabase.co';
-  supabaseKey = 'sb_publishable_0VhGDb9ZyrbyzO6jthywRw_O1TfyOjY';
-  supabase = createClient(this.supabaseUrl, this.supabaseKey);
-
+  readonly supabase = createClient(
+    this.supabaseUrl,
+    this.supabaseKey
+  );
 }
