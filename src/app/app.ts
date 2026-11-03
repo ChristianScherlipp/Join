@@ -2,9 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Supabase } from './services/supabase';
 import { NavBar } from './components/nav-bar/nav-bar';
+import { Header } from './components/header/header';
 
 @Component({
-  imports: [RouterOutlet, NavBar],
+  imports: [Header, RouterOutlet, NavBar],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
