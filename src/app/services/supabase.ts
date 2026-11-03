@@ -26,7 +26,7 @@ export class Supabase {
       .subscribe();
   }
 
-  // CRUD-Operationen
+  // CRUD-Operationen Create Read Update Delete
   //Create
   async addUser(name: string, mail: string, phone: number) {
     const { data, error } = await this.supabase
