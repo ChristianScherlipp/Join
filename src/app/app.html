@@ -1,3 +1,9 @@
-
-<router-outlet />
-<app-nav-bar></app-nav-bar>
+<div class="app-layout">
+  <app-nav-bar></app-nav-bar>
+  <div class="main-area">
+    <app-header></app-header>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
