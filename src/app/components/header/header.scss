@@ -1,15 +1,20 @@
-@use '../../../../public/styles/abstract/variables' as *;
+@use '/abstract/variables' as *;
 @use '../../../styles.scss' as *;
 
 
 .header{
-    width: 75.5rem;
+    width: 100%;
     height: 6rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem 0 6rem; 
 
+}
+.header {
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .header-title{
@@ -20,5 +25,21 @@
     font-style: normal;
     font-size: 1.25rem;
     color: $text-secondary;
+}
 
+.header-actions{
+    display: flex;
+    align-items: center;
+    padding: 1.25rem 2.5rem 1.25rem;
+    gap: 0.75rem;
+}
+.header-actions img{
+    width: 1.25rem;
+    height:1.25rem;
+}
+.user-avatar{
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background-color: $label-user;
 }
