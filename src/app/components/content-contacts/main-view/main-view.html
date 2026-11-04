@@ -1,0 +1,46 @@
+<header class="heading">
+  <h1>Contacts</h1>
+  <span class="divider" aria-hidden="true"></span>
+  <p>Better with a team</p>
+</header>
+
+<!-- Zeigt die Karte nur an, wenn ein Kontakt ausgewählt wurde. -->
+@if (contact(); as selected) {
+  <section class="contact-card" aria-label="Kontaktdetails">
+    <header class="card-header">
+      <span
+        class="avatar"
+        [style.background-color]="avatar.getColor(selected.name)"
+        aria-hidden="true"
+      >
+        {{ avatar.getInitials(selected.name) }}
+      </span>
+
+      <h2>{{ selected.name }}</h2>
+    </header>
+
+    <h3>Contact Information</h3>
+
+    <dl>
+      <dt>Email</dt>
+
+      <dd>
+        <a [href]="'mailto:' + selected.email">
+          {{ selected.email }}
+        </a>
+      </dd>
+
+      <dt>Phone</dt>
+
+      <dd>
+        @if (selected.phone) {
+          <a class="phone" [href]="'tel:' + selected.phone">
+            {{ selected.phone }}
+          </a>
+        } @else {
+          Keine Telefonnummer hinterlegt
+        }
+      </dd>
+    </dl>
+  </section>
+}

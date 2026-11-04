@@ -1,1 +1,22 @@
-<p>content-contacts works!</p>
+<!-- Verbindet Kontaktliste, Kontaktkarte und Dialog. -->
+<section class="contacts-layout" aria-label="Kontakte">
+  <app-namelist
+    [contacts]="contactService.sortedUsers()"
+    [loading]="contactService.loading()"
+    [selectedId]="selectedContact()?.id ?? null"
+    (contactSelected)="selectedContact.set($event)"
+    (addRequested)="addDialog.open()"
+  />
+
+  <main class="main-panel">
+    <app-main-view [contact]="selectedContact()" />
+
+    @if (contactService.errorMessage() && !addDialog.isOpen()) {
+      <p class="error-message" role="alert">
+        {{ contactService.errorMessage() }}
+      </p>
+    }
+  </main>
+</section>
+
+<app-add-contact #addDialog />

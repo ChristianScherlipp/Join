@@ -1,0 +1,120 @@
+@use '../../../../../public/styles/abstract/variables' as *;
+@use '../../../../../public/styles/abstract/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 48px;
+
+  h1 {
+    margin: 0;
+    color: $text-secondary;
+    font-size: clamp(40px, 4vw, 61px);
+    letter-spacing: -1px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 22px;
+  }
+}
+
+.divider {
+  width: 3px;
+  height: 52px;
+  background: $second-tow;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  h2 {
+    min-width: 0;
+    margin: 0;
+    color: $text-secondary;
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+}
+
+.avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  box-sizing: border-box;
+  width: 110px;
+  height: 110px;
+  border: 3px solid $background-primary;
+  border-radius: 50%;
+  color: $background-primary;
+  font-size: 40px;
+}
+
+h3 {
+  margin: 40px 0 28px;
+  color: $text-secondary;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+dt {
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+dd {
+  margin: 0 0 24px;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: $second-one;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 3px solid $second-tow;
+  }
+}
+
+.phone {
+  color: $background-secondary;
+}
+
+@media (max-width: 1100px) {
+  .heading {
+    gap: 16px;
+
+    p {
+      flex-basis: 100%;
+    }
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .card-header {
+    gap: 18px;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+}

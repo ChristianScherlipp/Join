@@ -2,10 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Supabase } from './services/supabase';
 import { NavBar } from './components/nav-bar/nav-bar';
-import { EditContact } from './components/content-contacts/edit-contact/edit-contact';
+import { Header } from './components/header/header';
 
 @Component({
-  imports: [RouterOutlet, NavBar, EditContact],
+  imports: [Header, RouterOutlet, NavBar],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',

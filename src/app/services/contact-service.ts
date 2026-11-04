@@ -1,31 +1,98 @@
-import { Service, signal, inject, computed } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { IUser } from '../interfaces/iuser';
-// import { User } from ' .. /components/models/user';
-// import { Toast, ToastType } from './toast';
 import { Supabase } from './supabase';
-// import { TasksService } from './tasks-service';
 
-@Service()
+@Injectable({
+  providedIn: 'root',
+})
 export class ContactService {
-    supabase = inject(Supabase).supabase;
-    // toastService = inject(Toast);
-    // taskService = inject(TasksService);
-    userList: IUser[] = [];
+  private readonly supabase = inject(Supabase).supabase;
 
-    users = signal<IUser[]>([]);
-    selectedUserID = signal<number | null>(null);
+  // Die geladenen Kontakte.
+  readonly users = signal<IUser[]>([]);
 
-    // constructor() {
-    //     this.getUsers();
+  // Zeigt an, ob gerade geladen oder gespeichert wird.
+  readonly loading = signal(false);
+  readonly saving = signal(false);
 
-    //     ngOnDestroy() {
-    //         this.supabase.removeChannel(this.channelUserInsert);
-    //         this.supabase.removeChannel(this.channelUserUpdate);
-    //         this.supabase.removeChannel(this.channelUserDelete);
+  // Diese Meldung wird bei einem Fehler im HTML angezeigt.
+  readonly errorMessage = signal('');
 
-    //         sortUsers() {
-    //             if (!this.userList) {
-    //                 return;
+  // Sortiert eine Kopie der Kontakte alphabetisch.
+  // Die ursprüngliche Liste wird dabei nicht verändert.
+  readonly sortedUsers = computed(() =>
+    [...this.users()].sort((firstContact, secondContact) =>
+      firstContact.name.localeCompare(secondContact.name, 'de')
+    )
+  );
 
-    //                 this.userList.sort((a, b) => a.name.localeCompare(b.name));
+  /**
+   * Lädt die Kontakte aus Supabase.
+   * Bei einem Fehler wird eine Meldung gesetzt.
+   */
+  async getUsers(): Promise<void> {
+    this.loading.set(true);
+    this.errorMessage.set('');
+
+    try {
+      const { data, error } = await this.supabase
+        .from('contacts')
+        .select('id, name, email, phone');
+
+      if (error) {
+        throw error;
+      }
+
+      // Falls keine Daten zurückkommen, verwenden wir eine leere Liste.
+      this.users.set(data ?? []);
+    } catch (error) {
+      console.error('Kontakte laden fehlgeschlagen:', error);
+
+      this.errorMessage.set(
+        'Die Kontakte konnten nicht geladen werden.'
+      );
+    } finally {
+      // Wird bei Erfolg und bei einem Fehler ausgeführt.
+      this.loading.set(false);
     }
+  }
+
+  /**
+   * Speichert einen neuen Kontakt.
+   * Omit bedeutet: Die ID wird nicht mitgegeben.
+   * Die Datenbank erzeugt sie automatisch.
+   *
+   * true = gespeichert, false = fehlgeschlagen.
+   */
+  async addContact(contact: Omit<IUser, 'id'>): Promise<boolean> {
+    this.saving.set(true);
+    this.errorMessage.set('');
+
+    try {
+      const { data, error } = await this.supabase
+        .from('contacts')
+        .insert(contact)
+        .select('id, name, email, phone')
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      // Ergänzt die Liste um den gespeicherten Kontakt inklusive ID.
+      this.users.update((contacts) => [...contacts, data]);
+
+      return true;
+    } catch (error) {
+      console.error('Kontakt speichern fehlgeschlagen:', error);
+
+      this.errorMessage.set(
+        'Der Kontakt konnte nicht gespeichert werden.'
+      );
+
+      return false;
+    } finally {
+      this.saving.set(false);
+    }
+  }
+}
