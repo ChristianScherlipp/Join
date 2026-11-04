@@ -13,8 +13,15 @@ import { AddContact } from './add-contact/add-contact';
 })
 export class ContentContacts implements OnInit {
   readonly contactService = inject(ContactService);
+
+  // Speichert den angeklickten Kontakt für die rechte Kontaktkarte.
+  // null bedeutet: Es ist noch kein Kontakt ausgewählt.
   readonly selectedContact = signal<IUser | null>(null);
 
+  /**
+   * Wird beim Öffnen der Kontaktseite ausgeführt.
+   * Startet das Laden der Kontakte.
+   */
   ngOnInit(): void {
     void this.contactService.getUsers();
   }

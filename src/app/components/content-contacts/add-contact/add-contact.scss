@@ -1,6 +1,5 @@
-* {
-  box-sizing: border-box;
-}
+@use '../../../../../public/styles/abstract/variables' as *;
+@use '../../../../../public/styles/abstract/mixins' as *;
 
 dialog {
   width: min(1100px, calc(100% - 32px));
@@ -10,8 +9,8 @@ dialog {
   overflow: auto;
   border: none;
   border-radius: 24px;
-  background: #fff;
-  color: #2a3647;
+  background: $background-primary;
+  color: $background-secondary;
   font-family: inherit;
   box-shadow: 0 16px 60px rgb(0 0 0 / 25%);
 
@@ -20,6 +19,7 @@ dialog {
   }
 }
 
+/* Aufteilung in dunklen Infobereich und Formularbereich. */
 .dialog-layout {
   display: grid;
   grid-template-columns: 38% minmax(0, 1fr);
@@ -32,12 +32,12 @@ dialog {
   align-items: flex-start;
   justify-content: center;
   padding: 48px 32px;
-  background: #2a3647;
-  color: #fff;
+  background: $background-secondary;
+  color: $background-primary;
 
   h2 {
     margin: 0 0 12px;
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: fluid(32px,48px);
     line-height: 1.1;
   }
 
@@ -58,7 +58,7 @@ dialog {
   width: 90px;
   height: 3px;
   margin-top: 16px;
-  background: #29abe2;
+  background: $second-tow;
 }
 
 .content {
@@ -88,7 +88,7 @@ button {
   }
 
   &:focus-visible {
-    outline: 3px solid #29abe2;
+    outline: 3px solid $second-tow;
     outline-offset: 2px;
   }
 }
@@ -113,15 +113,16 @@ button {
   }
 }
 
+/* Vorschau für Initialen oder Personensymbol. */
 .avatar {
   display: grid;
   flex-shrink: 0;
   place-items: center;
   width: 100px;
   height: 100px;
-  border: 2px solid #fff;
+  border: 2px solid $background-primary;
   border-radius: 50%;
-  color: #fff;
+  color: $background-primary;
   font-size: 34px;
   box-shadow: 0 0 4px rgb(0 0 0 / 15%);
 
@@ -132,21 +133,23 @@ button {
   }
 }
 
+/* Das Label enthält Eingabefeld und zugehöriges Symbol. */
 .input-wrapper {
+  display: block;
   position: relative;
   margin-bottom: 22px;
 
   input {
     width: 100%;
     min-height: 48px;
-    padding: 12px 44px 12px 16px;
+    padding: 12px 7px 12px 16px;
     border: 1px solid #d1d1d1;
     border-radius: 10px;
-    background: #fff;
-    color: #2a3647;
+    background: $background-primary;
+    color: $background-secondary;
 
     &:focus {
-      border-color: #29abe2;
+      border-color: $second-tow;
       outline: 2px solid rgb(41 171 226 / 20%);
     }
   }
@@ -173,39 +176,40 @@ button {
 .secondary-button {
   min-height: 48px;
   padding: 12px 20px;
-  border: 1px solid #2a3647;
+  border: 1px solid $background-secondary;
   border-radius: 10px;
   font-weight: 700;
 }
 
 .primary-button {
-  background: #2a3647;
-  color: #fff;
+  background: $background-secondary;
+  color: $background-primary;
 
   &:hover:not(:disabled) {
-    border-color: #007fae;
-    background: #007fae;
+    border-color: $second-one;
+    background: $second-one;
   }
 }
 
 .secondary-button {
-  background: #fff;
-  color: #2a3647;
+  background: $background-primary;
+  color: $background-secondary;
 
   &:hover:not(:disabled) {
-    border-color: #007fae;
-    color: #007fae;
+    border-color: $second-one;
+    color: $second-one;
   }
 }
 
 .error-message {
   padding: 12px 16px;
   border-radius: 10px;
-  background: #ffe8e8;
+  background: $background-third;
   color: #a11919;
   line-height: 1.5;
 }
 
+/* Beschriftung bleibt für Screenreader erhalten. */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -231,6 +235,7 @@ button {
   }
 }
 
+/* Auf schmalen Bildschirmen stehen die Bereiche untereinander. */
 @media (max-width: 760px) {
   .dialog-layout {
     grid-template-columns: 1fr;

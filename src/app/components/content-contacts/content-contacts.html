@@ -1,4 +1,5 @@
-<div class="contacts-layout">
+<!-- Verbindet Kontaktliste, Kontaktkarte und Dialog. -->
+<section class="contacts-layout" aria-label="Kontakte">
   <app-namelist
     [contacts]="contactService.sortedUsers()"
     [loading]="contactService.loading()"
@@ -7,7 +8,7 @@
     (addRequested)="addDialog.open()"
   />
 
-  <div class="main-panel">
+  <main class="main-panel">
     <app-main-view [contact]="selectedContact()" />
 
     @if (contactService.errorMessage() && !addDialog.isOpen()) {
@@ -15,7 +16,7 @@
         {{ contactService.errorMessage() }}
       </p>
     }
-  </div>
-</div>
+  </main>
+</section>
 
 <app-add-contact #addDialog />

@@ -1,3 +1,6 @@
+@use '../../../../../public/styles/abstract/variables' as *;
+@use '../../../../../public/styles/abstract/mixins' as *;
+
 :host {
   display: block;
   min-width: 0;
@@ -13,7 +16,7 @@
   display: flex;
   flex-direction: column;
   height: 100dvh;
-  background: #fff;
+  background: $background-primary;
   box-shadow: 3px 0 6px rgb(0 0 0 / 8%);
 }
 
@@ -26,7 +29,7 @@ button {
   cursor: pointer;
 
   &:focus-visible {
-    outline: 3px solid #29abe2;
+    outline: 3px solid $second-tow;
     outline-offset: 2px;
   }
 }
@@ -40,12 +43,12 @@ button {
   padding: 14px;
   border: none;
   border-radius: 10px;
-  background: #2a3647;
-  color: #fff;
+  background: $background-secondary;
+  color: $background-primary;
   font-weight: 700;
 
   &:hover {
-    background: #007fae;
+    background: $second-one;
   }
 
   img {
@@ -69,8 +72,8 @@ button {
 h2 {
   margin: 12px 0 8px;
   padding: 12px 20px 16px;
-  border-bottom: 1px solid #d1d1d1;
-  color: #000;
+  border-bottom: 1px solid $border-color;
+  color: $text-secondary;
   font-size: 18px;
   font-weight: 400;
 }
@@ -97,8 +100,8 @@ ul {
   }
 
   &.selected {
-    background: #2a3647;
-    color: #fff;
+    background: $background-secondary;
+    color: $background-primary;
 
     .email {
       color: #80d8ff;
@@ -112,9 +115,9 @@ ul {
   place-items: center;
   width: 42px;
   height: 42px;
-  border: 2px solid #fff;
+  border: 2px solid $background-primary;
   border-radius: 50%;
-  color: #fff;
+  color: $background-primary;
   font-size: 14px;
 }
 

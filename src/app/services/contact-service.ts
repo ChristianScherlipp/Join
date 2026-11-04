@@ -8,17 +8,28 @@ import { Supabase } from './supabase';
 export class ContactService {
   private readonly supabase = inject(Supabase).supabase;
 
+  // Die geladenen Kontakte.
   readonly users = signal<IUser[]>([]);
+
+  // Zeigt an, ob gerade geladen oder gespeichert wird.
   readonly loading = signal(false);
   readonly saving = signal(false);
+
+  // Diese Meldung wird bei einem Fehler im HTML angezeigt.
   readonly errorMessage = signal('');
 
+  // Sortiert eine Kopie der Kontakte alphabetisch.
+  // Die ursprüngliche Liste wird dabei nicht verändert.
   readonly sortedUsers = computed(() =>
-    [...this.users()].sort((a, b) =>
-      a.name.localeCompare(b.name, 'de')
+    [...this.users()].sort((firstContact, secondContact) =>
+      firstContact.name.localeCompare(secondContact.name, 'de')
     )
   );
 
+  /**
+   * Lädt die Kontakte aus Supabase.
+   * Bei einem Fehler wird eine Meldung gesetzt.
+   */
   async getUsers(): Promise<void> {
     this.loading.set(true);
     this.errorMessage.set('');
@@ -32,17 +43,27 @@ export class ContactService {
         throw error;
       }
 
+      // Falls keine Daten zurückkommen, verwenden wir eine leere Liste.
       this.users.set(data ?? []);
     } catch (error) {
       console.error('Kontakte laden fehlgeschlagen:', error);
+
       this.errorMessage.set(
         'Die Kontakte konnten nicht geladen werden.'
       );
     } finally {
+      // Wird bei Erfolg und bei einem Fehler ausgeführt.
       this.loading.set(false);
     }
   }
 
+  /**
+   * Speichert einen neuen Kontakt.
+   * Omit bedeutet: Die ID wird nicht mitgegeben.
+   * Die Datenbank erzeugt sie automatisch.
+   *
+   * true = gespeichert, false = fehlgeschlagen.
+   */
   async addContact(contact: Omit<IUser, 'id'>): Promise<boolean> {
     this.saving.set(true);
     this.errorMessage.set('');
@@ -58,11 +79,13 @@ export class ContactService {
         throw error;
       }
 
-      this.users.update((users) => [...users, data]);
+      // Ergänzt die Liste um den gespeicherten Kontakt inklusive ID.
+      this.users.update((contacts) => [...contacts, data]);
 
       return true;
     } catch (error) {
       console.error('Kontakt speichern fehlgeschlagen:', error);
+
       this.errorMessage.set(
         'Der Kontakt konnte nicht gespeichert werden.'
       );

@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ContactService } from '../../../services/contact-service';
+import { ContactAvatar } from '../../../services/contact-avatar';
 
 @Component({
   selector: 'app-add-contact',
@@ -16,27 +17,32 @@ import { ContactService } from '../../../services/contact-service';
 })
 export class AddContact {
   readonly contactService = inject(ContactService);
+  readonly avatar: ContactAvatar = inject(ContactAvatar);
+
+  // Zeigt der Hauptkomponente an, ob der Dialog geöffnet ist.
   readonly isOpen = signal(false);
 
+  // Zugriff auf das dialog-Element im eigenen HTML.
   @ViewChild('dialog')
   private dialog!: ElementRef<HTMLDialogElement>;
 
+  // Zugriff auf das Formular und seine Gültigkeit.
   @ViewChild('contactForm')
   private contactForm!: NgForm;
 
-  private readonly colors = [
-    '#FF7A00', '#9327FF', '#6E52FF',
-    '#FC71FF', '#00BEE8', '#1FD7C1', '#FF4646',
-  ];
-
   avatarColor = '#FF7A00';
 
+  // Hier werden die Formulareingaben gespeichert.
   newContact = {
     name: '',
     email: '',
     phone: '',
   };
 
+  /**
+   * Setzt das Formular zurück und öffnet den Dialog.
+   * Die Vorschaufarbe wird einmal pro Öffnen ausgewählt.
+   */
   open(): void {
     this.newContact = {
       name: '',
@@ -44,8 +50,7 @@ export class AddContact {
       phone: '',
     };
 
-    this.avatarColor =
-      this.colors[Math.floor(Math.random() * this.colors.length)];
+    this.avatarColor = this.avatar.getRandomColor();
 
     this.contactForm.resetForm(this.newContact);
     this.contactService.errorMessage.set('');
@@ -54,6 +59,9 @@ export class AddContact {
     this.isOpen.set(true);
   }
 
+  /**
+   * Schließt den Dialog, sofern gerade nicht gespeichert wird.
+   */
   close(): void {
     if (!this.contactService.saving()) {
       this.dialog.nativeElement.close();
@@ -61,6 +69,10 @@ export class AddContact {
     }
   }
 
+  /**
+   * Wird beim Drücken von Escape ausgeführt.
+   * Während des Speicherns verhindern wir das Schließen.
+   */
   onCancel(event: Event): void {
     if (this.contactService.saving()) {
       event.preventDefault();
@@ -69,16 +81,16 @@ export class AddContact {
     }
   }
 
-  getInitials(name: string): string {
-    return name.trim().split(/\s+/).slice(0, 2)
-      .map((part) => part.charAt(0)).join('').toUpperCase();
-  }
-
+  /**
+   * Prüft die Eingaben und speichert den Kontakt über den Service.
+   * Bei Erfolg wird der Dialog geschlossen.
+   */
   async save(): Promise<void> {
     if (this.contactForm.invalid || this.contactService.saving()) {
       return;
     }
 
+    // Entfernt Leerzeichen am Anfang und Ende.
     const name = this.newContact.name.trim();
     const email = this.newContact.email.trim();
     const phone = this.newContact.phone.trim();
@@ -87,15 +99,17 @@ export class AddContact {
       this.contactService.errorMessage.set(
         'Bitte gib einen Namen und eine E-Mail-Adresse ein.'
       );
+
       return;
     }
 
     const saved = await this.contactService.addContact({
-      name,
-      email,
+      name: name,
+      email: email,
       phone: phone || null,
     });
 
+    // Bei einem Fehler bleiben Dialog und Eingaben erhalten.
     if (saved) {
       this.close();
     }

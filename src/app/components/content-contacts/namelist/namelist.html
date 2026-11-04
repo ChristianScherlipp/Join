@@ -1,5 +1,6 @@
 <aside class="sidebar" aria-label="Kontaktliste">
-  <div class="toolbar">
+  <header class="toolbar">
+    <!-- Meldet der Hauptkomponente, dass der Dialog geöffnet werden soll. -->
     <button
       class="add-button"
       type="button"
@@ -8,8 +9,9 @@
       Add new contact
       <img src="/assets/icons/person_add.svg" alt="" />
     </button>
-  </div>
+  </header>
 
+  <!-- Dieser Container ist für den scrollbaren Bereich nötig. -->
   <div class="list-scroll">
     @if (loading()) {
       <p role="status">Kontakte werden geladen …</p>
@@ -21,6 +23,7 @@
           <ul>
             @for (contact of group.contacts; track contact.id) {
               <li>
+                <!-- Meldet den angeklickten Kontakt an die Hauptkomponente. -->
                 <button
                   class="contact-row"
                   type="button"
@@ -30,15 +33,20 @@
                 >
                   <span
                     class="avatar"
-                    [style.background-color]="getColor(contact.name)"
+                    [style.background-color]="avatar.getColor(contact.name)"
                     aria-hidden="true"
                   >
-                    {{ getInitials(contact.name) }}
+                    {{ avatar.getInitials(contact.name) }}
                   </span>
 
                   <span class="contact-text">
-                    <span class="name">{{ contact.name }}</span>
-                    <span class="email">{{ contact.email }}</span>
+                    <span class="name">
+                      {{ contact.name }}
+                    </span>
+
+                    <span class="email">
+                      {{ contact.email }}
+                    </span>
                   </span>
                 </button>
               </li>
