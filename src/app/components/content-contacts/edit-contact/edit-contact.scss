@@ -8,6 +8,9 @@
     border: none;
     border-radius: 1.875rem;
     overflow: hidden;
+    position: fixed;
+    inset: 0;
+    margin: auto;
 
     &[open] {
         display: flex;
@@ -20,7 +23,6 @@
         flex-direction: column;
         padding: 0 3rem;
         gap: 1.5rem;
-
         background-color: $background-secondary;
     }
 
@@ -51,7 +53,7 @@
         margin-top: 1.625rem;
         width: 5.625rem;
         height: 3px;
-        background: #29ABE2;
+        background: $hover-secondary;
     }
 
     &__close {
@@ -66,7 +68,7 @@
         img {
             width: 1.5rem;
             height: 1.5rem;
-            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%) !important; 
+            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%); 
         }
     }
 
