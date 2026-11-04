@@ -11,6 +11,10 @@
   <main class="main-panel">
     <app-main-view [contact]="selectedContact()" />
 
+    <button (click)="deleteSelected()" [disabled]="!selectedContact()">
+      Delete
+    </button>
+
     @if (contactService.errorMessage() && !addDialog.isOpen()) {
       <p class="error-message" role="alert">
         {{ contactService.errorMessage() }}
