@@ -12,6 +12,7 @@
 background: $background-secondary;
 color: $text-primary;
 font-size: fluid(16, 18);
+height: 3.5rem;
 
     &:hover {
         background: $hover-primary;
@@ -26,12 +27,12 @@ font-size: fluid(16, 18);
 
 .btn-light,
 .btn-cancel{
-    padding: 15px 24px;
     background: $background-primary;
     color: $background-secondary;
     border: 1px solid $background-secondary;
     border-radius: 0.5rem;
     font-size: fluid(16, 18);
+    height: 3.5rem;
 
     &:hover {
         color: $hover-primary;
@@ -57,6 +58,7 @@ font-size: fluid(16, 18);
     font-size: 1.5rem;
     line-height: 1.2;
     font-weight: 700;
+    border: none;
 
     &:hover {
         background-color: $hover-primary;
@@ -72,18 +74,6 @@ font-size: fluid(16, 18);
         width: 1.5rem;
         height: 1.5rem;
     }
-}
-
-.btn-createTask {
-    width: 11.4375rem;
-}
-
-.addTask {
-    width: 10rem;
-}
-
-.btn-addContact {
-    width: 15.9375rem;
 }
 
 .btn-addTask:hover:not(.is-active),

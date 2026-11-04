@@ -66,6 +66,7 @@
         img {
             width: 1.5rem;
             height: 1.5rem;
+            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%) !important; 
         }
     }
 
@@ -80,6 +81,7 @@
         background-color: #FF7A00;
         color: $background-primary;
         font-size: 3rem;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
     }
 
     &__form {
@@ -105,6 +107,7 @@
         img {
             width: 1.5rem;
             height: 1.5rem;
+            
         }
     }
 
