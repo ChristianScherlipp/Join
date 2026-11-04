@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { IUser } from '../interfaces/iuser';
 import { Supabase } from './supabase';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,28 @@ export class ContactService {
       firstContact.name.localeCompare(secondContact.name, 'de')
     )
   );
+
+  channel: RealtimeChannel | undefined;
+
+  subscribeToContacts(): void {
+    if (this.channel) return; 
+
+    this.channel = this.supabase
+      .channel('contacts-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'contacts' },
+        () => this.getUsers() 
+      )
+      .subscribe();
+  }
+
+  unsubscribeFromContacts(): void {
+    if (this.channel) {
+      this.supabase.removeChannel(this.channel);
+      this.channel = undefined;
+    }
+  }
 
   /**
    * Lädt die Kontakte aus Supabase.
@@ -94,5 +117,27 @@ export class ContactService {
     } finally {
       this.saving.set(false);
     }
+  }
+
+
+
+  // Delete
+  async deleteContact(id: number) {
+    const { error } = await this.supabase
+      .from('contacts')
+      .delete()
+      .eq('id', id);
+
+    if (error) console.error(error);
+  }
+
+  //Update
+   async updateUser(id: number, name: string, mail: string, phone: number) {
+    const { error } = await this.supabase
+      .from('contacts')
+      .update({ name, mail, phone })
+      .eq('id', id);
+
+    if (error) console.error(error);
   }
 }

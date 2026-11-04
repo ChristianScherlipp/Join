@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ContactService } from '../../services/contact-service';
 import { IUser } from '../../interfaces/iuser';
 import { Namelist } from './namelist/namelist';
@@ -11,7 +11,7 @@ import { AddContact } from './add-contact/add-contact';
   templateUrl: './content-contacts.html',
   styleUrl: './content-contacts.scss',
 })
-export class ContentContacts implements OnInit {
+export class ContentContacts implements OnInit, OnDestroy {
   readonly contactService = inject(ContactService);
 
   // Speichert den angeklickten Kontakt für die rechte Kontaktkarte.
@@ -24,5 +24,18 @@ export class ContentContacts implements OnInit {
    */
   ngOnInit(): void {
     void this.contactService.getUsers();
+    this.contactService.subscribeToContacts();
+  }
+
+  ngOnDestroy(): void {
+    this.contactService.unsubscribeFromContacts();
+  }
+
+  deleteSelected(): void {
+    const contact = this.selectedContact();
+    if (!contact) return;
+
+    void this.contactService.deleteContact(contact.id);
+    this.selectedContact.set(null);
   }
 }
