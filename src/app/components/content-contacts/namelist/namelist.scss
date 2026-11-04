@@ -1,0 +1,150 @@
+@use '../../../../../public/styles/abstract/variables' as *;
+@use '../../../../../public/styles/abstract/mixins' as *;
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: $background-primary;
+  box-shadow: 3px 0 6px rgb(0 0 0 / 8%);
+}
+
+.toolbar {
+  padding: 24px 20px 12px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 3px solid $second-tow;
+    outline-offset: 2px;
+  }
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: $background-secondary;
+  color: $background-primary;
+  font-weight: 700;
+
+  &:hover {
+    background: $second-one;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+  }
+}
+
+.list-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 0 20px 24px;
+  overflow-y: auto;
+
+  > p {
+    padding: 16px;
+  }
+}
+
+h2 {
+  margin: 12px 0 8px;
+  padding: 12px 20px 16px;
+  border-bottom: 1px solid $border-color;
+  color: $text-secondary;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 15px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+
+  &:hover {
+    background: #f1f2f3;
+  }
+
+  &.selected {
+    background: $background-secondary;
+    color: $background-primary;
+
+    .email {
+      color: #80d8ff;
+    }
+  }
+}
+
+.avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid $background-primary;
+  border-radius: 50%;
+  color: $background-primary;
+  font-size: 14px;
+}
+
+.contact-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.name {
+  font-size: 17px;
+}
+
+.email {
+  color: #007fae;
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .list-scroll {
+    max-height: 45dvh;
+  }
+}
