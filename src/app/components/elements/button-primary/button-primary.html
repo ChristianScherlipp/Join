@@ -1,1 +1,18 @@
-<p>button-primary works!</p>
+<button
+    [type]="buttonType()"
+    [style.width]="widthStr()"
+    class="btn-primary"
+    [disabled]="isDisabled()"
+    [class.btn-dark]="typeStr() === 'dark'"
+    [class.btn-light]="typeStr() === 'light'"
+    [class.btn-createTask]="typeStr() === 'createTask'"
+    [class.btn-addTask]="typeStr() === 'addTask'"
+    [class.btn-addTaskSmall]="typeStr() === 'addTaskSmall'"
+    [class.btn-addContact]="typeStr() === 'addContact'"
+    [class.btn-cancel]="typeStr() === 'cancel'"
+    [class.small]="small()"
+    [class.is-active]="isActive()"
+>
+    <p class="btn-primary__p"><ng-content></ng-content></p>
+    <img class="btn-primary__img" src="{{ btnSrc.get(typeStr()) }}" aria-hidden="true" />
+</button>
