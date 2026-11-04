@@ -1,4 +1,4 @@
-<dialog class="edit-area" open>
+<dialog class="edit-area" (cancel)="onCancel($event)">
     <section class="edit-area__left">
         <img class="edit-area__logo" src="./assets/icons/join-logo-white.svg" alt="Join logo" />
         <h2 class="edit-area__title">Edit contact
@@ -6,25 +6,25 @@
         </h2>
     </section>
     <section class="edit-area__right">
-        <button class="edit-area__close" type="button" aria-label="Close">
+        <button class="edit-area__close" type="button" (click)="close()" aria-label="Close">
         <img src="./assets/icons/cancel.svg" alt="Icon Close" />
         </button>
-        <div class="edit-area__avatar">AM</div>
-        <form class="edit-area__form">
+        <div class="edit-area__avatar" [style.background-color]="avatar.getColor(formData.name)">{{ avatar.getInitials(formData.name) }}</div>
+        <form class="edit-area__form" (ngSubmit)="saveContact()">
             <label class="edit-area__field">
-                <input class="edit-area__input" type="text" name="name" placeholder="Name" />
+                <input class="edit-area__input" type="text" name="name" placeholder="Name" [(ngModel)]="formData.name" required />
                 <img src="./assets/icons/person.svg" alt="" />
             </label>
             <label class="edit-area__field">
-                <input class="edit-area__input" type="email" name="email" placeholder="Email" />
+                <input class="edit-area__input" type="email" name="email" placeholder="Email" [(ngModel)]="formData.email" required />
                 <img src="./assets/icons/mail.svg" alt="" />
             </label>
             <label class="edit-area__field">
-                <input class="edit-area__input" type="tel" name="phone" placeholder="Phone" />
+                <input class="edit-area__input" type="tel" name="phone" placeholder="Phone" [(ngModel)]="formData.phone" required />
                 <img src="./assets/icons/call.svg" alt="" />
             </label>
             <div class="edit-area__actions">
-                <app-button-primary typeStr="light" widthStr="7rem">Delete</app-button-primary>
+                <app-button-primary typeStr="light" widthStr="7rem" (click)="deleteContact()">Delete</app-button-primary>
                 <app-button-primary typeStr="createTask" widthStr="7rem" buttonType="submit">Save</app-button-primary>
             </div>
         </form>

@@ -1,7 +1,8 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { IUser } from '../interfaces/iuser';
 import { Supabase } from './supabase';
-import { RealtimeChannel } from '@supabase/supabase-js';
+import { PostgrestError, RealtimeChannel } from '@supabase/supabase-js';
+import { defaultEquals } from '@angular/core/primitives/signals';
 
 @Injectable({
   providedIn: 'root',
@@ -119,25 +120,43 @@ export class ContactService {
     }
   }
 
+  /**
+   * Löscht den Kontakt mit der übergabenen ID.
+   * true = gelöscht, false = fehlgeschlagen.
+   * Die Liste wird danach über die Realtime-verbindung neu geladen 
+   */
+  async deleteContact(id: number): Promise<boolean> {
+    this.saving.set(true);
+    this.errorMessage.set('');
 
+    const { error } = await this.supabase.from('contacts').delete().eq('id', id);
 
-  // Delete
-  async deleteContact(id: number) {
-    const { error } = await this.supabase
-      .from('contacts')
-      .delete()
-      .eq('id', id);
-
-    if (error) console.error(error);
+    this.saving.set(false);
+    return !this.hasFailed(error, 'Der Kontakt konnte nicht gelöscht werden.');
   }
 
-  //Update
-   async updateUser(id: number, name: string, mail: string, phone: number) {
-    const { error } = await this.supabase
-      .from('contacts')
-      .update({ name, mail, phone })
-      .eq('id', id);
+  /**
+  * Ändert den Kontakt mit der übergebenen ID.
+  * true = gespeichert, false = fehlgeschlagen.
+  */
+  async updateContact(id: number, changes: Omit<IUser, 'id'>): Promise<boolean> {
+    this.saving.set(true);
+    this.errorMessage.set('');
 
-    if (error) console.error(error);
+    const { error } = await this.supabase.from('contacts').update(changes).eq('id', id);
+
+    this.saving.set(false);
+    return !this.hasFailed(error, 'Der Kontakt konnte nicht geändert werden.');
+  }
+
+  //Gibt true zurück, wenn ein fehler vorliegt, und setzt dann die Meldung für die oberfläche.
+  private hasFailed(error: PostgrestError | null, message: string): boolean {
+    if (!error) {
+      return false;
+    }
+
+    console.error(message, error);
+    this.errorMessage.set(message);
+    return true;
   }
 }
