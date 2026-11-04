@@ -37,6 +37,14 @@
     width: 1.25rem;
     height:1.25rem;
 }
+.help-link img {
+  transition: all 100ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+} 
+
 .user-avatar{
     width: 3.5rem;
     height: 3.5rem;
