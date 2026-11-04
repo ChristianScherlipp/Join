@@ -17,7 +17,7 @@ enum BtnType {
     templateUrl: './button-primary.html',
 })
 export class ButtonPrimary {
-    readonly widthStr = input<string | null>('null');
+    readonly widthStr = input<string | null>(null);
     readonly small = input<boolean>(false);
     readonly typeStr = input<string>(BtnType.Dark);
     readonly isDisabled = input<boolean>(false);

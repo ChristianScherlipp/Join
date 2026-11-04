@@ -1,0 +1,128 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.edit-area {
+    width: 75.75rem;
+    height: 37rem;
+    padding: 0;
+    border: none;
+    border-radius: 1.875rem;
+    overflow: hidden;
+
+    &[open] {
+        display: flex;
+    }
+
+    &__left {
+        display: flex;
+        justify-content: center;
+        flex: 0 0 calc(100% / 3);
+        flex-direction: column;
+        padding: 0 3rem;
+        gap: 1.5rem;
+
+        background-color: $background-secondary;
+    }
+
+    &__right {
+        position: relative;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        gap: 4rem;
+        padding: 0 3rem;
+    }
+
+    &__logo {
+        width: 3.370625rem;
+        height: 4.155rem;
+    }
+
+    &__title {
+        margin: 2rem 0 0;
+        color: $background-primary;
+        font-size: fluid(47, 61);
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    &__line {
+        margin-top: 1.625rem;
+        width: 5.625rem;
+        height: 3px;
+        background: #29ABE2;
+    }
+
+    &__close {
+        position: absolute;
+        top: 3.9rem;
+        right: 3.9rem;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%) !important; 
+        }
+    }
+
+    &__avatar {
+        display: flex;
+        flex: 0 0 8.125rem;
+        align-items: center;
+        justify-content: center;
+        height: 8.125rem;
+        border: 3px solid $background-primary;
+        border-radius: 50%;
+        background-color: #FF7A00;
+        color: $background-primary;
+        font-size: 3rem;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 26.375rem;
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 3.125rem;
+        padding: 0 1.3rem;
+        border: 1px solid $background-secondary;
+        border-radius: 0.625rem;
+
+        &:focus-within {
+            border-color: $hover-primary;
+        }
+
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+            
+        }
+    }
+
+    &__input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $background-secondary;
+        font-size: 1.25rem;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1.125rem;
+    }
+}
