@@ -1,5 +1,5 @@
-@use '../../../../../public/styles/abstract/variables' as *;
-@use '../../../../../public/styles/abstract/mixins' as *;
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
 
 dialog {
   width: min(1100px, calc(100% - 32px));
@@ -37,13 +37,14 @@ dialog {
 
   h2 {
     margin: 0 0 12px;
-    font-size: fluid(32px,48px);
+    font-size: fluid(61,47);
+    font-weight: 700;
     line-height: 1.1;
   }
 
   p {
     margin: 0;
-    font-size: 20px;
+    font-size: fluid(20,27);
     line-height: 1.5;
   }
 }
@@ -105,7 +106,7 @@ button {
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: #2a3647;
+  color: $background-secondary;
   font-size: 30px;
 
   &:hover:not(:disabled) {
