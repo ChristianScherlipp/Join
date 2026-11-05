@@ -9,19 +9,13 @@
     <button class="add-area__close" type="button" aria-label="Close" [disabled]="contactService.saving()" (click)="close()">
       <img src="./assets/icons/cancel.svg" alt="Icon Close" />
     </button>
-    <!-- Zeigt entweder Initialen oder das Personensymbol. -->
-    <div class="add-area__avatar" [style.background-color]="newContact.name.trim() ? avatarColor : '#d1d1d1'" aria-hidden="true">
-      @if (newContact.name.trim()) {
-        {{ avatar.getInitials(newContact.name) }}
-      } @else {
-        <img src="./assets/icons/person.svg" alt="Preson Icon" />
-      }
-    </div>
+    <!-- Zeigt Initialen oder bei leerem Namen das Platzhalter-Icon. -->
+    <app-initial-icon [name]="newContact.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
     <form class="add-area__form" #contactForm="ngForm" (ngSubmit)="save()">
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('name')">
           <input (blur)="fieldError.checkRequired('name', newContact.name)" class="add-area__input" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="newContact.name" required />
-          <img src="./assets/icons/person.svg" alt="Mail Icon" />
+          <img src="./assets/icons/person.svg" alt="Person Icon" />
         </label>
         @if (fieldError.isVisible('name')) {
           <span class="add-area__field-error" role="alert">This field is required</span>
@@ -30,7 +24,7 @@
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('email')">
           <input (blur)="fieldError.checkRequired('email', newContact.email)" class="add-area__input" type="email" name="email" placeholder="Email" aria-label="E-Mail" autocomplete="email" [(ngModel)]="newContact.email" required email />
-          <img src="./assets/icons/mail.svg" alt="Phone Icon" />
+          <img src="./assets/icons/mail.svg" alt="Mail Icon" />
         </label>
         @if (fieldError.isVisible('email')) {
           <span class="add-area__field-error" role="alert">This field is required</span>
@@ -38,7 +32,7 @@
       </div>
       <label class="add-area__field">
         <input class="add-area__input" type="tel" name="phone" placeholder="Phone" aria-label="Telefon (optional)" autocomplete="tel" [(ngModel)]="newContact.phone" />
-        <img src="./assets/icons/call.svg" alt="" />
+        <img src="./assets/icons/call.svg" alt="Phone Icon" />
       </label>
       @if (contactService.errorMessage()) {
         <p class="add-area__error" role="alert">{{ contactService.errorMessage() }}</p>

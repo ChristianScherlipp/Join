@@ -9,7 +9,7 @@
         <button class="edit-area__close" type="button" (click)="close()" aria-label="Close">
         <img src="./assets/icons/cancel.svg" alt="Icon Close" />
         </button>
-        <div class="edit-area__avatar" [style.background-color]="avatar.getColor(formData.name)">{{ avatar.getInitials(formData.name) }}</div>
+        <app-initial-icon [name]="formData.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
         <form class="edit-area__form" (ngSubmit)="saveContact()">
             <label class="edit-area__field">
                 <input class="edit-area__input" type="text" name="name" placeholder="Name" [(ngModel)]="formData.name" required />

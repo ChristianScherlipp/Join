@@ -4,18 +4,18 @@ import { ContactService } from '../../../services/contact-service';
 import { ContactAvatar } from '../../../services/contact-avatar';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
 import { FieldError } from '../../../services/field-error';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
-providers: [FieldError]
 
 @Component({
-  imports: [ButtonPrimary, FormsModule],
+  imports: [ButtonPrimary, FormsModule, InitialIcon],
+  providers: [FieldError],
   selector: 'app-add-contact',
   templateUrl: './add-contact.html',
   styleUrl: './add-contact.scss',
 })
 export class AddContact {
   readonly contactService = inject(ContactService);
-  readonly avatar: ContactAvatar = inject(ContactAvatar);
   
   readonly fieldError = inject(FieldError);
 
@@ -30,8 +30,6 @@ export class AddContact {
   @ViewChild('contactForm')
   private contactForm!: NgForm;
 
-  avatarColor = '#FF7A00';
-
   // Hier werden die Formulareingaben gespeichert.
   newContact = {
     name: '',
@@ -41,7 +39,6 @@ export class AddContact {
 
   /**
    * Setzt das Formular zurück und öffnet den Dialog.
-   * Die Vorschaufarbe wird einmal pro Öffnen ausgewählt.
    */
   open(): void {
     this.newContact = {
@@ -49,8 +46,6 @@ export class AddContact {
       email: '',
       phone: '',
     };
-
-    this.avatarColor = this.avatar.getRandomColor();
 
     this.contactForm.resetForm(this.newContact);
     this.contactService.errorMessage.set('');
