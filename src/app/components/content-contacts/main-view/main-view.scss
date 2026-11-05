@@ -1,5 +1,5 @@
-@use '../../../../../public/styles/abstract/variables' as *;
-@use '../../../../../public/styles/abstract/mixins' as *;
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
 
 :host {
   display: block;
@@ -15,13 +15,13 @@
   h1 {
     margin: 0;
     color: $text-secondary;
-    font-size: clamp(40px, 4vw, 61px);
+    font-size: fluid(47,61);
     letter-spacing: -1px;
   }
 
   p {
     margin: 0;
-    font-size: 22px;
+    font-size: fluid(20,27);
   }
 }
 
@@ -40,7 +40,7 @@
     min-width: 0;
     margin: 0;
     color: $text-secondary;
-    font-size: clamp(28px, 3vw, 44px);
+    font-size: fluid(36,47);
     font-weight: 500;
     overflow-wrap: anywhere;
   }
