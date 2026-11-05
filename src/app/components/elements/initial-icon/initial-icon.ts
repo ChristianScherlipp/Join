@@ -62,7 +62,7 @@ export class InitialIcon {
 
   backgroundColor = computed(() => {
   if (this.isHeader()) {
-    return 'transparent';
+    return '';
   } else if (this.isPlaceholder() || this.initials() === '') {
     return '#d1d1d1';
   } else {
