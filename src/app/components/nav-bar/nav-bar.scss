@@ -1,4 +1,4 @@
-@use '../../../../public/styles/abstract/variables' as *;
+@use 'abstract/variables' as *;
 @use '../../../styles.scss' as *;
 
 .nav-bar {
@@ -58,7 +58,7 @@
         background-color: $btn-after;
         cursor: pointer;
     }
-     &.router-link-active {
+    &.router-link-active {
         background-color: $btn-after;
     }
 }
@@ -82,6 +82,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
+    color: inherit;
 
     &:hover {
         background-color: $hover-primary;
@@ -91,5 +93,8 @@
     &:active {
         background-color: $btn-after;
         cursor: pointer;
+    }
+    &.router-link-active {
+        background-color: $btn-after;
     }
 }
