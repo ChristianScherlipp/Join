@@ -4,10 +4,11 @@ import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
 import { ContactService } from '../../../services/contact-service';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
 
 @Component({
-  imports: [ButtonPrimary, FormsModule],
+  imports: [ButtonPrimary, FormsModule, InitialIcon],
   selector: 'app-edit-contact',
   styleUrl: './edit-contact.scss',
   templateUrl: './edit-contact.html',
