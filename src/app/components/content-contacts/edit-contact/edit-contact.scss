@@ -12,6 +12,10 @@
     inset: 0;
     margin: auto;
 
+    &::backdrop {
+        background: rgb(0 0 0 / 40%);
+    }
+
     &[open] {
         display: flex;
     }

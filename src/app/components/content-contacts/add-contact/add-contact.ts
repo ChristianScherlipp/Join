@@ -1,23 +1,23 @@
-import {
-  Component,
-  ElementRef,
-  inject,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild, } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ContactService } from '../../../services/contact-service';
 import { ContactAvatar } from '../../../services/contact-avatar';
+import { ButtonPrimary } from '../../elements/button-primary/button-primary';
+import { FieldError } from '../../../services/field-error';
+
+providers: [FieldError]
 
 @Component({
+  imports: [ButtonPrimary, FormsModule],
   selector: 'app-add-contact',
-  imports: [FormsModule],
   templateUrl: './add-contact.html',
   styleUrl: './add-contact.scss',
 })
 export class AddContact {
   readonly contactService = inject(ContactService);
   readonly avatar: ContactAvatar = inject(ContactAvatar);
+  
+  readonly fieldError = inject(FieldError);
 
   // Zeigt der Hauptkomponente an, ob der Dialog geöffnet ist.
   readonly isOpen = signal(false);
