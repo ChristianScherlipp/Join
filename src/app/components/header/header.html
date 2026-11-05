@@ -1,14 +1,26 @@
 <header class="header">
   <p class="header-title">Kanban Project Management Tool</p>
-
   <div class="header-actions">
     <a class="help-link">
       <img src="/assets/icons/help.svg" alt="Hilfe">
     </a>
-    <app-initial-icon
-      name="Sofia Müller"
-      [isHeader]="true"
-      style="width: 3.5rem; height: 3.5rem"
-    ></app-initial-icon>
+    <button
+      class="avatar-button"
+      (click)="toggleMenu()"
+      aria-label="Benutzermenü"
+      [attr.aria-expanded]="isMenuOpen()">
+      <app-initial-icon
+        name="Sofia Müller"
+        [isHeader]="true"
+        style="width: 3.5rem; height: 3.5rem"></app-initial-icon>
+    </button>
+
+    @if (isMenuOpen()) {
+      <nav class="user-menu">
+        <a routerLink="/legal-notice" (click)="closeMenu()">Legal Notice</a>
+        <a routerLink="/privacy-policy" (click)="closeMenu()">Privacy Policy</a>
+        <button (click)="logout()">Log out</button>
+      </nav>
+    }
   </div>
 </header>
