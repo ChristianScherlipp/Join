@@ -1,132 +1,58 @@
-<!-- Der native Dialog übernimmt Fokus und Hintergrundsperre. -->
-<dialog
-  #dialog
-  aria-labelledby="dialog-title"
-  (cancel)="onCancel($event)"
-  (close)="isOpen.set(false)"
->
-  <div class="dialog-layout">
-    <header class="intro">
-      <img
-        class="logo"
-        src="/assets/icons/join-logo-white.svg"
-        alt="JOIN"
-      />
-
-      <h2 id="dialog-title">Add contact</h2>
-      <p>Tasks are better with a team!</p>
-
-      <span class="intro-line" aria-hidden="true"></span>
-    </header>
-
-    <div class="content">
-      <button
-        class="close-button"
-        type="button"
-        aria-label="Dialog schließen"
-        [disabled]="contactService.saving()"
-        (click)="close()"
-      >
-        ×
-      </button>
-
-      <!-- Zeigt entweder Initialen oder das Personensymbol. -->
-      <span
-        class="avatar"
-        [style.background-color]="
-          newContact.name.trim() ? avatarColor : '#d1d1d1'
-        "
-        aria-hidden="true"
-      >
-        @if (newContact.name.trim()) {
-          {{ avatar.getInitials(newContact.name) }}
-        } @else {
-          <img src="/assets/icons/person.svg" alt="" />
-        }
-      </span>
-
-      <form #contactForm="ngForm" (ngSubmit)="save()">
-        <label class="input-wrapper" for="contact-name">
-          <span class="visually-hidden">Name</span>
-
-          <input
-            id="contact-name"
-            name="name"
-            type="text"
-            placeholder="Name"
-            autocomplete="name"
-            [(ngModel)]="newContact.name"
-            required
-          />
-
-          <img src="/assets/icons/person.svg" alt="" />
-        </label>
-
-        <label class="input-wrapper" for="contact-email">
-          <span class="visually-hidden">E-Mail</span>
-
-          <input
-            id="contact-email"
-            name="email"
-            type="email"
-            placeholder="Email"
-            autocomplete="email"
-            [(ngModel)]="newContact.email"
-            required
-            email
-          />
-
-          <img src="/assets/icons/mail.svg" alt="" />
-        </label>
-
-        <label class="input-wrapper" for="contact-phone">
-          <span class="visually-hidden">Telefon (optional)</span>
-
-          <input
-            id="contact-phone"
-            name="phone"
-            type="tel"
-            placeholder="Phone"
-            autocomplete="tel"
-            [(ngModel)]="newContact.phone"
-          />
-
-          <img src="/assets/icons/call.svg" alt="" />
-        </label>
-
-        @if (contactService.errorMessage()) {
-          <p class="error-message" role="alert">
-            {{ contactService.errorMessage() }}
-          </p>
-        }
-
-        <footer class="actions">
-          <button
-            class="secondary-button"
-            type="button"
-            [disabled]="contactService.saving()"
-            (click)="close()"
-          >
-            Cancel ×
-          </button>
-
-          <button
-            class="primary-button"
-            type="submit"
-            [disabled]="
-              contactForm.invalid ||
-              !newContact.name.trim() ||
-              contactService.saving()
-            "
-          >
-            @if (contactService.saving()) {
-              Saving …
-            } @else {
-              Create contact ✓
-            }
-          </button>
-        </footer>
-      </form>
+<dialog class="add-area" #dialog aria-labelledby="dialog-title" (cancel)="onCancel($event)" (close)="isOpen.set(false); fieldError.reset()">
+  <section class="add-area__left">
+    <img class="add-area__logo" src="./assets/icons/join-logo-white.svg" alt="Join logo" />
+    <p class="add-area__title" id="dialog-title">Add contact</p>
+    <p class="add-area__subtitle">Tasks are better with a team!</p>
+    <div class="add-area__line"></div>
+  </section>
+  <section class="add-area__right">
+    <button class="add-area__close" type="button" aria-label="Close" [disabled]="contactService.saving()" (click)="close()">
+      <img src="./assets/icons/cancel.svg" alt="Icon Close" />
+    </button>
+    <!-- Zeigt entweder Initialen oder das Personensymbol. -->
+    <div class="add-area__avatar" [style.background-color]="newContact.name.trim() ? avatarColor : '#d1d1d1'" aria-hidden="true">
+      @if (newContact.name.trim()) {
+        {{ avatar.getInitials(newContact.name) }}
+      } @else {
+        <img src="./assets/icons/person.svg" alt="Preson Icon" />
+      }
     </div>
-  </div>
+    <form class="add-area__form" #contactForm="ngForm" (ngSubmit)="save()">
+      <div class="add-area__group">
+        <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('name')">
+          <input (blur)="fieldError.checkRequired('name', newContact.name)" class="add-area__input" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="newContact.name" required />
+          <img src="./assets/icons/person.svg" alt="Mail Icon" />
+        </label>
+        @if (fieldError.isVisible('name')) {
+          <span class="add-area__field-error" role="alert">This field is required</span>
+        }
+      </div>
+      <div class="add-area__group">
+        <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('email')">
+          <input (blur)="fieldError.checkRequired('email', newContact.email)" class="add-area__input" type="email" name="email" placeholder="Email" aria-label="E-Mail" autocomplete="email" [(ngModel)]="newContact.email" required email />
+          <img src="./assets/icons/mail.svg" alt="Phone Icon" />
+        </label>
+        @if (fieldError.isVisible('email')) {
+          <span class="add-area__field-error" role="alert">This field is required</span>
+        }
+      </div>
+      <label class="add-area__field">
+        <input class="add-area__input" type="tel" name="phone" placeholder="Phone" aria-label="Telefon (optional)" autocomplete="tel" [(ngModel)]="newContact.phone" />
+        <img src="./assets/icons/call.svg" alt="" />
+      </label>
+      @if (contactService.errorMessage()) {
+        <p class="add-area__error" role="alert">{{ contactService.errorMessage() }}</p>
+      }
+      <div class="add-area__actions">
+        <app-button-primary typeStr="light" widthStr="7rem" [isDisabled]="contactService.saving()" (click)="close()">Cancel</app-button-primary>
+        <app-button-primary typeStr="createTask" widthStr="15.5rem" buttonType="submit" [isDisabled]="contactForm.invalid || !newContact.name.trim() || contactService.saving()">
+          @if (contactService.saving()) {
+            Saving …
+          } @else {
+            Create contact
+          }
+        </app-button-primary>
+      </div>
+    </form>
+  </section>
 </dialog>
