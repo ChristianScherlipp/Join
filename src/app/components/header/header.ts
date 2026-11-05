@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { InitialIcon } from '../elements/initial-icon/initial-icon';
+
 
 @Component({
-  imports: [],
+  imports: [InitialIcon],
   selector: 'app-header',
   styleUrl: './header.scss',
   templateUrl: './header.html',
