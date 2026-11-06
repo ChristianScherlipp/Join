@@ -18,6 +18,10 @@
     
     &[open] {
         display: flex;
+
+        @include respond-below(768px){
+                flex-direction: column;
+            }
     }
 
     &__left {
@@ -43,6 +47,10 @@
     &__logo {
         width: 3.370625rem;
         height: 4.155rem;
+
+         @include respond-below(768px){
+                display: none;
+            }
     }
 
     &__title {
@@ -145,6 +153,16 @@
         display: flex;
         gap: 1.5rem;
         margin-top: 1.125rem;
+
+        @include respond-below(768px){
+                justify-content: center;
+            }
+
+        .cancel-btn{
+            @include respond-below(768px){
+                display: none;
+            }
+        }
     }
 
     &__error {
