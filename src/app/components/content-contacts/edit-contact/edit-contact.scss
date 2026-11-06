@@ -136,3 +136,162 @@
         line-height: 1;
     }
 }
+
+// Responsive: gleiche Logik wie im Add-Contact-Dialog.
+.edit-area {
+    // Tablet: von 761px bis 1240px schrumpft der Dialog mit der Bildschirmbreite.
+    @media (min-width: 761px) and (max-width: 1240px) {
+        $avatar-size: fluid(90, 130, 761, 1240);
+
+        width: 95vw;
+
+        &__left {
+            flex: 0 0 fluid(220, 467, 761, 1240);
+            padding: 0 fluid(24, 48, 761, 1240);
+        }
+
+        &__title {
+            font-size: fluid(36, 61, 761, 1240);
+        }
+
+        &__right {
+            gap: fluid(24, 64, 761, 1240);
+            padding: 0 fluid(24, 48, 761, 1240);
+        }
+
+        &__actions {
+            gap: fluid(16, 24, 761, 1240);
+        }
+
+        &__close {
+            top: fluid(24, 62, 761, 1240);
+            right: fluid(24, 62, 761, 1240);
+        }
+
+        &__avatar {
+            // Inline-Style im HTML ueberschreiben (8.125rem).
+            width: $avatar-size !important;
+            height: $avatar-size !important;
+            flex-shrink: 0;
+        }
+
+        &__form {
+            width: 100%;
+            max-width: 26.375rem;
+        }
+    }
+
+    // Mobile: alles skaliert linear von 320px bis 760px Bildschirmbreite.
+    @include respond-below(760px) {
+        $avatar-size: fluid(90, 130, 320, 760);
+
+        width: 92vw;
+        height: fit-content;
+        max-height: 95vh;
+        overflow-y: auto;
+        scrollbar-width: none; // Scrollbar ausblenden, Scrollen bleibt moeglich
+        border-radius: fluid(20, 30, 320, 760);
+
+        &[open] {
+            flex-direction: column;
+        }
+
+        &__left {
+            flex: none;
+            height: min(fluid(260, 351, 320, 760), 35vh);
+            padding: 0 fluid(20, 48, 320, 760);
+            gap: fluid(4, 24, 320, 760);
+        }
+
+        &__logo {
+            display: none;
+        }
+
+        &__title {
+            margin: 0;
+            font-size: fluid(36, 47, 320, 760);
+        }
+
+        &__line {
+            margin-top: fluid(12, 26, 320, 760);
+            width: fluid(60, 90, 320, 760);
+        }
+
+        &__avatar {
+            // Inline-Style im HTML ueberschreiben (8.125rem).
+            width: $avatar-size !important;
+            height: $avatar-size !important;
+            margin-top: calc(#{$avatar-size} * -0.5);
+        }
+
+        &__right {
+            position: static;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex: 1;
+            gap: fluid(24, 48, 320, 760);
+            padding: 0 fluid(12, 48, 320, 760) fluid(24, 72, 320, 760);
+        }
+
+        &__close {
+            filter: brightness(0) invert(1);
+            top: fluid(16, 32, 320, 760);
+            right: fluid(16, 32, 320, 760);
+
+            img {
+                width: fluid(13.15, 18, 320, 760);
+                height: fluid(13.15, 18, 320, 760);
+            }
+        }
+
+        &__form {
+            width: 100%;
+            gap: fluid(20, 32, 320, 760);
+        }
+
+        &__field {
+            height: fluid(42, 50, 320, 760);
+            padding: 0 fluid(12, 21, 320, 760);
+
+            img {
+                width: fluid(20, 24, 320, 760);
+                height: fluid(20, 24, 320, 760);
+            }
+        }
+
+        &__input {
+            min-width: 0;
+            font-size: fluid(16, 20, 320, 760);
+        }
+
+        &__field-error {
+            left: fluid(12, 21, 320, 760);
+            font-size: 1rem;
+        }
+
+        // Delete und Save bleiben beide sichtbar, nur zentriert.
+        &__actions {
+            justify-content: center;
+            gap: fluid(16, 24, 320, 760);
+            margin-top: fluid(8, 18, 320, 760);
+        }
+
+        // Button liegt in einer anderen Komponente, daher ::ng-deep.
+        &__actions ::ng-deep .btn-primary {
+            // !important ueberschreibt widthStr="7rem" aus dem HTML.
+            width: fluid(90, 112, 320, 760) !important;
+            height: fluid(40, 48, 320, 760);
+            font-size: fluid(16, 18, 320, 760);
+
+            img {
+                width: fluid(16, 20, 320, 760);
+                height: fluid(16, 20, 320, 760);
+            }
+
+            // Delete hat kein Icon (src=""), sonst erscheint ein kaputtes Bild-Symbol.
+            img[src=""] {
+                display: none;
+            }
+        }
+    }
+}

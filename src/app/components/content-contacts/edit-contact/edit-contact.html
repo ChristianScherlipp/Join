@@ -1,4 +1,4 @@
-<dialog class="edit-area" (cancel)="onCancel($event)" (close)="fieldError.reset()">
+<dialog class="edit-area" #dialog (cancel)="onCancel($event)" (close)="fieldError.reset()">
     <section class="edit-area__left">
         <img class="edit-area__logo" src="./assets/icons/join-logo-white.svg" alt="Join logo" />
         <h2 class="edit-area__title">Edit contact
@@ -9,7 +9,7 @@
         <button class="edit-area__close" type="button" (click)="close()" aria-label="Close">
         <img src="./assets/icons/cancel.svg" alt="Icon Close" />
         </button>
-        <app-initial-icon [name]="formData.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
+        <app-initial-icon class="edit-area__avatar" [name]="formData.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
         <form class="edit-area__form" (ngSubmit)="saveContact()">
             <div class="edit-area__group">
                 <label class="edit-area__field" [class.edit-area__field--error]="fieldError.isVisible('name')">
