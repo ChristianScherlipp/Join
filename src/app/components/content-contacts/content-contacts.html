@@ -3,15 +3,15 @@
   <app-namelist
     [contacts]="contactService.sortedUsers()"
     [loading]="contactService.loading()"
-    [selectedId]="selectedContact()?.id ?? null"
-    (contactSelected)="selectedContact.set($event)"
+    [selectedId]="contactService.selectedContact()?.id ?? null"
+    (contactSelected)="contactService.selectedContact.set($event)"
     (addRequested)="addDialog.open()"
   />
 
   <main class="main-panel">
-    <app-main-view [contact]="selectedContact()" />
+    <app-main-view [contact]="contactService.selectedContact()" />
 
-    <button (click)="deleteSelected()" [disabled]="!selectedContact()">
+    <button (click)="deleteSelected()" [disabled]="!contactService.selectedContact()">
       Delete
     </button>
 
