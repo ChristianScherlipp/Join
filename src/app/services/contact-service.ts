@@ -13,6 +13,9 @@ export class ContactService {
   // Die geladenen Kontakte.
   readonly users = signal<IUser[]>([]);
 
+  // Der ausgewählte Kontakt bleibt erhalten, auch wenn die Seite gewechselt wird.
+  readonly selectedContact = signal<IUser | null>(null);
+
   // Zeigt an, ob gerade geladen oder gespeichert wird.
   readonly loading = signal(false);
   readonly saving = signal(false);
