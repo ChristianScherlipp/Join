@@ -15,7 +15,7 @@
     &::backdrop {
         background: rgb(0 0 0 / 40%);
     }
-    
+
     &[open] {
         display: flex;
     }
@@ -44,6 +44,7 @@
         width: 3.370625rem;
         height: 4.155rem;
     }
+
 
     &__title {
         margin: 2rem 0 0;
@@ -84,7 +85,7 @@
         img {
             width: 1.5rem;
             height: 1.5rem;
-            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%); 
+            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%);
         }
     }
 
@@ -128,7 +129,7 @@
 
         img {
             width: 1.5rem;
-            height: 1.5rem;            
+            height: 1.5rem;
         }
     }
 
@@ -155,5 +156,167 @@
         color: #a11919;
         line-height: 1.5;
     }
-}
 
+    // Tablet: von 761px bis 1240px schrumpft der Dialog mit der Bildschirmbreite.
+    @media (min-width: 761px) and (max-width: 1240px) {
+        $avatar-size: fluid(90, 130, 761, 1240);
+
+        width: 95vw;
+
+        &__left {
+            flex: 0 0 fluid(220, 467, 761, 1240);
+            padding: 0 fluid(24, 48, 761, 1240);
+        }
+
+        &__title {
+            font-size: fluid(36, 61, 761, 1240);
+        }
+
+        &__right {
+            gap: fluid(24, 64, 761, 1240);
+            padding: 0 fluid(24, 48, 761, 1240);
+        }
+
+        &__actions {
+            gap: fluid(16, 24, 761, 1240);
+        }
+
+        // !important ueberschreibt widthStr="15.5rem" aus dem HTML.
+        &__actions app-button-primary:not(.cancel-bttn) ::ng-deep .btn-primary {
+            width: fluid(200, 248, 761, 1240) !important;
+            font-size: fluid(18, 21, 761, 1240);
+            white-space: nowrap;
+        }
+
+        &__close {
+            top: fluid(24, 62, 761, 1240);
+            right: fluid(24, 62, 761, 1240);
+        }
+
+        &__avatar {
+            // Inline-Style im HTML ueberschreiben (8.125rem).
+            width: $avatar-size !important;
+            height: $avatar-size !important;
+            flex-shrink: 0;
+        }
+
+        &__form {
+            width: 100%;
+            max-width: 26.375rem;
+        }
+    }
+
+    // Mobile: alles skaliert linear von 320px bis 760px Bildschirmbreite.
+    @include respond-below(760px) {
+        $avatar-size: fluid(90, 130, 320, 760);
+
+        width: 92vw;
+        height: fit-content;
+        max-height: 95vh;
+        overflow-y: auto;
+        scrollbar-width: none; // Scrollbar ausblenden, Scrollen bleibt moeglich
+        border-radius: fluid(20, 30, 320, 760);
+
+        &[open] {
+            flex-direction: column;
+        }
+
+        &__left {
+            flex: none;
+            height: min(fluid(260, 351, 320, 760), 35vh);
+            padding: 0 fluid(20, 48, 320, 760);
+            gap: fluid(4, 8, 320, 760);
+        }
+
+        &__logo {
+            display: none;
+        }
+
+        &__title {
+            margin: 0;
+            font-size: fluid(36, 47, 320, 760);
+        }
+
+        &__subtitle {
+            font-size: fluid(16, 20, 320, 760);
+        }
+
+        &__line {
+            width: fluid(60, 84, 320, 760);
+        }
+
+        &__avatar {
+            // Inline-Style im HTML ueberschreiben (8.125rem).
+            width: $avatar-size !important;
+            height: $avatar-size !important;
+            margin-top: calc(#{$avatar-size} * -0.5);
+        }
+
+        &__right {
+            position: static;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex: 1;
+            gap: fluid(24, 48, 320, 760);
+            padding: 0 fluid(12, 48, 320, 760) fluid(24, 72, 320, 760);
+        }
+
+        &__close {
+            filter: brightness(0) invert(1);
+            top: fluid(16, 32, 320, 760);
+            right: fluid(16, 32, 320, 760);
+
+            img {
+                width: fluid(13.15, 18, 320, 760);
+                height: fluid(13.15, 18, 320, 760);
+            }
+        }
+
+        &__form {
+            width: 100%;
+            gap: fluid(20, 32, 320, 760);
+        }
+
+        &__field {
+            height: fluid(42, 50, 320, 760);
+            padding: 0 fluid(12, 21, 320, 760);
+
+            img {
+                width: fluid(20, 24, 320, 760);
+                height: fluid(20, 24, 320, 760);
+            }
+        }
+
+        &__input {
+            min-width: 0;
+            font-size: fluid(16, 20, 320, 760);
+        }
+
+        &__field-error {
+            left: fluid(12, 21, 320, 760);
+            font-size: 1rem;
+        }
+
+        &__actions {
+            justify-content: center;
+            margin-top: fluid(8, 18, 320, 760);
+        }
+
+        // Button liegt in einer anderen Komponente, daher ::ng-deep.
+        &__actions ::ng-deep .btn-primary {
+            // !important ueberschreibt widthStr="15.5rem" aus dem HTML.
+            width: fluid(200, 248, 320, 760) !important;
+            height: fluid(50, 56, 320, 760);
+            font-size: fluid(18, 24, 320, 760);
+
+            img {
+                width: fluid(20, 24, 320, 760);
+                height: fluid(20, 24, 320, 760);
+            }
+        }
+
+        .cancel-bttn {
+            display: none;
+        }
+    }
+}
