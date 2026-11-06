@@ -23,7 +23,7 @@
     &__left {
         display: flex;
         justify-content: center;
-        flex: 0 0 calc(100% / 3);
+        flex: 0 0 29.1875rem;
         flex-direction: column;
         padding: 0 3rem;
         gap: 1.5rem;
@@ -116,5 +116,23 @@
         display: flex;
         gap: 1.5rem;
         margin-top: 1.125rem;
+    }
+
+    &__group {
+        position: relative;
+    }
+
+    &__field--error {
+        border-color: #E60026;
+    }
+
+    &__field-error {
+        position: absolute;
+        top: 100%;
+        left: 1.3rem;
+        margin-top: 0.25rem;
+        color: #E60026;
+        font-size: 1rem;
+        line-height: 1;
     }
 }

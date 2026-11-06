@@ -85,6 +85,10 @@ export class AddContact {
       return;
     }
 
+    if (!this.fieldError.validateAll(this.newContact)) {
+      return;
+    }
+
     // Entfernt Leerzeichen am Anfang und Ende.
     const name = this.newContact.name.trim();
     const email = this.newContact.email.trim();

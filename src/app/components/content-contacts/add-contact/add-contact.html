@@ -14,26 +14,31 @@
     <form class="add-area__form" #contactForm="ngForm" (ngSubmit)="save()">
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('name')">
-          <input (blur)="fieldError.checkRequired('name', newContact.name)" class="add-area__input" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="newContact.name" required />
+          <input (blur)="fieldError.check('name', newContact.name)" class="add-area__input" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="newContact.name" required />
           <img src="./assets/icons/person.svg" alt="Person Icon" />
         </label>
         @if (fieldError.isVisible('name')) {
-          <span class="add-area__field-error" role="alert">This field is required</span>
+          <span class="add-area__field-error" role="alert">{{ fieldError.message('name') }}</span>
         }
       </div>
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('email')">
-          <input (blur)="fieldError.checkRequired('email', newContact.email)" class="add-area__input" type="email" name="email" placeholder="Email" aria-label="E-Mail" autocomplete="email" [(ngModel)]="newContact.email" required email />
+          <input (blur)="fieldError.check('email', newContact.email)" class="add-area__input" type="email" name="email" placeholder="Email" aria-label="E-Mail" autocomplete="email" [(ngModel)]="newContact.email" required email />
           <img src="./assets/icons/mail.svg" alt="Mail Icon" />
         </label>
         @if (fieldError.isVisible('email')) {
-          <span class="add-area__field-error" role="alert">This field is required</span>
+          <span class="add-area__field-error" role="alert">{{ fieldError.message('email') }}</span>
         }
       </div>
-      <label class="add-area__field">
-        <input class="add-area__input" type="tel" name="phone" placeholder="Phone" aria-label="Telefon (optional)" autocomplete="tel" [(ngModel)]="newContact.phone" />
-        <img src="./assets/icons/call.svg" alt="Phone Icon" />
-      </label>
+      <div class="add-area__group">
+        <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('phone')">
+          <input (blur)="fieldError.check('phone', newContact.phone)" class="add-area__input" type="tel" name="phone" placeholder="Phone" aria-label="Telefon (optional)" autocomplete="tel" [(ngModel)]="newContact.phone" />
+          <img src="./assets/icons/call.svg" alt="" />
+        </label>
+        @if (fieldError.isVisible('phone')) {
+          <span class="add-area__field-error" role="alert">{{ fieldError.message('phone') }}</span>
+        }
+      </div>
       @if (contactService.errorMessage()) {
         <p class="add-area__error" role="alert">{{ contactService.errorMessage() }}</p>
       }
