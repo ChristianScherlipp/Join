@@ -56,6 +56,9 @@
 
         @include respond-below(768px) {
             display: flex;
+            width: 2rem;
+            height: 2.43rem;
+
         }
     }
 }
@@ -80,6 +83,8 @@
         }
     }
 }
+
+
 
 .user-avatar {
     width: 3.5rem;

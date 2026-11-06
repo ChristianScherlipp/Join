@@ -43,7 +43,7 @@
         <p class="add-area__error" role="alert">{{ contactService.errorMessage() }}</p>
       }
       <div class="add-area__actions">
-        <app-button-primary typeStr="light" widthStr="7rem" [isDisabled]="contactService.saving()" (click)="close()">Cancel</app-button-primary>
+        <app-button-primary class="cancel-btn" typeStr="light" widthStr="7rem" [isDisabled]="contactService.saving()" (click)="close()">Cancel</app-button-primary>
         <app-button-primary typeStr="createTask" widthStr="15.5rem" buttonType="submit" [isDisabled]="contactForm.invalid || !newContact.name.trim() || contactService.saving()">
           @if (contactService.saving()) {
             Saving …
