@@ -30,16 +30,17 @@ export class InitialIcon {
   readonly withShadow = input<boolean>(false);
   readonly isPlaceholder = input<boolean>(false);
 
- initials = computed(() => {
+initials = computed(() => {
   const words = this.name()
+    .toUpperCase()
     .split(' ')
     .filter(word => word.length > 0);
   if (words.length > 1) {
     const first = words[0].charAt(0);
     const last = words[words.length - 1].charAt(0);
-    return (first + last).toUpperCase();
+    return first + last;
   } else if (words.length === 1) {
-    return words[0].charAt(0).toUpperCase();
+    return words[0].charAt(0);
   } else {
     return '';
   }
