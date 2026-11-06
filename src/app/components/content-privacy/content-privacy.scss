@@ -1,0 +1,32 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+
+.privacy-policy {
+    height: calc(100vh - 6rem);
+    overflow-y: auto;
+    padding: 6rem 6rem 4rem 6rem;
+    font-size: 1rem;
+
+
+
+    h1 {
+        font-size: fluid(47, 61);
+        margin: 0 0 1.6rem 0;
+
+    }
+
+    h2 {
+        font-size: 1.68rem;
+        margin: 1.5rem 0 0.5rem 0;
+    }
+
+    h1+h2 {
+        margin-top: 0;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1rem;
+    }
+}
