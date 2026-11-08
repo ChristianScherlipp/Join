@@ -1,17 +1,20 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';
-import { ContactAvatar } from '../../../services/contact-avatar';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
 @Component({
   selector: 'app-main-view',
-  imports: [],
+  imports: [InitialIcon],
   templateUrl: './main-view.html',
   styleUrl: './main-view.scss',
 })
 export class MainView {
-  readonly avatar: ContactAvatar = inject(ContactAvatar);
-
-  // Die Hauptkomponente übergibt den ausgewählten Kontakt.
-  // Ohne Auswahl ist der Wert null.
+  // Erhält den ausgewählten Kontakt von der Hauptkomponente.
   readonly contact = input<IUser | null>(null);
+
+  // Meldet den Wunsch, den ausgewählten Kontakt zu bearbeiten.
+  readonly editRequested = output<void>();
+
+  // Meldet den Löschwunsch an die Hauptkomponente.
+  readonly deleteRequested = output<void>();
 }

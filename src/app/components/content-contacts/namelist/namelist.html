@@ -1,11 +1,7 @@
 <aside class="sidebar" aria-label="Kontaktliste">
   <header class="toolbar">
     <!-- Meldet der Hauptkomponente, dass der Dialog geöffnet werden soll. -->
-    <button
-      class="add-button"
-      type="button"
-      (click)="addRequested.emit()"
-    >
+    <button class="add-button" type="button" (click)="addRequested.emit()">
       Add new contact
       <img src="/assets/icons/person_add.svg" alt="" />
     </button>
@@ -14,48 +10,38 @@
   <!-- Dieser Container ist für den scrollbaren Bereich nötig. -->
   <div class="list-scroll">
     @if (loading()) {
-      <p role="status">Kontakte werden geladen …</p>
+    <p role="status">Kontakte werden geladen …</p>
     } @else {
-      @for (group of groups(); track group.letter) {
-        <section>
-          <h2>{{ group.letter }}</h2>
+    @for (group of groups(); track group.letter) {
+    <section>
+      <h2>{{ group.letter }}</h2>
 
-          <ul>
-            @for (contact of group.contacts; track contact.id) {
-              <li>
-                <!-- Meldet den angeklickten Kontakt an die Hauptkomponente. -->
-                <button
-                  class="contact-row"
-                  type="button"
-                  [class.selected]="selectedId() === contact.id"
-                  [attr.aria-pressed]="selectedId() === contact.id"
-                  (click)="contactSelected.emit(contact)"
-                >
-                  <span
-                    class="avatar"
-                    [style.background-color]="avatar.getColor(contact.name)"
-                    aria-hidden="true"
-                  >
-                    {{ avatar.getInitials(contact.name) }}
-                  </span>
+      <ul>
+        @for (contact of group.contacts; track contact.id) {
+        <li>
+          <!-- Meldet den angeklickten Kontakt an die Hauptkomponente. -->
+          <button class="contact-row" type="button" [class.selected]="selectedId() === contact.id"
+            [attr.aria-pressed]="selectedId() === contact.id" (click)="contactSelected.emit(contact)">
 
-                  <span class="contact-text">
-                    <span class="name">
-                      {{ contact.name }}
-                    </span>
+            <app-initial-icon [name]="contact.name" style="width: 2.625rem; height: 2.625rem"></app-initial-icon>
+            <span class="contact-text">
+              <span class="name" [title]="contact.name">
+                {{ contact.name }}
+              </span>
 
-                    <span class="email">
-                      {{ contact.email }}
-                    </span>
-                  </span>
-                </button>
-              </li>
-            }
-          </ul>
-        </section>
-      } @empty {
-        <p>Noch keine Kontakte vorhanden.</p>
-      }
+              <span class="email" [title]="contact.email">
+                {{ contact.email }}
+              </span>
+            </span>
+
+          </button>
+        </li>
+        }
+      </ul>
+    </section>
+    } @empty {
+    <p>Noch keine Kontakte vorhanden.</p>
+    }
     }
   </div>
 </aside>

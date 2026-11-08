@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
 import { ContactService } from '../../../services/contact-service';
@@ -12,39 +12,53 @@ import { ButtonPrimary } from '../../elements/button-primary/button-primary';
   styleUrl: './edit-contact.scss',
   templateUrl: './edit-contact.html',
 })
+
+
+
 export class EditContact {
   readonly contactService = inject(ContactService);
   readonly avatar = inject(ContactAvatar);
 
   @ViewChild('dialog')
-  private dialog! : ElementRef<HTMLDialogElement>;
+  private dialog!: ElementRef<HTMLDialogElement>;
 
   //Die ID des Kontakts, der gerade bearbeitet wird.
   private contactId: number | null = null;
 
   //Hier werden die Formulareingaben gespeichert.
-  formData = { name: '', email: '', phone: ''};
+  formData = { name: '', email: '', phone: '' };
 
-  /**
-   * Füllt das Formular mit den übergebenen Kontakt und öffnet den dialog.
-   */
-  open(contact: IUser): void {
-    this.contactId = contact.id;
-    this.formData = {
-      name: contact.name,
-      email: contact.email,
-      phone: contact.phone ?? '',
-    };
 
-    this.contactService.errorMessage.set('');
-    this.dialog.nativeElement.showModal();
+/**
+ * Übernimmt den ausgewählten Kontakt und setzt das Formular
+ * einschließlich seiner Eingabefelder zurück.
+ */
+open(contact: IUser | null): void {
+  if (!contact) {
+    return;
   }
+
+  console.log('Kontakt zum Bearbeiten:', contact.id, contact.name);
+
+  this.contactId = contact.id;
+
+  this.formData = {
+    name: contact.name,
+    email: contact.email,
+    phone: contact.phone ?? '',
+  };
+
+  this.editForm.resetForm(this.formData);
+
+  this.contactService.errorMessage.set('');
+  this.dialog.nativeElement.showModal();
+}
 
   /**
    * Schließt den Dialog, sofern gerade nicht gespeichert wird.
    */
   close(): void {
-    if (!this.contactService.saving()){
+    if (!this.contactService.saving()) {
       this.dialog.nativeElement.close();
     }
   }
@@ -102,4 +116,7 @@ export class EditContact {
       phone: this.formData.phone.trim() || null,
     };
   }
+
+  @ViewChild('editForm')
+  private editForm!: NgForm;
 }
