@@ -3,11 +3,14 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
 import { ContactService } from '../../../services/contact-service';
+import { FieldError } from '../../../services/field-error';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
 
 @Component({
-  imports: [ButtonPrimary, FormsModule],
+  imports: [ButtonPrimary, FormsModule, InitialIcon],
+  providers: [FieldError],
   selector: 'app-edit-contact',
   styleUrl: './edit-contact.scss',
   templateUrl: './edit-contact.html',
@@ -18,6 +21,7 @@ import { ButtonPrimary } from '../../elements/button-primary/button-primary';
 export class EditContact {
   readonly contactService = inject(ContactService);
   readonly avatar = inject(ContactAvatar);
+  readonly fieldError = inject(FieldError);
 
   @ViewChild('dialog')
   private dialog!: ElementRef<HTMLDialogElement>;
@@ -74,7 +78,7 @@ open(contact: IUser | null): void {
    * Speichert die gänderten Werte. Bei Erfolg wird der Dialog geschlossen.
    */
   async saveContact(): Promise<void> {
-    if (this.contactId === null || !this.hasRequiredValues()) {
+    if (this.contactId === null || !this.fieldError.validateAll(this.formData)) {
       return;
     }
 
@@ -101,11 +105,6 @@ open(contact: IUser | null): void {
     if (isDeleted) {
       this.close()
     }
-  }
-
-  //Name und E-mail sind Pflichtfelder.
-  private hasRequiredValues(): boolean {
-    return !!this.formData.name.trim() && !!this.formData.email.trim();
   }
 
   //Entfernt Leerzeichen am Rand. Eine leere Numnmer wird zu null.

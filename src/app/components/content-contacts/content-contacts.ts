@@ -1,6 +1,5 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ContactService } from '../../services/contact-service';
-import { IUser } from '../../interfaces/iuser';
 import { Namelist } from './namelist/namelist';
 import { MainView } from './main-view/main-view';
 import { AddContact } from './add-contact/add-contact';
@@ -14,10 +13,6 @@ import { EditContact } from './edit-contact/edit-contact';
 })
 export class ContentContacts implements OnInit, OnDestroy {
   readonly contactService = inject(ContactService);
-
-  // Speichert den angeklickten Kontakt für die rechte Kontaktkarte.
-  // null bedeutet: Es ist noch kein Kontakt ausgewählt.
-  readonly selectedContact = signal<IUser | null>(null);
 
   /**
    * Wird beim Öffnen der Kontaktseite ausgeführt.

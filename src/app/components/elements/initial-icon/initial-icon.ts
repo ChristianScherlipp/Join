@@ -1,4 +1,3 @@
-
 import { Component, computed, input } from '@angular/core';
 
 const colors = [
@@ -23,27 +22,47 @@ const colors = [
   styleUrl: './initial-icon.scss',
   templateUrl: './initial-icon.html',
 })
-
 export class InitialIcon {
   readonly name = input.required<string>();
   readonly isHeader = input<boolean>(false);
   readonly withShadow = input<boolean>(false);
   readonly isPlaceholder = input<boolean>(false);
 
- initials = computed(() => {
-  const words = this.name()
-    .split(' ')
-    .filter(word => word.length > 0);
-  if (words.length > 1) {
-    const first = words[0].charAt(0);
-    const last = words[words.length - 1].charAt(0);
-    return (first + last).toUpperCase();
-  } else if (words.length === 1) {
-    return words[0].charAt(0).toUpperCase();
-  } else {
-    return '';
-  }
-});
+  words = computed(() => {
+    return this.name()
+      .toUpperCase()
+      .split(' ')
+      .filter(word => word.length > 0);
+  });
+
+  initials = computed(() => {
+    const words = this.words();
+    if (words.length > 1) {
+      const first = words[0].charAt(0);
+      const last = words[words.length - 1].charAt(0);
+      return first + last;
+    } else if (words.length === 1) {
+      return words[0].charAt(0);
+    } else {
+      return '';
+    }
+  });
+
+  color = computed(() => {
+    const name = this.words().join(' ');
+    const index = this.getColorIndex(name);
+    return colors[index];
+  });
+
+  backgroundColor = computed(() => {
+    if (this.isHeader()) {
+      return '';
+    } else if (this.isPlaceholder() || this.initials() === '') {
+      return '#d1d1d1';
+    } else {
+      return this.color();
+    }
+  });
 
   getColorIndex(name: string) {
     let hash = 0;
@@ -53,21 +72,4 @@ export class InitialIcon {
     }
     return Math.abs(hash) % colors.length;
   }
-
-  color = computed(() => {
-    const name = this.name();
-    const index = this.getColorIndex(name);
-    return colors[index];
-  });
-
-  backgroundColor = computed(() => {
-  if (this.isHeader()) {
-    return 'transparent';
-  } else if (this.isPlaceholder() || this.initials() === '') {
-    return '#d1d1d1';
-  } else {
-    return this.color();
-  }
-});
 }
-
