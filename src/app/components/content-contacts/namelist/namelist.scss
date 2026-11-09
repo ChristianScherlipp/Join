@@ -94,6 +94,8 @@ ul {
   border-radius: 10px;
   background: transparent;
   text-align: left;
+  box-sizing: border-box;
+
 
   &:hover {
     background: #f1f2f3;
@@ -109,24 +111,14 @@ ul {
   }
 }
 
-.avatar {
-  display: grid;
+app-initial-icon {
   flex-shrink: 0;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 2px solid $background-primary;
-  border-radius: 50%;
-  color: $background-primary;
-  font-size: 14px;
 }
 
 .contact-text {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  flex: 1;
   min-width: 0;
-  overflow-wrap: anywhere;
+
 }
 
 .name {
@@ -136,6 +128,14 @@ ul {
 .email {
   color: #007fae;
   font-size: 13px;
+}
+
+.name,
+.email {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 760px) {

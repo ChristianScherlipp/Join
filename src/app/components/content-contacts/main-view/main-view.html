@@ -6,41 +6,47 @@
 
 <!-- Zeigt die Karte nur an, wenn ein Kontakt ausgewählt wurde. -->
 @if (contact(); as selected) {
-  <section class="contact-card" aria-label="Kontaktdetails">
-    <header class="card-header">
-      <span
-        class="avatar"
-        [style.background-color]="avatar.getColor(selected.name)"
-        aria-hidden="true"
-      >
-        {{ avatar.getInitials(selected.name) }}
-      </span>
+<section class="contact-card" aria-label="Kontaktdetails">
+  <header class="card-header">
+    <app-initial-icon [name]="selected.name" [withShadow]="true"
+      style="width: 7.5rem; height: 7.5rem; font-size: 2.9375rem;"></app-initial-icon>
 
+    <div>
       <h2>{{ selected.name }}</h2>
-    </header>
+      <nav class="edit-contact">
+        <button type="button" class="button-edit-and-delete" (click)="editRequested.emit()">
+          <img src="/assets/icons/edit.svg" alt="pen">Edit
+        </button>
+        <button type="button" class="button-edit-and-delete" (click)="deleteRequested.emit()">
+          <img src="/assets/icons/delete.svg" alt="trash">Delete
+        </button>
+      </nav>
+    </div>
+  </header>
 
-    <h3>Contact Information</h3>
+  <h3>Contact Information</h3>
 
-    <dl>
-      <dt>Email</dt>
 
-      <dd>
-        <a [href]="'mailto:' + selected.email">
-          {{ selected.email }}
-        </a>
-      </dd>
+  <dl>
+    <dt>Email</dt>
 
-      <dt>Phone</dt>
+    <dd>
+      <a [href]="'mailto:' + selected.email">
+        {{ selected.email }}
+      </a>
+    </dd>
 
-      <dd>
-        @if (selected.phone) {
-          <a class="phone" [href]="'tel:' + selected.phone">
-            {{ selected.phone }}
-          </a>
-        } @else {
-          Keine Telefonnummer hinterlegt
-        }
-      </dd>
-    </dl>
-  </section>
+    <dt>Phone</dt>
+
+    <dd>
+      @if (selected.phone) {
+      <a class="phone" [href]="'tel:' + selected.phone">
+        +{{ selected.phone }}
+      </a>
+      } @else {
+      Keine Telefonnummer hinterlegt
+      }
+    </dd>
+  </dl>
+</section>
 }
