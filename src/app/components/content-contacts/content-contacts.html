@@ -1,26 +1,22 @@
 <!-- Verbindet Kontaktliste, Kontaktkarte und Dialog. -->
 <section class="contacts-layout" aria-label="Kontakte">
-  <app-namelist
-    [contacts]="contactService.sortedUsers()"
-    [loading]="contactService.loading()"
-    [selectedId]="contactService.selectedContact()?.id ?? null"
-    (contactSelected)="contactService.selectedContact.set($event)"
-    (addRequested)="addDialog.open()"
-  />
+  <app-namelist [contacts]="contactService.sortedUsers()" [loading]="contactService.loading()"
+    [selectedId]="selectedContact()?.id ?? null" (contactSelected)="selectedContact.set($event)"
+    (addRequested)="addDialog.open()" />
 
   <main class="main-panel">
-    <app-main-view [contact]="contactService.selectedContact()" />
+    <app-main-view [contact]="selectedContact()" (deleteRequested)="deleteSelected()"
+      (editRequested)="editDialog.open(selectedContact())" />
 
-    <button (click)="deleteSelected()" [disabled]="!contactService.selectedContact()">
-      Delete
-    </button>
+
 
     @if (contactService.errorMessage() && !addDialog.isOpen()) {
-      <p class="error-message" role="alert">
-        {{ contactService.errorMessage() }}
-      </p>
+    <p class="error-message" role="alert">
+      {{ contactService.errorMessage() }}
+    </p>
     }
   </main>
 </section>
 
 <app-add-contact #addDialog />
+<app-edit-contact #editDialog />

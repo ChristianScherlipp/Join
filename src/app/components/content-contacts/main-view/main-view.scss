@@ -107,6 +107,31 @@ a {
   }
 }
 
+.edit-contact{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.button-edit-and-delete {
+  border: none;
+  background-color: transparent;
+  color: $background-secondary;
+  font-size: 1rem;
+  font-weight: 400;
+  gap: 3px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &:hover{
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
 @media (max-width: 760px) {
   .card-header {
     gap: 18px;
