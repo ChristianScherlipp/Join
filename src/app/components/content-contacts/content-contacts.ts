@@ -1,9 +1,10 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ContactService } from '../../services/contact-service';
 import { Namelist } from './namelist/namelist';
 import { MainView } from './main-view/main-view';
 import { AddContact } from './add-contact/add-contact';
 import { EditContact } from './edit-contact/edit-contact';
+import { IUser } from '../../interfaces/iuser';
 
 @Component({
   selector: 'app-content-contacts',
@@ -13,6 +14,9 @@ import { EditContact } from './edit-contact/edit-contact';
 })
 export class ContentContacts implements OnInit, OnDestroy {
   readonly contactService = inject(ContactService);
+
+  // Speichert den ausgewählten Kontakt für die Kontaktkarte und den Edit-Dialog.
+  readonly selectedContact = signal<IUser | null>(null);
 
   /**
    * Wird beim Öffnen der Kontaktseite ausgeführt.
