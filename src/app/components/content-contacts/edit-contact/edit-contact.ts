@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
@@ -100,5 +100,11 @@ export class EditContact {
       email: this.formData.email.trim(),
       phone: this.formData.phone.trim() || null,
     };
+  }
+
+  previewName = signal('');
+
+  updatePreview(value: string) {
+    this.previewName.set(value);
   }
 }

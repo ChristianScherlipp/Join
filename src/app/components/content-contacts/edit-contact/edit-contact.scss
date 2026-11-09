@@ -1,6 +1,8 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
+// Breakpoints: 1240px = Tablet (und Mobile), 760px = nur Mobile.
+// Mobile steht immer nach Tablet und ueberschreibt es.
 .edit-area {
     width: 75.75rem;
     height: 37rem;
@@ -12,12 +14,29 @@
     inset: 0;
     margin: auto;
 
+    @include respond-below(1240px) {
+        width: 95vw;
+    }
+
+    @include respond-below(760px) {
+        width: 92vw;
+        height: fit-content;
+        max-height: 95vh;
+        overflow-y: auto;
+        scrollbar-width: none; // Scrollbar ausblenden, Scrollen bleibt moeglich
+        border-radius: fluid(20, 30, 320, 760);
+    }
+
     &::backdrop {
         background: rgb(0 0 0 / 40%);
     }
 
     &[open] {
         display: flex;
+
+        @include respond-below(760px) {
+            flex-direction: column;
+        }
     }
 
     &__left {
@@ -28,6 +47,18 @@
         padding: 0 3rem;
         gap: 1.5rem;
         background-color: $background-secondary;
+
+        @include respond-below(1240px) {
+            flex: 0 0 fluid(190, 467, 761, 1240);
+            padding: 0 fluid(24, 48, 761, 1240);
+        }
+
+        @include respond-below(760px) {
+            flex: none;
+            height: min(fluid(260, 351, 320, 760), 35vh);
+            padding: 0 fluid(20, 48, 320, 760);
+            gap: fluid(4, 24, 320, 760);
+        }
     }
 
     &__right {
@@ -38,11 +69,28 @@
         justify-content: center;
         gap: 4rem;
         padding: 0 3rem;
+
+        @include respond-below(1240px) {
+            gap: fluid(24, 64, 761, 1240);
+            padding: 0 fluid(24, 48, 761, 1240);
+        }
+
+        @include respond-below(760px) {
+            position: static;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: fluid(24, 48, 320, 760);
+            padding: 0 fluid(12, 48, 320, 760) fluid(24, 72, 320, 760);
+        }
     }
 
     &__logo {
         width: 3.370625rem;
         height: 4.155rem;
+
+        @include respond-below(760px) {
+            display: none;
+        }
     }
 
     &__title {
@@ -51,6 +99,15 @@
         font-size: fluid(47, 61);
         font-weight: 700;
         line-height: 1.2;
+
+        @include respond-below(1240px) {
+            font-size: fluid(36, 61, 761, 1240);
+        }
+
+        @include respond-below(760px) {
+            margin: 0;
+            font-size: fluid(36, 47, 320, 760);
+        }
     }
 
     &__line {
@@ -58,6 +115,21 @@
         width: 5.625rem;
         height: 3px;
         background: $hover-secondary;
+
+        @include respond-below(760px) {
+            margin-top: fluid(12, 26, 320, 760);
+            width: fluid(60, 90, 320, 760);
+        }
+    }
+
+    &__avatar {
+        width: 7.5rem; // immer 120px
+        height: 7.5rem;
+        flex-shrink: 0;
+
+        @include respond-below(760px) {
+            margin-top: -3.75rem; // halbe Avatar-Hoehe (60px)
+        }
     }
 
     &__close {
@@ -68,11 +140,27 @@
         border: none;
         background: none;
         cursor: pointer;
-        
+
+        @include respond-below(1240px) {
+            top: fluid(24, 62, 761, 1240);
+            right: fluid(24, 62, 761, 1240);
+        }
+
+        @include respond-below(760px) {
+            filter: brightness(0) invert(1);
+            top: fluid(16, 32, 320, 760);
+            right: fluid(16, 32, 320, 760);
+        }
+
         img {
             width: 1.5rem;
             height: 1.5rem;
-            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%); 
+            filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(681%) hue-rotate(176deg) brightness(91%) contrast(90%);
+
+            @include respond-below(760px) {
+                width: fluid(13.15, 18, 320, 760);
+                height: fluid(13.15, 18, 320, 760);
+            }
         }
     }
 
@@ -81,6 +169,16 @@
         flex-direction: column;
         gap: 2rem;
         width: 26.375rem;
+
+        @include respond-below(1240px) {
+            width: 100%;
+            max-width: 26.375rem;
+        }
+
+        @include respond-below(760px) {
+            max-width: none;
+            gap: fluid(20, 32, 320, 760);
+        }
     }
 
     &__field {
@@ -92,6 +190,11 @@
         border: 1px solid $background-secondary;
         border-radius: 0.625rem;
 
+        @include respond-below(760px) {
+            height: fluid(42, 50, 320, 760);
+            padding: 0 fluid(12, 21, 320, 760);
+        }
+
         &:focus-within {
             border-color: $hover-primary;
         }
@@ -99,7 +202,11 @@
         img {
             width: 1.5rem;
             height: 1.5rem;
-            
+
+            @include respond-below(760px) {
+                width: fluid(20, 24, 320, 760);
+                height: fluid(20, 24, 320, 760);
+            }
         }
     }
 
@@ -110,12 +217,49 @@
         background: transparent;
         color: $background-secondary;
         font-size: 1.25rem;
+
+        @include respond-below(760px) {
+            min-width: 0;
+            font-size: fluid(16, 20, 320, 760);
+        }
     }
 
+    // Delete und Save bleiben auf Mobile beide sichtbar, nur zentriert.
     &__actions {
         display: flex;
         gap: 1.5rem;
         margin-top: 1.125rem;
+
+        @include respond-below(1240px) {
+            gap: fluid(16, 24, 761, 1240);
+        }
+
+        @include respond-below(760px) {
+            justify-content: center;
+            gap: fluid(16, 24, 320, 760);
+            margin-top: fluid(8, 18, 320, 760);
+        }
+    }
+
+    // Button liegt in einer anderen Komponente, daher ::ng-deep.
+    &__actions ::ng-deep .btn-primary {
+        width: 7rem;
+
+        @include respond-below(760px) {
+            width: fluid(90, 112, 320, 760);
+            height: fluid(40, 48, 320, 760);
+            font-size: fluid(16, 18, 320, 760);
+
+            img {
+                width: fluid(16, 20, 320, 760);
+                height: fluid(16, 20, 320, 760);
+            }
+
+            // Delete hat kein Icon (src=""), sonst erscheint ein kaputtes Bild-Symbol.
+            img[src=""] {
+                display: none;
+            }
+        }
     }
 
     &__group {
@@ -134,164 +278,9 @@
         color: #E60026;
         font-size: 1rem;
         line-height: 1;
-    }
-}
 
-// Responsive: gleiche Logik wie im Add-Contact-Dialog.
-.edit-area {
-    // Tablet: von 761px bis 1240px schrumpft der Dialog mit der Bildschirmbreite.
-    @media (min-width: 761px) and (max-width: 1240px) {
-        $avatar-size: fluid(90, 130, 761, 1240);
-
-        width: 95vw;
-
-        &__left {
-            flex: 0 0 fluid(220, 467, 761, 1240);
-            padding: 0 fluid(24, 48, 761, 1240);
-        }
-
-        &__title {
-            font-size: fluid(36, 61, 761, 1240);
-        }
-
-        &__right {
-            gap: fluid(24, 64, 761, 1240);
-            padding: 0 fluid(24, 48, 761, 1240);
-        }
-
-        &__actions {
-            gap: fluid(16, 24, 761, 1240);
-        }
-
-        &__close {
-            top: fluid(24, 62, 761, 1240);
-            right: fluid(24, 62, 761, 1240);
-        }
-
-        &__avatar {
-            // Inline-Style im HTML ueberschreiben (8.125rem).
-            width: $avatar-size !important;
-            height: $avatar-size !important;
-            flex-shrink: 0;
-        }
-
-        &__form {
-            width: 100%;
-            max-width: 26.375rem;
-        }
-    }
-
-    // Mobile: alles skaliert linear von 320px bis 760px Bildschirmbreite.
-    @include respond-below(760px) {
-        $avatar-size: fluid(90, 130, 320, 760);
-
-        width: 92vw;
-        height: fit-content;
-        max-height: 95vh;
-        overflow-y: auto;
-        scrollbar-width: none; // Scrollbar ausblenden, Scrollen bleibt moeglich
-        border-radius: fluid(20, 30, 320, 760);
-
-        &[open] {
-            flex-direction: column;
-        }
-
-        &__left {
-            flex: none;
-            height: min(fluid(260, 351, 320, 760), 35vh);
-            padding: 0 fluid(20, 48, 320, 760);
-            gap: fluid(4, 24, 320, 760);
-        }
-
-        &__logo {
-            display: none;
-        }
-
-        &__title {
-            margin: 0;
-            font-size: fluid(36, 47, 320, 760);
-        }
-
-        &__line {
-            margin-top: fluid(12, 26, 320, 760);
-            width: fluid(60, 90, 320, 760);
-        }
-
-        &__avatar {
-            // Inline-Style im HTML ueberschreiben (8.125rem).
-            width: $avatar-size !important;
-            height: $avatar-size !important;
-            margin-top: calc(#{$avatar-size} * -0.5);
-        }
-
-        &__right {
-            position: static;
-            flex-direction: column;
-            justify-content: flex-start;
-            flex: 1;
-            gap: fluid(24, 48, 320, 760);
-            padding: 0 fluid(12, 48, 320, 760) fluid(24, 72, 320, 760);
-        }
-
-        &__close {
-            filter: brightness(0) invert(1);
-            top: fluid(16, 32, 320, 760);
-            right: fluid(16, 32, 320, 760);
-
-            img {
-                width: fluid(13.15, 18, 320, 760);
-                height: fluid(13.15, 18, 320, 760);
-            }
-        }
-
-        &__form {
-            width: 100%;
-            gap: fluid(20, 32, 320, 760);
-        }
-
-        &__field {
-            height: fluid(42, 50, 320, 760);
-            padding: 0 fluid(12, 21, 320, 760);
-
-            img {
-                width: fluid(20, 24, 320, 760);
-                height: fluid(20, 24, 320, 760);
-            }
-        }
-
-        &__input {
-            min-width: 0;
-            font-size: fluid(16, 20, 320, 760);
-        }
-
-        &__field-error {
+        @include respond-below(760px) {
             left: fluid(12, 21, 320, 760);
-            font-size: 1rem;
-        }
-
-        // Delete und Save bleiben beide sichtbar, nur zentriert.
-        &__actions {
-            justify-content: center;
-            gap: fluid(16, 24, 320, 760);
-            margin-top: fluid(8, 18, 320, 760);
-        }
-
-        // Button liegt in einer anderen Komponente, daher ::ng-deep.
-        &__actions ::ng-deep .btn-primary {
-            // !important ueberschreibt widthStr="7rem" aus dem HTML.
-            width: fluid(90, 112, 320, 760) !important;
-            height: fluid(40, 48, 320, 760);
-            font-size: fluid(16, 18, 320, 760);
-
-            img {
-                width: fluid(16, 20, 320, 760);
-                height: fluid(16, 20, 320, 760);
-            }
-
-            // Delete hat kein Icon (src=""), sonst erscheint ein kaputtes Bild-Symbol.
-            img[src=""] {
-                display: none;
-            }
         }
     }
 }

@@ -9,11 +9,11 @@
         <button class="edit-area__close" type="button" (click)="close()" aria-label="Close">
         <img src="./assets/icons/cancel.svg" alt="Icon Close" />
         </button>
-        <app-initial-icon class="edit-area__avatar" [name]="formData.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
+        <app-initial-icon class="edit-area__avatar" [name]="previewName()" [withShadow]="true" />
         <form class="edit-area__form" (ngSubmit)="saveContact()">
             <div class="edit-area__group">
                 <label class="edit-area__field" [class.edit-area__field--error]="fieldError.isVisible('name')">
-                    <input (blur)="fieldError.check('name', formData.name)" class="edit-area__input" type="text" name="name" placeholder="Name" [(ngModel)]="formData.name" required />
+                    <input (blur)="fieldError.check('name', formData.name); updatePreview('name')" class="edit-area__input" type="text" name="name" placeholder="Name" [(ngModel)]="formData.name" required />
                     <img src="./assets/icons/person.svg" alt="" />
                 </label>
                 @if (fieldError.isVisible('name')) {
@@ -39,8 +39,8 @@
                 }
             </div>
             <div class="edit-area__actions">
-                <app-button-primary typeStr="light" widthStr="7rem" (click)="deleteContact()">Delete</app-button-primary>
-                <app-button-primary typeStr="createTask" widthStr="7rem" buttonType="submit">Save</app-button-primary>
+                <app-button-primary typeStr="light" (click)="deleteContact()">Delete</app-button-primary>
+                <app-button-primary typeStr="createTask" buttonType="submit">Save</app-button-primary>
             </div>
         </form>
     </section>
