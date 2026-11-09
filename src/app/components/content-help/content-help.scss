@@ -1,0 +1,75 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.help {
+  height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
+  font-size: 1rem;
+
+ @include respond-below(768px) {
+   height: calc(100vh - 6rem - 7.5rem);
+  }
+
+  h1 {
+    font-size: fluid(47, 61);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 1.6875rem;
+    font-weight: 700;
+    margin: fluid(24, 32) 0 fluid(8, 16) 0;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: fluid(12, 20);
+  }
+
+  .highlight {
+    color: #2a6b8a;
+  }
+}
+
+.help__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: fluid(16, 32);
+}
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: fluid(16, 32) 0 0 0;
+  counter-reset: step;
+
+  li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: fluid(40, 64) 1fr;
+    margin-bottom: fluid(16, 20);
+
+    &::before {
+      content: counter(step) '.';
+      grid-row: 1 / span 10;
+      font-size: 1.6875rem;
+      font-weight: 700;
+    }
+
+    > * {
+      grid-column: 2;
+    }
+  }
+}
