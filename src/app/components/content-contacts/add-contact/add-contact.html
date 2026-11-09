@@ -10,11 +10,11 @@
       <img src="./assets/icons/cancel.svg" alt="Icon Close" />
     </button>
     <!-- Zeigt Initialen oder bei leerem Namen das Platzhalter-Icon. -->
-    <app-initial-icon [name]="newContact.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
+    <app-initial-icon class="add-area__avatar" [name]="previewName()" [withShadow]="true" />
     <form class="add-area__form" #contactForm="ngForm" (ngSubmit)="save()">
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('name')">
-          <input (blur)="fieldError.check('name', newContact.name)" class="add-area__input" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="newContact.name" required />
+          <input (blur)="fieldError.check('name', newContact.name); updatePreview(newContact.name)" class="add-area__input" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="newContact.name" required />
           <img src="./assets/icons/person.svg" alt="Person Icon" />
         </label>
         @if (fieldError.isVisible('name')) {

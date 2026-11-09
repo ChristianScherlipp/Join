@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
@@ -53,6 +53,7 @@ open(contact: IUser | null): void {
   };
 
   this.editForm.resetForm(this.formData);
+  this.previewName.set(contact.name);
 
   this.contactService.errorMessage.set('');
   this.dialog.nativeElement.showModal();
@@ -116,6 +117,11 @@ open(contact: IUser | null): void {
     };
   }
 
+  previewName = signal('');
+
+  updatePreview(value: string) {
+    this.previewName.set(value);
+  }
   @ViewChild('editForm')
   private editForm!: NgForm;
 }

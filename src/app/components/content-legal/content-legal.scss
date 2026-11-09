@@ -2,33 +2,58 @@
 @use 'abstract/mixins' as *;
 
 .legal-notice {
-  padding: 7.25rem 6.13rem 0 6rem;
-  width: 100%;
-  max-width: 75.5rem;
-  font-family: 'Inter', sans-serif;
+  height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
+  font-size: 1rem;
+
+  @include respond-below(768px) {
+    height: calc(100vh - 6rem - 7.5rem);
+  }
+
+ .page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: fluid(16, 24);
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.mobile-back {
+  display: none;
+
+  @include respond-below(768px) {
+    display: block;
+  }
+}
 
   h1 {
     font-size: fluid(47, 61);
-    margin: 0 0 1.6rem 0;
+    font-weight: 700;
+    margin: 0 0 fluid(16, 24) 0;
   }
 
   h2 {
-    font-size: 1.68rem;
-    margin: 0 0 1rem 0;
+    font-size: 1.6875rem;
+    font-weight: 700;
+    margin: 0 0 fluid(8, 16) 0;
   }
 
   ul {
     margin: 0;
-    padding-left: 1.6rem;
+    padding-left: 1.25rem;
   }
 
   h3 {
-    font-size: fluid(16, 20);
-    margin: 1.5rem 0 0 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: fluid(16, 24) 0 0 0;
   }
 
   p {
     margin: 0;
-    font-size: 1rem;
   }
 }

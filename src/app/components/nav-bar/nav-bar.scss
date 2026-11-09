@@ -76,20 +76,20 @@
 }
 
 .legal-link {
-  width: 14.5rem;
-  height: 2.19rem;
-  padding: 0 3.69rem 0 3.25rem;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: inherit;
+    width: 14.5rem;
+    height: 2.19rem;
+    padding: 0 3.69rem 0 3.25rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    color: inherit;
 
-  &:hover {
-    background-color: $hover-primary;
-    cursor: pointer;
-  }
+    &:hover {
+        background-color: $hover-primary;
+        cursor: pointer;
+    }
 
   &:active {
     background-color: $btn-after;

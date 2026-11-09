@@ -16,7 +16,7 @@ import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 })
 export class AddContact {
   readonly contactService = inject(ContactService);
-  
+
   readonly fieldError = inject(FieldError);
 
   // Zeigt der Hauptkomponente an, ob der Dialog geöffnet ist.
@@ -113,4 +113,11 @@ export class AddContact {
       this.close();
     }
   }
-}
+
+  previewName = signal('');
+
+  updatePreview(value: string) {
+    this.previewName.set(value);
+  }
+
+} 
