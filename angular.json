@@ -70,7 +70,8 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/angular-projects/join/"
             },
             "development": {
               "optimization": false,
