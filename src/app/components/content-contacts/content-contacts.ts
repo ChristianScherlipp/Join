@@ -1,21 +1,21 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ContactService } from '../../services/contact-service';
-import { IUser } from '../../interfaces/iuser';
 import { Namelist } from './namelist/namelist';
 import { MainView } from './main-view/main-view';
 import { AddContact } from './add-contact/add-contact';
+import { EditContact } from './edit-contact/edit-contact';
+import { IUser } from '../../interfaces/iuser';
 
 @Component({
   selector: 'app-content-contacts',
-  imports: [Namelist, MainView, AddContact],
+  imports: [Namelist, MainView, AddContact, EditContact],
   templateUrl: './content-contacts.html',
   styleUrl: './content-contacts.scss',
 })
 export class ContentContacts implements OnInit, OnDestroy {
   readonly contactService = inject(ContactService);
 
-  // Speichert den angeklickten Kontakt für die rechte Kontaktkarte.
-  // null bedeutet: Es ist noch kein Kontakt ausgewählt.
+  // Speichert den ausgewählten Kontakt für die Kontaktkarte und den Edit-Dialog.
   readonly selectedContact = signal<IUser | null>(null);
 
   /**
@@ -31,11 +31,19 @@ export class ContentContacts implements OnInit, OnDestroy {
     this.contactService.unsubscribeFromContacts();
   }
 
-  deleteSelected(): void {
+  async deleteSelected(): Promise<void> {
     const contact = this.selectedContact();
-    if (!contact) return;
 
-    void this.contactService.deleteContact(contact.id);
-    this.selectedContact.set(null);
+    // Verhindert Löschen ohne Auswahl und mehrfache Klicks beim Speichern.
+    if (!contact || this.contactService.saving()) {
+      return;
+    }
+
+    const deleted = await this.contactService.deleteContact(contact.id);
+
+    // Auswahl nur zurücksetzen, wenn weiterhin derselbe Kontakt geöffnet ist.
+    if (deleted && this.selectedContact()?.id === contact.id) {
+      this.selectedContact.set(null);
+    }
   }
 }

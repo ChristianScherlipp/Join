@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
 // Beschreibt eine Buchstabengruppe in der Kontaktliste.
 interface ContactGroup {
@@ -16,7 +17,7 @@ interface ContactGroup {
 
 @Component({
   selector: 'app-namelist',
-  imports: [],
+  imports: [InitialIcon],
   templateUrl: './namelist.html',
   styleUrl: './namelist.scss',
 })

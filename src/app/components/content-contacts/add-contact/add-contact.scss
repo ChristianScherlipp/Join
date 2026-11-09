@@ -34,9 +34,9 @@
     &[open] {
         display: flex;
 
-        @include respond-below(760px) {
-            flex-direction: column;
-        }
+        @include respond-below(768px){
+                flex-direction: column;
+            }
     }
 
     &__left {
@@ -87,6 +87,11 @@
     &__logo {
         width: 3.370625rem;
         height: 4.155rem;
+
+         @include respond-below(768px){
+                display: none;
+            }
+    }
 
         @include respond-below(760px) {
             display: none;
@@ -265,6 +270,32 @@
         display: flex;
         gap: 1.5rem;
         margin-top: 1.125rem;
+
+        @include respond-below(768px){
+                justify-content: center;
+            }
+
+        .cancel-btn{
+            @include respond-below(768px){
+                display: none;
+            }
+        }
+    }
+
+    &__error {
+        margin: 0;
+        padding: 0.75rem 1rem;
+        border-radius: 0.625rem;
+        background: $background-third;
+        color: #a11919;
+        line-height: 1.5;
+    }
+
+    // Tablet: von 761px bis 1240px schrumpft der Dialog mit der Bildschirmbreite.
+    @media (min-width: 761px) and (max-width: 1240px) {
+        $avatar-size: fluid(90, 130, 761, 1240);
+
+        width: 95vw;
 
         @include respond-below(1240px) {
             gap: fluid(16, 24, 761, 1240);
