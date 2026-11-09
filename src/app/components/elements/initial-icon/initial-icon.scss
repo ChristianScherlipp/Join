@@ -1,4 +1,5 @@
 @use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
 
 :host {
   display: block;
@@ -13,11 +14,12 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: clamp(1px, 5cqh, 3px) solid white;
+  border: clamp(1px, 5cqh, 3px) solid $background-primary;
 
   p {
     margin: 0;
-    color: white;
+    font-size: max(42cqh, 14px);
+    color: $text-primary;
     line-height: 100%;
   }
 
@@ -28,7 +30,7 @@
 
   &.is-header {
     border: 0.1875rem solid $background-secondary;
-    background-color: white;
+    background-color: $background-primary;
     transition: background-color 0.2s;
 
     &:hover {
@@ -38,7 +40,7 @@
     p {
       color: $background-secondary;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: fluid(14, 20)
     }
   }
 }
