@@ -1,4 +1,11 @@
-import { Component, input, output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  input,
+  output,
+  ViewChild,
+} from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
@@ -17,4 +24,25 @@ export class MainView {
 
   // Meldet den Löschwunsch an die Hauptkomponente.
   readonly deleteRequested = output<void>();
+
+  // Zugriff auf das mobile Menü im HTML.
+  @ViewChild('actionMenu')
+  private actionMenu?: ElementRef<HTMLDetailsElement>;
+
+  /**
+   * Schließt das Menü, wenn außerhalb davon geklickt wird.
+   */
+  @HostListener('document:click', ['$event'])
+  closeMenuOnOutsideClick(event: MouseEvent): void {
+    const menu = this.actionMenu?.nativeElement;
+    const target = event.target;
+
+    if (!menu || !menu.open || !(target instanceof Node)) {
+      return;
+    }
+
+    if (!menu.contains(target)) {
+      menu.open = false;
+    }
+  }
 }
