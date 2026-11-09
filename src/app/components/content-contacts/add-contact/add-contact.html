@@ -10,7 +10,7 @@
       <img src="./assets/icons/cancel.svg" alt="Icon Close" />
     </button>
     <!-- Zeigt Initialen oder bei leerem Namen das Platzhalter-Icon. -->
-    <app-initial-icon [name]="newContact.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
+    <app-initial-icon class="add-area__avatar" [name]="newContact.name.trim()" [withShadow]="true" style="width: 8.125rem; height: 8.125rem;" />
     <form class="add-area__form" #contactForm="ngForm" (ngSubmit)="save()">
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('name')">
