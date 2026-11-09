@@ -1,3 +1,5 @@
+import { Component, ElementRef, inject, ViewChild, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { IUser } from '../../../interfaces/iuser';
@@ -116,6 +118,11 @@ open(contact: IUser | null): void {
     };
   }
 
+  previewName = signal('');
+
+  updatePreview(value: string) {
+    this.previewName.set(value);
+  }
   @ViewChild('editForm')
   private editForm!: NgForm;
 }
