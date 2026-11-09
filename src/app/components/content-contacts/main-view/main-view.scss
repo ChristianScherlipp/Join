@@ -158,7 +158,7 @@ a {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 810px) {
   .card-header {
     gap: 18px;
     flex-flow: wrap;
@@ -207,7 +207,7 @@ a {
   .mobile-actions {
     position: fixed;
     right: 16px;
-    bottom: 120px;
+    bottom: 145px;
     z-index: 5;
     display: block;
 

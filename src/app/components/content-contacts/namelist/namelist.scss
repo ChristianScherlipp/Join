@@ -142,7 +142,7 @@ app-initial-icon {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 810px) {
   :host {
     height: 100%;
     min-height: 0px;
@@ -170,7 +170,7 @@ app-initial-icon {
   .mobile-add-button {
     position: fixed;
     right: 20px;
-    bottom: 120px;
+    bottom: 145px;;
     z-index: 2;
     display: grid;
     place-items: center;
