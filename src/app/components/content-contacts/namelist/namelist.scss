@@ -64,7 +64,7 @@ button {
   padding: 0 20px 24px;
   overflow-y: auto;
 
-  > p {
+  >p {
     padding: 16px;
   }
 }
@@ -138,13 +138,55 @@ app-initial-icon {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 760px) {
+.mobile-add-button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  :host {
+    height: 100%;
+    min-height: 0px;
+  }
+
   .sidebar {
     position: static;
     height: auto;
+    height: 100%;
+    min-height: 0px;
   }
 
   .list-scroll {
-    max-height: 45dvh;
+    padding-bottom: 88px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  /* Der große Desktop-Button wird mobil ausgeblendet. */
+  .toolbar {
+    display: none;
+  }
+
+  .mobile-add-button {
+    position: fixed;
+    right: 20px;
+    bottom: 120px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #2a3647;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
+    cursor: pointer;
+
+    img {
+      width: 28px;
+      height: 28px;
+      filter: brightness(0) invert(1);
+    }
   }
 }

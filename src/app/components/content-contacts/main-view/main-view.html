@@ -9,15 +9,15 @@
 <section class="contact-card" aria-label="Kontaktdetails">
   <header class="card-header">
     <app-initial-icon [name]="selected.name" [withShadow]="true"
-      style="width: 7.5rem; height: 7.5rem; font-size: 2.9375rem;"></app-initial-icon>
+      class="contact-icon"></app-initial-icon>
 
     <div>
       <h2>{{ selected.name }}</h2>
       <nav class="edit-contact">
-        <button type="button" class="button-edit-and-delete" (click)="editRequested.emit()">
+        <button type="button" class="button-edit-and-delete for-display" (click)="editRequested.emit()">
           <img src="/assets/icons/edit.svg" alt="pen">Edit
         </button>
-        <button type="button" class="button-edit-and-delete" (click)="deleteRequested.emit()">
+        <button type="button" class="button-edit-and-delete for-display" (click)="deleteRequested.emit()">
           <img src="/assets/icons/delete.svg" alt="trash">Delete
         </button>
       </nav>
@@ -48,5 +48,26 @@
       }
     </dd>
   </dl>
+  <details class="mobile-actions" #actionMenu>
+    <summary aria-label="Kontaktaktionen öffnen oder schließen">
+      <span aria-hidden="true">⋮</span>
+    </summary>
+
+    <menu>
+      <li>
+        <button type="button" (click)="actionMenu.open = false; editRequested.emit()">
+          <img src="/assets/icons/edit.svg" alt="" />
+          <span>Edit</span>
+        </button>
+      </li>
+
+      <li>
+        <button type="button" (click)="actionMenu.open = false; deleteRequested.emit()">
+          <img src="/assets/icons/delete.svg" alt="" />
+          <span>Delete</span>
+        </button>
+      </li>
+    </menu>
+  </details>
 </section>
 }
