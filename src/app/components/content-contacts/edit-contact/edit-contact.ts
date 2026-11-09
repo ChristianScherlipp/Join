@@ -1,6 +1,4 @@
 import { Component, ElementRef, inject, ViewChild, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';

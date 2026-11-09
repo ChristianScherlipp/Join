@@ -88,15 +88,11 @@
         width: 3.370625rem;
         height: 4.155rem;
 
-         @include respond-below(768px){
+        @include respond-below(768px){
                 display: none;
             }
     }
-
-        @include respond-below(760px) {
-            display: none;
-        }
-    }
+    
 
     &__title {
         margin: 2rem 0 0;
