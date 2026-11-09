@@ -34,7 +34,7 @@
     &[open] {
         display: flex;
 
-        @include respond-below(768px){
+        @include respond-below(810px){
                 flex-direction: column;
             }
     }
@@ -88,7 +88,7 @@
         width: 3.370625rem;
         height: 4.155rem;
 
-        @include respond-below(768px){
+        @include respond-below(810px){
                 display: none;
             }
     }
@@ -267,12 +267,12 @@
         gap: 1.5rem;
         margin-top: 1.125rem;
 
-        @include respond-below(768px){
+        @include respond-below(810px){
                 justify-content: center;
             }
 
         .cancel-btn{
-            @include respond-below(768px){
+            @include respond-below(810px){
                 display: none;
             }
         }
