@@ -12,7 +12,7 @@
     padding: 0 1rem 0 6rem;
 
     @include respond-below(850px){
-        padding: 0 1rem 0 5rem;
+        padding: 0 1rem 0 3rem;
     }
 
     @include respond-below(768px) {
