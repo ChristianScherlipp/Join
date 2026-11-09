@@ -53,6 +53,7 @@ open(contact: IUser | null): void {
   };
 
   this.editForm.resetForm(this.formData);
+  this.previewName.set(contact.name);
 
   this.contactService.errorMessage.set('');
   this.dialog.nativeElement.showModal();
