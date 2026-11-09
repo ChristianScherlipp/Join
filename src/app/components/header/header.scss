@@ -1,6 +1,6 @@
 @use '/abstract/variables' as *;
 @use '../../../styles.scss' as *;
-@use '../../../../public/styles/abstract/mixins' as *;
+@use 'abstract/mixins' as *;
 
 
 .header {
@@ -15,6 +15,13 @@
         padding: 0;
     }
 
+}
+.menu-help {
+  display: none;
+
+  @include respond-below(768px) {
+    display: block;
+  }
 }
 
 .header {
@@ -121,7 +128,6 @@
     right: 0;
     z-index: 10;
     width: 9.38rem;
-    height: 9.88rem;
     padding: 0.63rem;
     display: flex;
     flex-direction: column;

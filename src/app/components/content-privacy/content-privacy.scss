@@ -1,32 +1,52 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
-
 .privacy-policy {
-    height: calc(100vh - 6rem);
-    overflow-y: auto;
-    padding: 6rem 6rem 4rem 6rem;
-    font-size: 1rem;
+  height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
+  font-size: 1rem;
 
+  @include respond-below(768px) {
+    height: calc(100vh - 6rem - 7.5rem);
+  }
 
+  .page-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: fluid(16, 24);
+  }
 
-    h1 {
-        font-size: fluid(47, 61);
-        margin: 0 0 1.6rem 0;
+  .mobile-back {
+    display: none;
 
+    @include respond-below(768px) {
+      display: block;
     }
+  }
 
-    h2 {
-        font-size: 1.68rem;
-        margin: 1.5rem 0 0.5rem 0;
-    }
+  h1 {
+    font-size: fluid(47, 61);
+    font-weight: 700;
+    margin: 0;
+  }
 
-    h1+h2 {
-        margin-top: 0;
-    }
+  h2 {
+    font-size: 1.6875rem;
+    font-weight: 700;
+    margin: fluid(16, 24) 0 fluid(4, 8) 0;
+  }
 
-    p {
-        margin: 0;
-        font-size: 1rem;
-    }
+  .page-head + h2 {
+    margin-top: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 0.5rem;
+  }
 }
