@@ -23,7 +23,7 @@
           <button class="contact-row" type="button" [class.selected]="selectedId() === contact.id"
             [attr.aria-pressed]="selectedId() === contact.id" (click)="contactSelected.emit(contact)">
 
-            <app-initial-icon [name]="contact.name" style="width: 2.625rem; height: 2.625rem"></app-initial-icon>
+            <app-initial-icon [name]="contact.name" style="width: 2.625rem; height: 2.625rem; font-size: 1rem;" ></app-initial-icon>
             <span class="contact-text">
               <span class="name" [title]="contact.name">
                 {{ contact.name }}
