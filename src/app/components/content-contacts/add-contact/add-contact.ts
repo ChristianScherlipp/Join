@@ -49,6 +49,7 @@ export class AddContact {
 
     this.contactForm.resetForm(this.newContact);
     this.contactService.errorMessage.set('');
+    this.previewName.set(''); 
 
     this.dialog.nativeElement.showModal();
     this.isOpen.set(true);
