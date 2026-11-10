@@ -1,10 +1,11 @@
-import { Component, ElementRef, inject, signal, ViewChild, } from '@angular/core';
+import { Component, ElementRef, inject, output, signal, ViewChild, } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ContactService } from '../../../services/contact-service';
 import { ContactAvatar } from '../../../services/contact-avatar';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
 import { FieldError } from '../../../services/field-error';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
+import { ToastSuccess } from '../../elements/toast-succsess/toast-succsess';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class AddContact {
 
   // Zeigt der Hauptkomponente an, ob der Dialog geöffnet ist.
   readonly isOpen = signal(false);
+  readonly created = output<void>();
 
   // Zugriff auf das dialog-Element im eigenen HTML.
   @ViewChild('dialog')
@@ -49,7 +51,7 @@ export class AddContact {
 
     this.contactForm.resetForm(this.newContact);
     this.contactService.errorMessage.set('');
-    this.previewName.set(''); 
+    this.previewName.set('');
 
     this.dialog.nativeElement.showModal();
     this.isOpen.set(true);
@@ -112,6 +114,7 @@ export class AddContact {
     // Bei einem Fehler bleiben Dialog und Eingaben erhalten.
     if (saved) {
       this.close();
+      this.created.emit();
     }
   }
 
