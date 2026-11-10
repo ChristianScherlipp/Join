@@ -17,7 +17,7 @@ export class ContentContacts implements OnInit, OnDestroy {
   readonly contactService = inject(ContactService);
 
   // Speichert den ausgewählten Kontakt für die Kontaktkarte und den Edit-Dialog.
-  readonly selectedContact = signal<IUser | null>(null);
+  readonly selectedContact = this.contactService.selectedContact;
 
   /**
    * Wird beim Öffnen der Kontaktseite ausgeführt.

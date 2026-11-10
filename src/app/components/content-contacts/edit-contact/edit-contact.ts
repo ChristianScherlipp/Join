@@ -23,6 +23,7 @@ export class EditContact {
   readonly avatar = inject(ContactAvatar);
   readonly fieldError = inject(FieldError);
 
+
   @ViewChild('dialog')
   private dialog!: ElementRef<HTMLDialogElement>;
 
@@ -33,31 +34,29 @@ export class EditContact {
   formData = { name: '', email: '', phone: '' };
 
 
-/**
- * Übernimmt den ausgewählten Kontakt und setzt das Formular
- * einschließlich seiner Eingabefelder zurück.
- */
-open(contact: IUser | null): void {
-  if (!contact) {
-    return;
+  /**
+   * Übernimmt den ausgewählten Kontakt und setzt das Formular
+   * einschließlich seiner Eingabefelder zurück.
+   */
+  open(contact: IUser | null): void {
+    if (!contact) {
+      return;
+    }
+
+    this.contactId = contact.id;
+
+    this.formData = {
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone ?? '',
+    };
+
+    this.editForm.resetForm(this.formData);
+    this.previewName.set(contact.name);
+
+    this.contactService.errorMessage.set('');
+    this.dialog.nativeElement.showModal();
   }
-
-  console.log('Kontakt zum Bearbeiten:', contact.id, contact.name);
-
-  this.contactId = contact.id;
-
-  this.formData = {
-    name: contact.name,
-    email: contact.email,
-    phone: contact.phone ?? '',
-  };
-
-  this.editForm.resetForm(this.formData);
-  this.previewName.set(contact.name);
-
-  this.contactService.errorMessage.set('');
-  this.dialog.nativeElement.showModal();
-}
 
   /**
    * Schließt den Dialog, sofern gerade nicht gespeichert wird.
@@ -92,6 +91,7 @@ open(contact: IUser | null): void {
       this.close();
     }
   }
+
 
   /**
    * Löscht den Kontakt. Bei erfolg wird der Dialog geschlossen.

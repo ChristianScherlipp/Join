@@ -10,16 +10,25 @@ import { Router } from '@angular/router';
 })
 export class ButtonBack {
   private readonly location = inject(Location);
-  private readonly router = inject(Router)
+  private readonly router = inject(Router);
 
   readonly widthStr = input<string>('2rem');
   readonly heightStr = input<string>('2rem');
-  //Ziel, wenn es keine vorherige Seite im Verlauf gibt (z.B. nach Reload).
-  readonly fallbackUrl = input<string>('/contacts'); // Wenn Summary fertig ist hier ('/contacts') in ('/summary') ändern
+
+  readonly fallbackUrl = input<string>('/contacts');
   readonly iconSrc = './assets/icons/arrow-back.svg';
 
-  //Geht zur vorherigen Ansicht zurück, sonst zur Fallbackseite.
+  // Bei false übernimmt die verwendende Komponente die Klickaktion.
+  readonly useHistory = input<boolean>(true);
+
+  /**
+   * Navigiert zurück, sofern die Verlaufsnavigation aktiviert ist.
+   */
   goBack(): void {
+    if (!this.useHistory()) {
+      return;
+    }
+
     if (this.hasHistory()) {
       this.location.back();
     } else {
@@ -27,7 +36,10 @@ export class ButtonBack {
     }
   }
 
-  //Angular zähhlt die Navigation mit; ab 2 gibt es eine vorherige Seite
+  /**
+   * Prüft die bisher verwendete Angular-Navigationsnummer.
+   * Diese Prüfung garantiert nicht, dass das vorherige Ziel intern ist.
+   */
   private hasHistory(): boolean {
     return history.state?.navigationId > 1;
   }

@@ -5,7 +5,7 @@
     (addRequested)="addDialog.open()" />
 
   <main class="main-panel">
-    <app-button-back class="back-button" type="button" aria-label="Zurück zur Kontaktliste"
+    <app-button-back class="back-button" [useHistory]="false" aria-label="Zurück zur Kontaktliste"
       (click)="selectedContact.set(null)"></app-button-back>
     <app-main-view [contact]="selectedContact()" (deleteRequested)="deleteSelected()"
       (editRequested)="editDialog.open(selectedContact())" />
