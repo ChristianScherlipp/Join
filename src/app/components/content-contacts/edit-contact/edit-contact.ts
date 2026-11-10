@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild, signal } from '@angular/core';
+import { Component, ElementRef, inject, output, ViewChild, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
@@ -6,6 +6,7 @@ import { ContactService } from '../../../services/contact-service';
 import { FieldError } from '../../../services/field-error';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
+import { ToastSuccess } from '../../elements/toast-succsess/toast-succsess';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class EditContact {
   readonly contactService = inject(ContactService);
   readonly avatar = inject(ContactAvatar);
   readonly fieldError = inject(FieldError);
+  readonly created = output<void>();
 
 
   @ViewChild('dialog')
@@ -89,6 +91,7 @@ export class EditContact {
 
     if (isSaved) {
       this.close();
+      this.created.emit();
     }
   }
 

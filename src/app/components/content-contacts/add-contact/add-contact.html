@@ -32,7 +32,7 @@
       </div>
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('phone')">
-          <input (blur)="fieldError.check('phone', newContact.phone)" class="add-area__input" type="tel" name="phone" placeholder="Phone" aria-label="Telefon (optional)" autocomplete="tel" [(ngModel)]="newContact.phone" />
+          <input (blur)="fieldError.check('phone', newContact.phone)" class="add-area__input" type="tel" name="phone" placeholder="Phone" aria-label="Telefon" autocomplete="tel" [(ngModel)]="newContact.phone" required phone />
           <img src="./assets/icons/call.svg" alt="" />
         </label>
         @if (fieldError.isVisible('phone')) {

@@ -26,7 +26,7 @@ function checkEmail(value:string): string {
 
 function checkPhone(value:string): string {
     if (!value.trim()) {
-        return '';
+        return REQUIRED;
     }
     // Optinales + nur am Anfang, danach 1 bis 15 Ziffern, keine Leerzeichen.
     const isValid = /^\+?\d{1,15}$/.test(value.trim());

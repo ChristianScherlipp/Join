@@ -31,7 +31,7 @@
             </div>
             <div class="edit-area__group">
                 <label class="edit-area__field" [class.edit-area__field--error]="fieldError.isVisible('phone')">
-                    <input (blur)="fieldError.check('phone', formData.phone)" class="edit-area__input" type="tel" name="phone" placeholder="Phone" [(ngModel)]="formData.phone" />
+                    <input (blur)="fieldError.check('phone', formData.phone)" class="edit-area__input" type="tel" name="phone" placeholder="Phone" [(ngModel)]="formData.phone" required/>
                     <img src="./assets/icons/call.svg" alt="" />
                 </label>
                 @if (fieldError.isVisible('phone')) {

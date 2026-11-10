@@ -20,5 +20,6 @@
   </main>
 </section>
 
-<app-add-contact #addDialog />
-<app-edit-contact #editDialog />
+<app-add-contact #addDialog (created)="toast.show('Contact successfully created')"/>
+<app-edit-contact #editDialog (created)="toast.show('Contact successfully edited')"/>
+<app-toast-success #toast />

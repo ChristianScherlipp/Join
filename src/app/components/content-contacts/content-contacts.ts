@@ -6,10 +6,11 @@ import { AddContact } from './add-contact/add-contact';
 import { EditContact } from './edit-contact/edit-contact';
 import { IUser } from '../../interfaces/iuser';
 import { ButtonBack } from '../elements/button-back/button-back';
+import { ToastSuccess } from '../elements/toast-succsess/toast-succsess';
 
 @Component({
   selector: 'app-content-contacts',
-  imports: [Namelist, MainView, AddContact, EditContact, ButtonBack],
+  imports: [Namelist, MainView, AddContact, EditContact, ButtonBack, ToastSuccess],
   templateUrl: './content-contacts.html',
   styleUrl: './content-contacts.scss',
 })
