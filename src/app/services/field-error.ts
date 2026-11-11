@@ -1,5 +1,4 @@
 import { Service, signal } from '@angular/core';
-import { email } from '@angular/forms/signals';
 
 const REQUIRED = 'This field is required';
 
@@ -44,9 +43,6 @@ export class FieldError {
      // Aktuell sichtbare Meldung pro Feld
     readonly messages = signal<Record<string, string>>({});
 
-    // Merkt sich pro Feld den Timer, der die Meldung ausblendet.
-    private readonly timers = new Map<string, number>();
-
     /**
     * Prüft ein Feld. Bei einem Fehler wird die Meldung 5 Sekunden angezeigt.
     * true = gültig, false = ungültig.
@@ -79,8 +75,6 @@ export class FieldError {
 
     // Blendet alle Meldungen aus und stoppt alle Timer.
     reset(): void {
-        this.timers.forEach((timer) => window.clearTimeout(timer));
-        this.timers.clear();
         this.messages.set({});
     }
 
@@ -89,18 +83,10 @@ export class FieldError {
     }
 
     private show(field: string, message: string): void {
-        this.clearTimer(field);
         this.messages.update((current) => ({ ...current, [field]: message }));
-        this.timers.set(field, window.setTimeout(() => this.hide(field), 3000));
     }
 
     private hide(field: string): void {
-        this.clearTimer(field);
         this.messages.update(({ [field]: removed, ...rest }) => rest);
-    }
-
-    private clearTimer(field: string): void {
-        window.clearTimeout(this.timers.get(field));
-        this.timers.delete(field);
     }
 }

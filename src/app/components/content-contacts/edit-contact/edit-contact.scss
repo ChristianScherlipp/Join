@@ -266,7 +266,8 @@
         position: relative;
     }
 
-    &__field--error {
+    &__field--error,
+    &__field--error:focus-within {
         border-color: #E60026;
     }
 
