@@ -112,6 +112,15 @@ a {
   font-size: 2.9375rem;
 }
 
+.contact-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-details h2 {
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 1155px) {
   .card-header {
     flex-flow: wrap;
@@ -141,6 +150,10 @@ a {
   }
 }
 
+.contact-icon {
+  flex-shrink: 0;
+}
+
 .edit-contact {
   display: flex;
   justify-content: start;
@@ -154,6 +167,8 @@ a {
   font-size: 1rem;
   font-weight: 400;
   gap: 1rem;
+  width: 100px;
+  justify-content: start;
 
   display: flex;
   flex-direction: row;
@@ -170,7 +185,7 @@ a {
   display: none;
 }
 
-@media (max-width: 810px) {
+@media (max-width: 1000px) {
   .card-header {
     gap: 18px;
     flex-flow: wrap;

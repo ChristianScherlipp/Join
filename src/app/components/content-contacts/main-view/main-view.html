@@ -11,7 +11,7 @@
     <app-initial-icon [name]="selected.name" [withShadow]="true"
       class="contact-icon"></app-initial-icon>
 
-    <div>
+    <div class="contact-details">
       <h2>{{ selected.name }}</h2>
       <nav class="edit-contact">
         <button type="button" class="button-edit-and-delete for-display" (click)="editRequested.emit()">
@@ -35,7 +35,7 @@
         {{ selected.email }}
       </a>
     </dd>
-
+,,
     <dt>Phone</dt>
 
     <dd>

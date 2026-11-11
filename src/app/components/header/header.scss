@@ -15,14 +15,14 @@
         padding: 0 1rem 0 3rem;
     }
 
-    @include respond-below(810px) {
+    @include respond-below(1000px) {
         padding: 0;
     }
 }
 .menu-help {
   display: none;
 
-  @include respond-below(810px) {
+  @include respond-below(1000px) {
     display: block;
   }
 }
@@ -42,7 +42,7 @@
     font-size: 1.25rem;
     color: $text-secondary;
 
-    @include respond-below(810px) {
+    @include respond-below(1000px) {
         display: none;
     }
 
@@ -58,7 +58,7 @@
         padding: 1.25rem 0.5rem 1.25rem;
     }
 
-    @include respond-below(810px) {
+    @include respond-below(1000px) {
         padding: 0 1rem;
         width: 100%;
         justify-content: space-between;
@@ -68,7 +68,7 @@
     .join-logo {
         display: none;
 
-        @include respond-below(810px) {
+        @include respond-below(1000px) {
             display: flex;
             width: 2rem;
             height: 2.43rem;
@@ -85,7 +85,7 @@
 }
 
 .help-link {
-    @include respond-below(810px) {
+    @include respond-below(1000px) {
         display: none;
     }
 
@@ -115,7 +115,7 @@
     width: 3.5rem;
     height: 3.5rem;
 
-    @include respond-below(810px) {
+    @include respond-below(1000px) {
         width: 40px;
         height: 40px;
     }
