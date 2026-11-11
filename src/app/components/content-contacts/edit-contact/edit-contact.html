@@ -40,7 +40,7 @@
             </div>
             <div class="edit-area__actions">
                 <app-button-primary typeStr="light" (click)="deleteContact()">Delete</app-button-primary>
-                <app-button-primary typeStr="createTask" buttonType="submit">Save</app-button-primary>
+                <app-button-primary typeStr="createTask" buttonType="submit" [isDisabled]="!fieldError.isValid(formData) || contactService.saving()">Save</app-button-primary>
             </div>
         </form>
     </section>
