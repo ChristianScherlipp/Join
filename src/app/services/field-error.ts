@@ -65,6 +65,11 @@ export class FieldError {
         return results.every(Boolean);
     }
 
+    //Prüft alle Felder still, ohne Meldung anzuzeigen (z.B. für den save-Button).
+    isValid(values: Record<string, string>): boolean {
+        return Object.keys(rules).every((field) => !rules[field](values[field] ?? ''));
+    }
+
     isVisible(field: string): boolean {
         return !!this.messages()[field];
     }

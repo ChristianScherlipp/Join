@@ -5,16 +5,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
+    // Deaktiviert: blasser und kein Klick-Mauszeiger.
+    &:disabled {                          // ← NEU
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }
 
 .btn-dark {
-background: $background-secondary;
-color: $text-primary;
-font-size: fluid(16, 18);
-height: 3.5rem;
+    background: $background-secondary;
+    color: $text-primary;
+    font-size: fluid(16, 18);
+    height: 3.5rem;
 
-    &:hover {
+    &:hover:not(:disabled) {              // ← NEU: :not(:disabled)
         background: $hover-primary;
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         cursor: pointer;
@@ -27,15 +32,16 @@ height: 3.5rem;
 }
 
 .btn-light,
-.btn-cancel{
+.btn-cancel {
     background: $background-primary;
     color: $background-secondary;
     border: 1px solid $background-secondary;
     border-radius: 0.5rem;
-    font-size: fluid(16, 18);
+    font-size: 1.25rem;
+    font-weight: 400;
     height: 3.5rem;
 
-    &:hover {
+    &:hover:not(:disabled) {            
         color: $hover-primary;
         border: 2px solid $hover-primary;
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -62,7 +68,7 @@ height: 3.5rem;
     font-weight: 700;
     border: none;
 
-    &:hover {
+    &:hover:not(:disabled) {              
         background-color: $hover-primary;
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         cursor: pointer;
@@ -72,15 +78,15 @@ height: 3.5rem;
         background-color: $btn-after;
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     }
-    
+
     img {
         width: 1.5rem;
         height: 1.5rem;
     }
 }
 
-.btn-addTask:hover:not(.is-active),
-.btn-addContact:hover:not(.is-active) {
+.btn-addTask:hover:not(.is-active):not(:disabled),     // ← NEU: :not(:disabled)
+.btn-addContact:hover:not(.is-active):not(:disabled) {
     background-color: $hover-secondary;
 }
 
@@ -91,5 +97,5 @@ height: 3.5rem;
         width: 1rem;
         height: 1rem;
         filter: brightness(0) saturate(100%) invert(16%) sepia(51%) saturate(411%) hue-rotate(176deg) brightness(89%) contrast(87%);
-    } 
+    }
 }
