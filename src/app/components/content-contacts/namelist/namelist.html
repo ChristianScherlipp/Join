@@ -20,7 +20,7 @@
         @for (contact of group.contacts; track contact.id) {
         <li>
           <!-- Meldet den angeklickten Kontakt an die Hauptkomponente. -->
-          <button class="contact-row" type="button" [class.selected]="selectedId() === contact.id"
+          <button class="contact-row" type="button" [attr.data-contact-id]="contact.id" [class.selected]="selectedId() === contact.id"
             [attr.aria-pressed]="selectedId() === contact.id" (click)="contactSelected.emit(contact)">
 
             <app-initial-icon [name]="contact.name"

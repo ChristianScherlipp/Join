@@ -7,7 +7,7 @@
   padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
   font-size: 1rem;
 
-  @include respond-below(810px) {
+  @include respond-below(1000px) {
     height: calc(100vh - 6rem - 7.5rem);
   }
 
@@ -21,7 +21,7 @@
   .mobile-back {
     display: none;
 
-    @include respond-below(810px) {
+    @include respond-below(1000px) {
       display: block;
     }
   }

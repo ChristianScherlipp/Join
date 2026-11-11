@@ -112,6 +112,7 @@ export class ContactService {
 
       // Ergänzt die Liste um den gespeicherten Kontakt inklusive ID.
       this.users.update((contacts) => [...contacts, data]);
+      this.selectedContact.set(data);
 
       return true;
     } catch (error) {

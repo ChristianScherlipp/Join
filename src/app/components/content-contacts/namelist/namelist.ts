@@ -5,6 +5,10 @@ import {
   input,
   output,
 } from '@angular/core';
+import {
+  afterRenderEffect,
+  ElementRef,
+} from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';
 import { ContactAvatar } from '../../../services/contact-avatar';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
@@ -64,5 +68,64 @@ export class Namelist {
     }
 
     return groups;
+  }
+
+private readonly element: ElementRef<HTMLElement> = inject(ElementRef);
+
+  constructor() {
+    // Wird nach dem Rendern ausgeführt, wenn sich Auswahl oder Liste ändern.
+    afterRenderEffect(() => {
+      const id = this.selectedId();
+      this.contacts();
+      const loading = this.loading();
+
+      if (id === null || loading) {
+        return;
+      }
+
+      this.scrollToContact(id);
+    });
+  }
+
+  /**
+   * Verschiebt nur den Scrollbereich der Kontaktliste.
+   */
+  private scrollToContact(id: number): void {
+    const host = this.element.nativeElement;
+
+    // Mobil ist die Liste bei geöffneter Kontaktkarte ausgeblendet.
+    if (host.getClientRects().length === 0) {
+      return;
+    }
+
+    const list = host.querySelector<HTMLElement>('.list-scroll');
+    const button = host.querySelector<HTMLElement>(
+      `[data-contact-id="${id}"]`
+    );
+
+    if (!list || !button) {
+      return;
+    }
+
+    const listBounds = list.getBoundingClientRect();
+    const buttonBounds = button.getBoundingClientRect();
+
+    // Ist der Kontakt bereits vollständig sichtbar, bleibt die Liste stehen.
+    if (
+      buttonBounds.top >= listBounds.top &&
+      buttonBounds.bottom <= listBounds.bottom
+    ) {
+      return;
+    }
+
+    list.scrollTo({
+      top:
+        list.scrollTop +
+        buttonBounds.top -
+        listBounds.top -
+        list.clientHeight / 2 +
+        buttonBounds.height / 2,
+      behavior: 'smooth',
+    });
   }
 }
