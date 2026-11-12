@@ -1,0 +1,82 @@
+<dialog open aria-labelledby="task-dialog-title">
+    <header class="dialog-header">
+        <h1 id="task-dialog-title">Edit Task</h1>
+
+        <button class="close-button" type="button" aria-label="Dialog schließen">
+            ×
+        </button>
+    </header>
+
+    <form id="task-form" class="task-form">
+        <section class="form-column" aria-label="Aufgabendetails">
+            <label class="field">
+                <span>Title<span class="required">*</span></span>
+
+                <input type="text" name="title" placeholder="Enter a title" required />
+            </label>
+
+            <label class="field">
+                <span>Description</span>
+
+                <textarea name="description" placeholder="Enter a Description" rows="4"></textarea>
+            </label>
+
+            <label class="field">
+                <span>Due date<span class="required">*</span></span>
+
+                <input type="date" name="dueDate" required />
+            </label>
+        </section>
+
+        <section class="form-column" aria-label="Zuordnung und Priorität">
+            <fieldset class="priority-field">
+                <app-button-priority></app-button-priority>
+            </fieldset>
+
+            <label class="field">
+                <span>Assigned to</span>
+
+                <select name="assignedTo">
+                    <option value="" disabled selected>
+                        Select contacts to assign
+                    </option>
+                    <option value="a">Name A</option>
+                    <option value="b">Name B</option>
+                    <option value="c">Name C</option>
+                    <option value="d">Name D</option>
+                </select>
+            </label>
+
+            <label class="field">
+                <span>Category<span class="required">*</span></span>
+
+                <select name="category" required>
+                    <option value="" disabled selected>
+                        Select task category
+                    </option>
+                    <option value="technical">Technical Task</option>
+                    <option value="user-story">User Story</option>
+                </select>
+            </label>
+
+            <label class="field">
+                <span>Subtasks</span>
+
+                <input type="text" name="subtask" placeholder="Add new subtask" />
+            </label>
+        </section>
+    </form>
+
+    <footer class="dialog-footer">
+        <p>
+            <span class="required">*</span>This field is required
+        </p>
+
+        <div class="footer-actions">
+
+            <app-button-primary typeStr="createTask" buttonType="button">
+                Ok
+            </app-button-primary>
+        </div>
+    </footer>
+</dialog>
