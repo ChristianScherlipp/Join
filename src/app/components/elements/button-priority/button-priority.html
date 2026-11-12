@@ -1,0 +1,21 @@
+<!--HTML bsp. <app-button-priority [(selected)]="priority" /> -->
+<!--TS Datei import { ButtonPriority, Priority } from '../../elements/button-priority/button-priority'; und signal muss importiert sein-->
+<!--TS Datei imports: [ButtonPriority],-->
+<!--TS Datei priority = signal<Priority | null>('urgent');-->
+<section class="priority">
+    <p class="priority__label">Priority</p>
+    <section class="priority__group" role="group" aria-label="Priority">
+        @for (item of priorities; track item.key) {
+            <button
+                type="button"
+                class="priority__btn priority__btn--{{ item.key }}"
+                [class.is-active]="selected() === item.key"
+                [attr.aria-pressed]="selected() === item.key"
+                (click)="select(item.key)"
+            >
+                <span class="priority__text">{{ item.label }}</span>
+                <img class="priority__icon" [src]="item.icon" alt="" aria-hidden="true" />
+            </button>
+        }
+    </section>
+</section>
