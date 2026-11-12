@@ -144,7 +144,12 @@
         padding: 0;
         border: none;
         background: none;
+        border-radius: 50%;
         cursor: pointer;
+
+        &:hover {
+            box-shadow: 0 0 0 0.5rem rgb(0 0 0 / 8%);
+        }
 
         @include respond-below(1240px) {
             top: fluid(24, 62, 761, 1240);
@@ -155,6 +160,10 @@
             filter: brightness(0) invert(1);
             top: fluid(16, 32, 320, 760);
             right: fluid(16, 32, 320, 760);
+
+            &:hover {
+                box-shadow: none;
+            }
         }
 
         img {
