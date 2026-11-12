@@ -3,8 +3,12 @@ import { ContentContacts } from './components/content-contacts/content-contacts'
 import { ContentLegal } from './components/content-legal/content-legal';
 import { ContentPrivacy } from './components/content-privacy/content-privacy';
 import { ContentHelp } from './components/content-help/content-help';
+import { ContentBoard } from './components/content-board/content-board';
 
 export const routes: Routes = [
+  { path: 'board', 
+    component: ContentBoard 
+  },
   {
     path: 'contacts',
     component: ContentContacts,
@@ -26,4 +30,5 @@ export const routes: Routes = [
     redirectTo: 'contacts',
     pathMatch: 'full',
   },
+  
 ];
