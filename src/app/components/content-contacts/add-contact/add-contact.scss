@@ -110,10 +110,6 @@
         position: relative;
     }
 
-    &__field--error {
-        border-color: #E60026;
-    }
-
     &__field-error {
         position: absolute;
         top: 100%;
@@ -141,6 +137,11 @@
             width: 1.5rem;
             height: 1.5rem;
         }
+    }
+
+    &__field--error,
+    &__field--error:focus-within {
+        border-color: #E60026;
     }
 
     &__input {
