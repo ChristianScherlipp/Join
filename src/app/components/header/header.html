@@ -1,0 +1,22 @@
+<header class="header">
+  <p class="header-title">Kanban Project Management Tool</p>
+  <div class="header-actions">
+    <a routerLink="/help" class="help-link">
+      <img src="./assets/icons/help.svg" alt="Hilfe">
+    </a>
+    <img class="join-logo" src="./assets/icons/join_logo.svg" alt="Join Logo">
+
+    <button class="avatar-button" (click)="toggleMenu()" aria-label="Benutzermenü" [attr.aria-expanded]="isMenuOpen()">
+      <app-initial-icon name="Sofia Müller" [isHeader]="true" class="header-avatar"></app-initial-icon>
+    </button>
+
+   @if (isMenuOpen()) {
+  <nav class="user-menu">
+    <a routerLink="/help" class="menu-help" (click)="closeMenu()">Help</a>
+    <a routerLink="/legal-notice" (click)="closeMenu()">Legal Notice</a>
+    <a routerLink="/privacy-policy" (click)="closeMenu()">Privacy Policy</a>
+    <button (click)="logout()">Log out</button>
+  </nav>
+}
+  </div>
+</header>

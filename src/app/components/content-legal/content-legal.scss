@@ -1,0 +1,59 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.legal-notice {
+  height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
+  font-size: 1rem;
+
+  @include respond-below(1000px) {
+    height: calc(100vh - 6rem - 7.5rem);
+  }
+
+ .page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: fluid(16, 24);
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.mobile-back {
+  display: none;
+
+  @include respond-below(1000px) {
+    display: block;
+  }
+}
+
+  h1 {
+    font-size: fluid(47, 61);
+    font-weight: 700;
+    margin: 0 0 fluid(16, 24) 0;
+  }
+
+  h2 {
+    font-size: 1.6875rem;
+    font-weight: 700;
+    margin: 0 0 fluid(8, 16) 0;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: fluid(16, 24) 0 0 0;
+  }
+
+  p {
+    margin: 0;
+  }
+}

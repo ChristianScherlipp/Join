@@ -1,0 +1,336 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+@keyframes slide-in-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+:host {
+  display: block;
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 48px;
+
+  h1 {
+    margin: 0;
+    color: $text-secondary;
+    font-size: fluid(47, 61);
+    letter-spacing: -1px;
+  }
+
+  p {
+    margin: 0;
+    font-size: fluid(20, 27);
+  }
+}
+
+.divider {
+  width: 3px;
+  height: 52px;
+  background: $second-tow;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  h2 {
+    min-width: 0;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    color: $text-secondary;
+    font-size: fluid(36, 47);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+}
+
+.avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  box-sizing: border-box;
+  width: 110px;
+  height: 110px;
+  border: 3px solid $background-primary;
+  border-radius: 50%;
+  color: $background-primary;
+  font-size: 40px;
+}
+
+h3 {
+  margin: 40px 0 28px;
+  color: $text-secondary;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+dt {
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+dd {
+  margin: 0 0 24px;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: $second-one;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 3px solid $second-tow;
+  }
+}
+
+.phone {
+  color: $background-secondary;
+}
+
+.contact-icon {
+  width: 7.5rem;
+  height: 7.5rem;
+  font-size: 2.9375rem;
+}
+
+.contact-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-details h2 {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1155px) {
+  .card-header {
+    flex-flow: wrap;
+
+    h2 {
+      font-size: fluid(30, 36);
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .heading {
+    gap: 16px;
+
+    h1 {
+      font-size: fluid(36, 47);
+    }
+
+
+    p {
+      flex-basis: 100%;
+    }
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+.contact-icon {
+  flex-shrink: 0;
+}
+
+.edit-contact {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.button-edit-and-delete {
+  border: none;
+  background-color: transparent;
+  color: $background-secondary;
+  font-size: 1rem;
+  font-weight: 400;
+  gap: 1rem;
+  width: 100px;
+  justify-content: start;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+.mobile-actions {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .card-header {
+    gap: 18px;
+    flex-flow: wrap;
+
+    h2 {
+      min-width: 0;
+      margin: 0;
+      color: #000000;
+      overflow-wrap: anywhere;
+      font-size: 23px;
+      // text-wrap: nowrap;
+    }
+  }
+
+  .for-display {
+    display: none;
+    z-index: 1;
+  }
+
+
+
+  .heading {
+    padding-right: 48px;
+  }
+
+  .contact-icon {
+    width: 5rem;
+    height: 5rem;
+    font-size: 1.6875rem;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+
+  .desktop-action {
+    display: none;
+  }
+
+  .contact-card {
+    padding-bottom: 110px;
+  }
+
+  .mobile-actions {
+    position: fixed;
+    right: 16px;
+    bottom: 145px;
+    z-index: 5;
+    display: block;
+
+    /* Geschlossener Zustand: runder Button mit drei Punkten. */
+    summary {
+      display: grid;
+      place-items: center;
+      box-sizing: border-box;
+      width: 50px;
+      height: 50px;
+      padding: 0;
+      border-radius: 50%;
+      background: #2a3647;
+      color: #fff;
+      box-shadow: 0 3px 5px rgb(0 0 0 / 25%);
+      font-size: 30px;
+      line-height: 1;
+      list-style: none;
+      cursor: pointer;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #29abe2;
+        outline-offset: 3px;
+      }
+    }
+
+    /* Geöffneter Zustand: weißes Menü anstelle des runden Buttons. */
+    &[open] {
+      animation: slide-in-from-right 500ms ease-out;
+
+      width: 106px;
+      padding: 8px;
+      box-sizing: border-box;
+      border-radius: 20px 20px 0;
+      background: #fff;
+      box-shadow: 0 3px 5px rgb(0 0 0 / 25%);
+
+      summary {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 28px;
+        height: 28px;
+        background: transparent;
+        box-shadow: none;
+
+        /* Der Schalter bleibt per Tastatur erreichbar. */
+        span {
+          visibility: hidden;
+        }
+
+        &:focus-visible {
+          outline-offset: -3px;
+        }
+      }
+    }
+
+
+    menu {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 8px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #2a3647;
+      font: inherit;
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+
+      img {
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        background: #f1f2f3;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #29abe2;
+      }
+    }
+  }
+}

@@ -45,6 +45,9 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "stylePreprocessorOptions": {
+              "includePaths": ["public/styles"]
+            },
             "assets": [
               {
                 "glob": "**/*",
@@ -67,7 +70,8 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/angular-projects/join/"
             },
             "development": {
               "optimization": false,

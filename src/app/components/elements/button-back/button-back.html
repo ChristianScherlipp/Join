@@ -1,0 +1,11 @@
+<!--bsp. <app-button-back widthStr="2rem" heightStr="2rem" fallbackUrl="/login"></app-button-back> -->
+<button
+    type="button"
+    class="btn-back"
+    [style.width]="widthStr()"
+    [style.height]="heightStr()"
+    (click)="goBack()"
+    aria-label="Back"
+>
+    <img class="btn-back__img" [src]="iconSrc" alt="Icon zurück" aria-hidden="true">
+</button>

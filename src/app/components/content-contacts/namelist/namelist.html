@@ -1,0 +1,51 @@
+<aside class="sidebar" aria-label="Kontaktliste">
+  <header class="toolbar">
+    <!-- Meldet der Hauptkomponente, dass der Dialog geöffnet werden soll. -->
+    <button class="add-button" type="button" (click)="addRequested.emit()">
+      Add new contact
+      <img src="./assets/icons/person_add.svg" alt="" />
+    </button>
+  </header>
+
+  <!-- Dieser Container ist für den scrollbaren Bereich nötig. -->
+  <div class="list-scroll">
+    @if (loading()) {
+    <p role="status">Kontakte werden geladen …</p>
+    } @else {
+    @for (group of groups(); track group.letter) {
+    <section>
+      <h2>{{ group.letter }}</h2>
+
+      <ul>
+        @for (contact of group.contacts; track contact.id) {
+        <li>
+          <!-- Meldet den angeklickten Kontakt an die Hauptkomponente. -->
+          <button class="contact-row" type="button" [attr.data-contact-id]="contact.id" [class.selected]="selectedId() === contact.id"
+            [attr.aria-pressed]="selectedId() === contact.id" (click)="contactSelected.emit(contact)">
+
+            <app-initial-icon [name]="contact.name"
+              style="width: 2.625rem; height: 2.625rem; font-size: 1rem;"></app-initial-icon>
+            <span class="contact-text">
+              <span class="name" [title]="contact.name">
+                {{ contact.name }}
+              </span>
+
+              <span class="email" [title]="contact.email">
+                {{ contact.email }}
+              </span>
+            </span>
+
+          </button>
+        </li>
+        }
+      </ul>
+    </section>
+    } @empty {
+    <p>Noch keine Kontakte vorhanden.</p>
+    }
+    }
+  </div>
+  <button class="mobile-add-button" type="button" aria-label="Kontakt hinzufügen" (click)="addRequested.emit()">
+    <img src="./assets/icons/person_add.svg" alt="" />
+  </button>
+</aside>

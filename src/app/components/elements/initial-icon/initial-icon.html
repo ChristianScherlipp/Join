@@ -1,0 +1,11 @@
+<!-- <app-initial-icon [name]="contact.name" [withShadow]="true"
+    style="width: 2.625rem; height: 2.625rem"></app-initial-icon> -->
+
+<div class="initial-icon" [class.with-shadow]="withShadow()" [class.is-header]="isHeader()"
+    [style.background-color]="backgroundColor()">
+    @if (isPlaceholder() || initials() === '') {
+    <img src="./assets/icons/person.svg" alt="">
+    } @else {
+    <p>{{ initials() }}</p>
+    }
+</div>

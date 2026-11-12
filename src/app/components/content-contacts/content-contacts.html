@@ -1,0 +1,25 @@
+<!-- Verbindet Kontaktliste, Kontaktkarte und Dialog. -->
+<section class="contacts-layout" aria-label="Kontakte" [class.show-details]="selectedContact() !== null">
+  <app-namelist [contacts]="contactService.sortedUsers()" [loading]="contactService.loading()"
+    [selectedId]="selectedContact()?.id ?? null" (contactSelected)="selectedContact.set($event)"
+    (addRequested)="addDialog.open()" />
+
+  <main class="main-panel">
+    <app-button-back class="back-button" [useHistory]="false" aria-label="Zurück zur Kontaktliste"
+      (click)="selectedContact.set(null)"></app-button-back>
+    <app-main-view [contact]="selectedContact()" (deleteRequested)="deleteSelected()"
+      (editRequested)="editDialog.open(selectedContact())" />
+
+
+
+    @if (contactService.errorMessage() && !addDialog.isOpen()) {
+    <p class="error-message" role="alert">
+      {{ contactService.errorMessage() }}
+    </p>
+    }
+  </main>
+</section>
+
+<app-add-contact #addDialog (created)="toast.show('Contact successfully created')"/>
+<app-edit-contact #editDialog (created)="toast.show('Contact successfully edited')"/>
+<app-toast-success #toast />

@@ -1,0 +1,108 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  color: $background-secondary;
+}
+
+.contacts-layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  background: $background-primary;
+}
+
+.main-panel {
+  min-width: 0;
+  min-height: 0;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.error-message {
+  padding: 16px;
+  border-radius: 10px;
+  background: $background-third;
+  color: #a11919;
+}
+
+.back-button {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .contacts-layout {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  .main-panel {
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 1000px) {
+  :host {
+    display: block;
+    height: calc(100dvh - 100px - 85px);
+    min-height: 0px;
+  }
+
+  .contacts-layout {
+    grid-template-columns: 1fr;
+    height: 100%;
+    min-height: 0px;
+  }
+
+  .contacts-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Zunächst ist nur die Kontaktliste sichtbar. */
+  .main-panel {
+    display: none;
+  }
+
+  /* Nach der Auswahl verschwindet die Liste. */
+  .contacts-layout.show-details app-namelist {
+    display: none;
+  }
+
+  /* Stattdessen erscheint die Kontaktansicht. */
+  .contacts-layout.show-details .main-panel {
+    display: block;
+    position: relative;
+    min-width: 0;
+    padding: 32px 24px;
+  }
+
+  .back-button {
+    position: absolute;
+    top: 28px;
+    right: 16px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #2a3647;
+    font-size: 32px;
+    cursor: pointer;
+
+    &:hover {
+      background: #e8edf0;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #29abe2;
+      outline-offset: 2px;
+    }
+  }
+}

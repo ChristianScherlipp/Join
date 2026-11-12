@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+*{
+  margin: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+} 
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../public/assets/fonts/InterVariable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}

@@ -1,0 +1,127 @@
+import { Component, ElementRef, inject, output, signal, ViewChild, } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ContactService } from '../../../services/contact-service';
+import { ContactAvatar } from '../../../services/contact-avatar';
+import { ButtonPrimary } from '../../elements/button-primary/button-primary';
+import { FieldError } from '../../../services/field-error';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
+import { ToastSuccess } from '../../elements/toast-succsess/toast-succsess';
+
+
+@Component({
+  imports: [ButtonPrimary, FormsModule, InitialIcon],
+  providers: [FieldError],
+  selector: 'app-add-contact',
+  templateUrl: './add-contact.html',
+  styleUrl: './add-contact.scss',
+})
+export class AddContact {
+  readonly contactService = inject(ContactService);
+
+  readonly fieldError = inject(FieldError);
+
+  // Zeigt der Hauptkomponente an, ob der Dialog geöffnet ist.
+  readonly isOpen = signal(false);
+  readonly created = output<void>();
+
+  // Zugriff auf das dialog-Element im eigenen HTML.
+  @ViewChild('dialog')
+  private dialog!: ElementRef<HTMLDialogElement>;
+
+  // Zugriff auf das Formular und seine Gültigkeit.
+  @ViewChild('contactForm')
+  private contactForm!: NgForm;
+
+  // Hier werden die Formulareingaben gespeichert.
+  newContact = {
+    name: '',
+    email: '',
+    phone: '',
+  };
+
+  /**
+   * Setzt das Formular zurück und öffnet den Dialog.
+   */
+  open(): void {
+    this.newContact = {
+      name: '',
+      email: '',
+      phone: '',
+    };
+
+    this.contactForm.resetForm(this.newContact);
+    this.contactService.errorMessage.set('');
+    this.previewName.set('');
+
+    this.dialog.nativeElement.showModal();
+    this.isOpen.set(true);
+  }
+
+  /**
+   * Schließt den Dialog, sofern gerade nicht gespeichert wird.
+   */
+  close(): void {
+    if (!this.contactService.saving()) {
+      this.dialog.nativeElement.close();
+      this.isOpen.set(false);
+    }
+  }
+
+  /**
+   * Wird beim Drücken von Escape ausgeführt.
+   * Während des Speicherns verhindern wir das Schließen.
+   */
+  onCancel(event: Event): void {
+    if (this.contactService.saving()) {
+      event.preventDefault();
+    } else {
+      this.isOpen.set(false);
+    }
+  }
+
+  /**
+   * Prüft die Eingaben und speichert den Kontakt über den Service.
+   * Bei Erfolg wird der Dialog geschlossen.
+   */
+  async save(): Promise<void> {
+    if (this.contactForm.invalid || this.contactService.saving()) {
+      return;
+    }
+
+    if (!this.fieldError.validateAll(this.newContact)) {
+      return;
+    }
+
+    // Entfernt Leerzeichen am Anfang und Ende.
+    const name = this.newContact.name.trim();
+    const email = this.newContact.email.trim();
+    const phone = this.newContact.phone.trim();
+
+    if (!name || !email) {
+      this.contactService.errorMessage.set(
+        'Bitte gib einen Namen und eine E-Mail-Adresse ein.'
+      );
+
+      return;
+    }
+
+    const saved = await this.contactService.addContact({
+      name: name,
+      email: email,
+      phone: phone || null,
+    });
+
+    // Bei einem Fehler bleiben Dialog und Eingaben erhalten.
+    if (saved) {
+      this.close();
+      this.created.emit();
+    }
+  }
+
+  previewName = signal('');
+
+  updatePreview(value: string) {
+    this.previewName.set(value);
+  }
+
+} 
