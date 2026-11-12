@@ -1,0 +1,160 @@
+@use 'abstract/variables' as *;
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  transform: translate(-50%, -50%);
+
+  box-sizing: border-box;
+  width: 525px;
+  max-width: calc(100% - 32px);
+  height: auto;
+  max-height: calc(100dvh - 32px);
+
+  padding: 0;
+  overflow: hidden;
+
+  border: none;
+  border-radius: 30px;
+  background: #fff;
+  color: $background-secondary;
+  font-family: 'Inter', sans-serif;
+
+  &[open] {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+p,
+dt,
+dd {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+/* Header und Footer bleiben außerhalb des Scrollbereichs. */
+header,
+footer {
+  position: static;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  padding: 24px 48px;
+  background: #fff;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  p {
+    padding: 4px 16px;
+    border-radius: 8px;
+    background: aquamarine;
+  }
+}
+
+/* Nur der mittlere Inhalt scrollt. */
+.dialog-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 16px 48px;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  /* Die Inhalte behalten ihre Höhe, statt zusammengedrückt zu werden. */
+  >* {
+    flex-shrink: 0;
+  }
+}
+
+section {
+  h1 {
+    margin: 0 0 24px;
+    font-size: 61px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  h2 {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.due-date,
+.priority {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin: 0;
+
+  dt {
+    flex-shrink: 0;
+  }
+
+  dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 8px;
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 2px solid #29abe2;
+  outline-offset: 3px;
+}
+
+@media (max-width: 1000px) {
+
+  header,
+  footer {
+    padding: 20px 24px;
+  }
+
+  .dialog-content {
+    padding: 16px 24px;
+  }
+
+  section h1 {
+    font-size: 36px;
+  }
+}
