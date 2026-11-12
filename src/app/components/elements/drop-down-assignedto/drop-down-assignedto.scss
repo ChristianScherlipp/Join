@@ -1,0 +1,164 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.assign {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 27.5rem; // 440px
+    max-width: 100%;
+
+    &__label {
+        margin: 0;
+        color: $text-secondary;
+        font-size: 1.25rem;
+        line-height: 1.2;
+
+        @include respond-below(810px) {
+            font-size: 1rem;
+        }
+    }
+
+    // Bezugspunkt fuer die aufklappende Liste.
+    &__box {
+        position: relative;
+    }
+
+    // Geschlossenes Feld.
+    &__field {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        height: 3rem; // 48px
+        padding: 0 1rem;
+        border: 1px solid $border-input;
+        border-radius: 0.625rem;
+        background: $background-primary;
+
+        &:focus-within {
+            border-color: $background-secondary;
+        }
+    }
+
+    &__input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1.25rem;
+
+        &::placeholder {
+            color: $text-secondary;
+            opacity: 1;
+        }
+    }
+
+    &__toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+     // Pfeil als Dreieck, zeigt offen nach oben.
+    &__arrow {
+        width: 0;
+        height: 0;
+        border-left: 0.3125rem solid transparent;
+        border-right: 0.3125rem solid transparent;
+        border-top: 0.3125rem solid $text-secondary;
+    }
+
+    &__box.is-open &__arrow {
+        border-top: none;
+        border-bottom: 0.3125rem solid $text-secondary;
+    }
+
+    // Aufgeklappte Liste: Gesamthoehe mit Feld 345px, also Liste max. 345 - 48 = 297px.
+    &__list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 10;
+        width: 100%;
+        max-height: 18.5625rem; // 297px
+        margin: 0;
+        padding: 0.25rem;
+        overflow-y: auto;
+        list-style: none;
+        border-radius: 0.625rem;
+        background: $background-primary;
+        box-shadow: 0 0 4px 0 rgb(0 0 0 / 25%);
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        height: 3.5rem; // 56px
+        padding: 0 1rem;
+        border: none;
+        border-radius: 0.625rem;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1.25rem;
+        text-align: left;
+        cursor: pointer;
+
+        &:hover {
+            background: $background-secondary;
+        }
+
+        &.is-selected {
+            background: $btn-after;
+        }
+
+        &:hover,
+        &.is-selected {
+            color: $background-primary;
+        }
+    }
+
+    &__avatar {
+        flex-shrink: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    &__name {
+        flex: 1;
+    }
+
+    &__check {
+        width: 1.5rem;
+        height: 1.5rem;
+        filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%) hue-rotate(175deg) brightness(89%) contrast(91%);
+    }
+
+    // Hover/ausgewaehlt: Checkbox-Icon wird weiss.
+    &__option:hover &__check,
+    &__option.is-selected &__check {
+        filter: brightness(0) invert(1);
+    }
+
+    // Ausgewaehlte Kontakte unter dem Feld.
+    &__selected {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    &__chip {
+        width: 2rem;
+        height: 2rem;
+    }
+}
