@@ -7,7 +7,6 @@ import { AddTask } from './components/content-add-task/add-task/add-task';
 import { AddTaskDialog } from './components/content-add-task/add-task-dialog/add-task-dialog'; 
 import { ContentBoard } from './components/content-board/content-board';
 
-
 export const routes: Routes = [
   { path: 'board', 
     component: ContentBoard 
