@@ -1,0 +1,9 @@
+<button type="button" [disabled]="isDisabled()" (click)="actionClicked.emit()">
+    @if (typeStr() === 'edit') {
+    <img src="assets/icons/edit.svg" alt="" />
+    <span>Edit</span>
+    } @else {
+    <img src="assets/icons/delete.svg" alt="" />
+    <span>Delete</span>
+    }
+</button>
