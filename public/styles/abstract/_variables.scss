@@ -1,6 +1,8 @@
 // Textfarben
 $text-primary: #E7E7E7;
 $text-secondary: #000000;
+$text-blue: #42526e;
+$text-grey: #686868;
 
 // Hintergrundfarben
 $background-primary: #FFFFFF;
@@ -27,5 +29,9 @@ $hover-secondary: #29ABE2;
 
 //btn:after
 $btn-after:#091931;
+
+// Fortschrittsbalken
+$progress-track: #f4f4f4;   
+$progress-fill: #4589ff   
 
 // @use './styles/variables' as *;

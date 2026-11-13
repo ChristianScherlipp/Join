@@ -1,0 +1,29 @@
+<section class="board">
+    <header class="board__head">
+        <h1>Board</h1>
+
+        <div class="board__actions">
+            <div class="board__search-placeholder">Suche</div>
+            <app-button-primary typeStr="addTask" widthStr="10rem">Add task</app-button-primary>
+        </div>
+    </header>
+
+    <div class="board__columns">
+        @for (column of columns; track column.id) {
+        <section class="board__column">
+            <header class="board__column-head">
+                <h2>{{ column.title }}</h2>
+                @if (column.canAdd) {
+                <button class="board__plus">+</button>
+                }
+            </header>
+
+            <div class="board__cards">
+                <app-task-card></app-task-card>
+                <app-task-card></app-task-card>
+                <app-task-card></app-task-card>
+            </div>
+        </section>
+        }
+    </div>
+</section>
