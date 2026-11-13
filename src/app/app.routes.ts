@@ -4,6 +4,7 @@ import { ContentLegal } from './components/content-legal/content-legal';
 import { ContentPrivacy } from './components/content-privacy/content-privacy';
 import { ContentHelp } from './components/content-help/content-help';
 import { AddTask } from './components/content-add-task/add-task/add-task'; // TEMPORAL: borrar antes del commit
+import { AddTaskDialog } from './components/content-add-task/add-task-dialog/add-task-dialog'; // TEMPORAL: borrar antes del commit
 
 export const routes: Routes = [
   {
@@ -22,10 +23,13 @@ export const routes: Routes = [
     path: 'help',
     component: ContentHelp,
   },
-  // TEMPORAL: borrar antes del commit
   {
     path: 'add-task',
     component: AddTask,
+  },
+  {
+    path: 'add-task-dialog',
+    component: AddTaskDialog,
   },
   {
     path: '',
