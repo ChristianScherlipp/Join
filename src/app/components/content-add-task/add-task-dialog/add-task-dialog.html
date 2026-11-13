@@ -1,0 +1,56 @@
+<dialog #dialog closedby="any">
+    <header class="heading">
+        <h1>Add Task</h1>
+        <button class="heading__close" type="button" (click)="close()">
+            <img src="./assets/icons/cancel.svg" alt="close">
+        </button>
+    </header>
+    <section>
+        <form class="task-form">
+            <div class="task-form__columns">
+                <div class="task-form__column task-form__column--left">
+                    <label class="task-form__label">
+                        <p>Title<span class="star">*</span></p>
+                        <input class="task-form__input task-form__input--text" type="text"
+                            placeholder="Enter a title" />
+                    </label>
+                    <label class="task-form__label">
+                        Description
+                        <textarea class="task-form__input task-form__input--text" rows="4"
+                            placeholder="Enter a description"></textarea>
+                    </label>
+                    <label class="task-form__label">
+                        <span>Due date<span class="star">*</span></span>
+                        <input required onclick="this.showPicker()" class="task-form__input task-form__input--text"
+                            type="date" />
+                    </label>
+                </div>
+
+                <div class="task-form__divider"></div>
+
+                <div class="task-form__column task-form__column--right">
+                    <app-button-priority></app-button-priority>
+                    <app-drop-down-assignedto></app-drop-down-assignedto>
+                    <label class="task-form__label">
+                        <span>Category<span class="star">*</span></span>
+                        <input class="task-form__input" type="text" />
+                    </label>
+                    <label class="task-form__label">
+                        Subtasks
+                        <input class="task-form__input task-form__input--text" type="text"
+                            placeholder="Add new subtask" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="task-form__actions">
+                <p><span class="star">*</span>This field is required</p>
+                <div class="task-form__buttons">
+                    <app-button-primary typeStr="cancel" widthStr="7.875rem">Clear</app-button-primary>
+                    <app-button-primary typeStr="createTask" widthStr="13rem" buttonType="submit">Create
+                        task</app-button-primary>
+                </div>
+            </div>
+        </form>
+    </section>
+</dialog>
