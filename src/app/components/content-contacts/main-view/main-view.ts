@@ -9,10 +9,11 @@ import {
 } from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
+import { Subtask, ISubtask } from '../../elements/subtask/subtask';
 
 @Component({
   selector: 'app-main-view',
-  imports: [InitialIcon],
+  imports: [InitialIcon, Subtask],
   templateUrl: './main-view.html',
   styleUrl: './main-view.scss',
 })
@@ -46,4 +47,6 @@ export class MainView {
       menu.open = false;
     }
   }
+
+  subtasks = signal<ISubtask[]>([]);
 }

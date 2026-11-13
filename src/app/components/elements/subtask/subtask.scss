@@ -1,0 +1,137 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+// Icons sind weiss. Der Filter faerbt sie in $background-secondary (#2A3647).
+$icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%) hue-rotate(175deg) brightness(89%) contrast(91%);
+
+.subtask {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; // 8px zwischen Feld und Liste
+    width: 27.5rem; // 440px
+    max-width: 100%;
+
+    &__label {
+        margin: 0;
+        color: $text-secondary;
+        font-size: 1.25rem;
+        line-height: 1.2;
+
+        @include respond-below(810px) {
+            font-size: 1rem;
+        }
+    }
+
+    // Eingabefeld, gleiche Maße wie die Dropdowns.
+    &__field {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        height: 3rem; // 48px
+        padding: 0 1rem;
+        border: 1px solid $border-input;
+        border-radius: 0.625rem;
+        background: $background-primary;
+
+        &:focus-within {
+            border-color: $background-secondary;
+        }
+    }
+
+    &__input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1.25rem;
+    }
+
+    // Cancel und Check im Feld.
+    &__field-actions,
+    &__actions {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        gap: 0.25rem;
+    }
+
+    &__icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    &__icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        filter: $icon-filter;
+
+        // cancel.svg ist nur 14px gross.
+        &--small {
+            width: 0.875rem;
+            height: 0.875rem;
+        }
+    }
+
+    // Trennlinie zwischen den zwei Buttons.
+    &__divider {
+        width: 1px;
+        height: 1.5rem;
+        background: $border-color;
+    }
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        min-height: 3rem; // 48px
+        padding: 0 0.5rem 0 1rem;
+        color: $text-secondary;
+        font-size: 1rem; // 16px
+
+        &--editing {
+            border-bottom: 1px solid $hover-primary;
+            background: $background-primary;
+        }
+    }
+
+    // Punkt vor dem Text wie bei einer Liste.
+    &__text {
+        flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+
+        &::before {
+            content: '\2022';
+            margin-right: 0.5rem;
+        }
+    }
+
+    &__edit-input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1rem;
+    }
+}

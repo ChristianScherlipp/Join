@@ -1,0 +1,66 @@
+<!--bsp. HTML <app-subtask [(subtasks)]="subtasks" />
+        TS import { Subtask, ISubtask } from '../../elements/subtask/subtask';
+        TS imports: [Subtask]; subtasks = signal<ISubtask[]>([]);-->
+<section class="subtask">
+    <p class="subtask__label">Subtasks</p>
+
+    <div class="subtask__field">
+        <input
+            class="subtask__input"
+            type="text"
+            placeholder="Add new subtask"
+            aria-label="Add new subtask"
+            [value]="inputText()"
+            (input)="onInput($event)"
+            (focus)="activateInput()"
+            (blur)="deactivateInput()"
+            (keydown.enter)="addSubtask()"
+        >
+        @if (isInputActive()) {
+            <!-- mousedown verhindern, damit das Feld beim Klick den Fokus (und die Buttons) behält. -->
+            <div class="subtask__field-actions">
+                <button type="button" class="subtask__icon-btn" aria-label="Clear input" (mousedown)="$event.preventDefault()" (click)="clearInput()">
+                    <img class="subtask__icon subtask__icon--small" src="./assets/icons/cancel.svg" alt="">
+                </button>
+                <span class="subtask__divider" aria-hidden="true"></span>
+                <button type="button" class="subtask__icon-btn" aria-label="Add subtask" (mousedown)="$event.preventDefault()" (click)="addSubtask()">
+                    <img class="subtask__icon" src="./assets/icons/check.svg" alt="">
+                </button>
+            </div>
+        }
+    </div>
+
+    @if (subtasks().length) {
+        <ul class="subtask__list">
+            @for (item of subtasks(); track item.id) {
+                @if (isEditing(item)) {
+                    <li class="subtask__item subtask__item--editing">
+                        <input
+                            #editField
+                            class="subtask__edit-input"
+                            type="text"
+                            aria-label="Edit subtask"
+                            [value]="editText()"
+                            (input)="onEditInput($event)"
+                            (keydown.enter)="saveEdit()"
+                        >
+                        <div class="subtask__actions">
+                            <app-button-edit-delete typeStr="delete" [needText]="false" (actionClicked)="deleteSubtask(item.id)" />
+                            <span class="subtask__divider" aria-hidden="true"></span>
+                            <app-button-edit-delete typeStr="save" [needText]="false" (actionClicked)="saveEdit()" />
+                        </div>
+                    </li>
+                } @else {
+                    <li class="subtask__item">
+                        <span class="subtask__text">{{ item.title }}</span>
+                        <div class="subtask__actions">
+                            <app-button-edit-delete typeStr="edit" [needText]="false" (actionClicked)="startEdit(item)" />
+                            <span class="subtask__divider" aria-hidden="true"></span>
+                            <app-button-edit-delete typeStr="delete" [needText]="false" (actionClicked)="deleteSubtask(item.id)" />
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    }
+</section>
