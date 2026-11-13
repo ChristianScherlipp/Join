@@ -32,11 +32,15 @@ dialog {
 }
 
 p,
-dt,
 dd {
   margin: 0;
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 16px;
+}
+
+dt{
+  font-size: 16px;
+  font-weight: 700;
+  color: #42526E;
 }
 
 /* Header und Footer bleiben außerhalb des Scrollbereichs. */
@@ -45,7 +49,7 @@ footer {
   position: static;
   flex: 0 0 auto;
   box-sizing: border-box;
-  padding: 24px 48px;
+  padding: 48px 40px;
   background: #fff;
 }
 
@@ -60,6 +64,11 @@ header {
     border-radius: 8px;
     background: aquamarine;
   }
+}
+
+.hyphen {
+  color: #D1D1D1;
+  font-size: x-large;
 }
 
 /* Nur der mittlere Inhalt scrollt. */
@@ -89,8 +98,9 @@ section {
 
   h2 {
     margin: 0 0 12px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
+    color: #42526E;
   }
 }
 
@@ -119,6 +129,7 @@ ol {
 
   li {
     margin-bottom: 8px;
+    font-size: 16px;
   }
 
   li:last-child {
@@ -130,7 +141,7 @@ footer {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 button {
