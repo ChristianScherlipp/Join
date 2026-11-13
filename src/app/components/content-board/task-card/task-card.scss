@@ -83,3 +83,20 @@
 .task-card__avatar + .task-card__avatar {
   margin-left: -0.5rem;
 }
+
+.task-card__priority {
+  width: 1.25rem;
+  height: 1.25rem;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.task-card__priority--low {
+  -webkit-mask-image: url('/assets/icons/prio-low.svg');
+  mask-image: url('/assets/icons/prio-low.svg');
+  background-color: $priority-low;
+}

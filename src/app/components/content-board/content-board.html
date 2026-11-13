@@ -12,9 +12,11 @@
         @for (column of columns; track column.id) {
         <section class="board__column">
             <header class="board__column-head">
-                <h2>{{ column.title }}</h2>
+                <h2 class="board__column-title">{{ column.title }}</h2>
                 @if (column.canAdd) {
-                <button class="board__plus">+</button>
+                <button class="board__plus" type="button">
+                    <img class="board__plus-icon" src="assets/icons/plus-dark.svg" alt="Add task">
+                </button>
                 }
             </header>
 
