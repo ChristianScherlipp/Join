@@ -1,0 +1,60 @@
+<!--bsp. HTML <app-drop-down-assignedto /> 
+        TS import { DropDownAssignedto } from '../../elements/drop-down-assignedto/drop-down-assignedto' und das signal auch importieren;
+        TS imports: [DropDownAssignedto],-->
+<section class="assign">
+    <p class="assign__label">Assigned to</p>
+
+    <section class="assign__box" [class.is-open]="isOpen()">
+        <div class="assign__field">
+            <input 
+                class="assign__input"
+                type="text"
+                placeholder="Select contacts to assign"
+                aria-label="Assigned to"
+                [value]="searchText()"
+                (focus)="openList()"
+                (input)="onSearch($event)"
+            >
+            <button
+                type="button"
+                class="assign__toggle"
+                aria-label="Contactlist open or closed"
+                [attr.aria-expanded]="isOpen()"
+                (click)="toggleList()"
+            >
+                <span class="assign__arrow" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        @if (isOpen()) {
+            <ul class="assign__list" role="listbox" aria-multiselectable="true">
+                @for (contact of filteredContacts(); track contact.id) {
+                    <li role="option" [attr.aria-selected]="isSelected(contact)">
+                        <button
+                            type="button"
+                            class="assign__option"
+                            [class.is-selected]="isSelected(contact)"
+                            (click)="toggleContact(contact)"
+                        >
+                            <app-initial-icon class="assign__avatar" [name]="contact.name" />
+                            <span class="assign__name">{{ contact.name }}</span>
+                            <img 
+                                class="assign__check" 
+                                [src]="isSelected(contact) ? './assets/icons/checkt.svg' : './assets/icons/uncheckt.svg'" 
+                                alt=""
+                                aria-hidden="true" 
+                            />
+                        </button>
+                    </li>
+                }
+            </ul>
+        }
+    </section>
+
+    <!-- Ausgewählte Kontakte als Initial-Icons unter dem Feld. -->
+    <div class="assign__selected">
+        @for (contact of selectedContacts(); track contact.id) {
+            <app-initial-icon class="assign__chip" [name]="contact.name" />
+        }
+    </div>
+</section>

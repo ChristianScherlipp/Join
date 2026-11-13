@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
@@ -86,7 +87,7 @@ $priority-icon-filters: (
     // Hover/aktiv: Hintergrund in der Farbe, Text und Icon weiss.
     @each $name, $color in $priority-colors {
         &__btn--#{$name} &__icon {
-            filter: map-get($priority-icon-filters, $name);
+            filter: map.get($priority-icon-filters, $name);
         }
 
         &__btn--#{$name}:hover,
