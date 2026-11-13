@@ -46,11 +46,6 @@
             display: flex;
             align-items: end;
             font-size: 1.25rem;
-
-            span{
-                color: #FF8090;
-                font-size: 1.5rem;
-            }
         }
     }
 
@@ -58,6 +53,10 @@
         display: flex;
         justify-content: flex-end;
         gap: 2rem;
+
+        ::ng-deep .btn-primary {
+            font-size: 1.31rem;
+        }
     }
 
     &__column {
@@ -87,11 +86,32 @@
     }
 
     &__input {
-        padding: 0.75rem 1rem;
+        padding: 0.75rem 1.31rem;
         border: 1px solid #D1D1D1;
         border-radius: 0.625rem;
-        font-size: 1rem; 
+        font-size: 1rem;
+
+        &--text {
+            font-family: inherit;
+            font-size: 1.25rem;
+            color: #000000;
+            font-weight: 400;
+
+            &::placeholder {
+                font-family: inherit;
+                font-size: 1.25rem;
+                color: #686868;
+            }
+
+            &[type="date"]:invalid::-webkit-datetime-edit {
+                color: #686868;
+            }
+        }
     }
 
+    .star {
+        color: #FF8090;
+        font-size: 1.5rem;
+    }
 
 }
