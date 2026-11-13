@@ -7,4 +7,6 @@ import { InitialIcon } from '../../elements/initial-icon/initial-icon';
   styleUrl: './task-card.scss',
   templateUrl: './task-card.html',
 })
-export class TaskCard {}
+export class TaskCard {
+  
+}

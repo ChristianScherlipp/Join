@@ -1,6 +1,10 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
+$column-width: 15.75rem;   
+$column-gap: 1.5rem;       
+$board-max-width: 4 * $column-width + 3 * $column-gap;   
+
 
 .board {
     height: calc(100vh - 6rem);
@@ -15,6 +19,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: $board-max-width;  
     padding-right: 1.5rem;
 
     h1 {
@@ -23,6 +28,58 @@
     }
 }
 
+.board__plus {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 2px solid $background-secondary;
+    border-radius: 0.5rem;
+    background: none;
+    cursor: pointer;
+    transition: transform 150ms ease, border-color 0.2s ease;
+    will-change: transform;
+}
+
+.board__plus-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: $background-secondary;
+    -webkit-mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
+    mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
+    transition: background-color 0.2s ease;
+}
+
+.board__plus:hover {
+    transform: scale(1.1);
+    border-color: $hover-primary;
+    box-shadow: 0 0 0 0.5px $hover-primary;
+}
+
+.board__plus:hover .board__plus-icon {
+    background-color: $hover-primary;
+}
+
+.board__column-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    min-height: 2.875rem;
+    padding-left: 0.625rem;
+    padding-right: 1rem;
+    margin-bottom: 0.72rem;
+}
+
+.board__column-title {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: $text-blue;
+}
 .board__actions {
     display: flex;
     align-items: center;
@@ -31,8 +88,8 @@
 
 .board__columns {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(4, minmax(0, $column-width));   
+    gap: $column-gap;                                         
     margin-top: 3rem;
     flex: 1;
     min-height: 0;
