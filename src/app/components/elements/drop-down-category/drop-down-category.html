@@ -1,0 +1,41 @@
+<!--bsp. HTML <app-drop-down-category [(selectedCategory)]="category" />
+        TS import { DropDownCategory, Category } from '../../elements/drop-down-category/drop-down-category';
+        TS imports: [DropDownCategory]
+        TS in der class -> category = signal<Category | null>(null);-->
+<section class="category">
+    <p class="category__label">
+        Category
+        <img class="category__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true" >
+    </p>
+
+    <section class="category__box" [class.is-open]="isOpen()">
+        <button
+            type="button"
+            class="category__field"
+            aria-label="category"
+            aria-haspopup="listbox"
+            [attr.aria-expanded]="isOpen()"
+            (click)="toggleList()"
+        >
+            <span class="category__value">{{ selectedCategory() ?? 'Select task category' }}</span>
+            <span class="category__arrow" aria-hidden="true"></span>
+        </button>
+
+        @if (isOpen()) {
+            <ul class="category__list" role="listbox">
+                @for (option of categories; track option) {
+                    <li role="option" [attr.aria-selected]="isSelected(option)">
+                        <button
+                            type="button"
+                            class="category__option"
+                            [class.is.selected]="isSelected(option)"
+                            (click)="selectCategory(option)"
+                        >
+                            {{ option }}
+                        </button>
+                    </li>
+                }
+            </ul>
+        }
+    </section>
+</section>

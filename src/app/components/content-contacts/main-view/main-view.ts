@@ -4,14 +4,16 @@ import {
   HostListener,
   input,
   output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
+import { Category, DropDownCategory } from '../../elements/drop-down-category/drop-down-category';
 
 @Component({
   selector: 'app-main-view',
-  imports: [InitialIcon],
+  imports: [InitialIcon, DropDownCategory],
   templateUrl: './main-view.html',
   styleUrl: './main-view.scss',
 })
@@ -45,4 +47,6 @@ export class MainView {
       menu.open = false;
     }
   }
+
+  category = signal<Category | null>(null);
 }
