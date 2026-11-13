@@ -114,15 +114,11 @@
         cursor: pointer;
 
         &:hover {
-            background: $background-secondary;
+            background: $hover-list;
         }
 
         &.is-selected {
             background: $btn-after;
-        }
-
-        &:hover,
-        &.is-selected {
             color: $background-primary;
         }
     }
@@ -143,8 +139,7 @@
         filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%) hue-rotate(175deg) brightness(89%) contrast(91%);
     }
 
-    // Hover/ausgewaehlt: Checkbox-Icon wird weiss.
-    &__option:hover &__check,
+    //Ausgewählt: Checkbox-Icon wird weiss.
     &__option.is-selected &__check {
         filter: brightness(0) invert(1);
     }

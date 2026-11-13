@@ -4,6 +4,7 @@ import {
   HostListener,
   input,
   output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';

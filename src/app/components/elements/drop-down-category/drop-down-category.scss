@@ -1,0 +1,121 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.category {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 27.5rem; // 440px
+    max-width: 100%;
+
+    &__label {
+        display: flex;
+        gap: 0.25rem;
+        margin: 0;
+        color: $text-secondary;
+        font-size: 1.25rem;
+        line-height: 1.2;
+
+        @include respond-below(810px) {
+            font-size: 1rem;
+        }
+    }
+
+    // Sternchen: halb so hoch wie die Schrift, 25% der Schrifthoehe nach oben versetzt.
+    // Die Icon-Datei ist egal, der Filter macht sie zu $priority-high (#FF3D00).
+    &__required {
+        align-self: flex-start;
+        position: relative;
+        top: -0.01rem;
+        width: auto;
+        height: 0.7rem;
+        filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
+    }
+
+    // Bezugspunkt fuer die aufklappende Liste.
+    &__box {
+        position: relative;
+    }
+
+    // Geschlossenes Feld.
+    &__field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: 100%;
+        height: 3rem; // 48px
+        padding: 0 1rem;
+        border: 1px solid $border-input;
+        border-radius: 0.625rem;
+        background: $background-primary;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1.25rem;
+        text-align: left;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: none;
+            border-color: $background-secondary;
+        }
+    }
+
+    &__box.is-open &__field {
+        border-color: $background-secondary;
+    }
+
+    // Pfeil als Dreieck, zeigt offen nach oben.
+    &__arrow {
+        flex-shrink: 0;
+        width: 0;
+        height: 0;
+        border-left: 0.3125rem solid transparent;
+        border-right: 0.3125rem solid transparent;
+        border-top: 0.3125rem solid $text-secondary;
+    }
+
+    &__box.is-open &__arrow {
+        border-top: none;
+        border-bottom: 0.3125rem solid $text-secondary;
+    }
+
+    &__list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 10;
+        width: 100%;
+        margin: 0;
+        padding: 0.25rem;
+        list-style: none;
+        border-radius: 0.625rem;
+        background: $background-primary;
+        box-shadow: 0 0 4px 0 rgb(0 0 0 / 25%);
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 3.5rem; // 56px
+        padding: 0 1rem;
+        border: none;
+        border-radius: 0.625rem;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1.25rem;
+        text-align: left;
+        cursor: pointer;
+
+        &:hover {
+            background: $hover-list;
+        }
+
+        &.is-selected {
+            background: $btn-after;
+            color: $background-primary;
+        }
+    }
+}
