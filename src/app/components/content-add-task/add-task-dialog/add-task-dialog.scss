@@ -84,8 +84,11 @@ dialog {
 
         p {
             display: flex;
-            align-items: end;
-            font-size: 1.25rem;
+            align-self: flex-end;
+            gap: 0.25rem;
+            margin: 0;
+            line-height: 1.2;
+            font-size: 1rem;
         }
     }
 
@@ -123,6 +126,27 @@ dialog {
         flex-direction: column;
         gap: 0.5rem;
         font-size: 1.25rem;
+
+        @include respond-below(810px){
+            font-size: 1rem;
+        }
+    }
+
+    // Titel + Sternchen wie in drop-down-category (.category__label)
+    &__title {
+        display: flex;
+        gap: 0.25rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    &__required {
+        align-self: flex-start;
+        position: relative;
+        top: -0.01rem;
+        width: auto;
+        height: 0.7rem;
+        filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
     }
 
     &__input {
@@ -151,11 +175,6 @@ dialog {
                 color: #686868;
             }
         }
-    }
-
-    .star {
-        color: #FF8090;
-        font-size: 1.5rem;
     }
 
 }

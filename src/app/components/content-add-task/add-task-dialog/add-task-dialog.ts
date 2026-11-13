@@ -2,9 +2,10 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ButtonPriority } from '../../elements/button-priority/button-priority';
 import { DropDownAssignedto } from '../../elements/drop-down-assignedto/drop-down-assignedto';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
+import { DropDownCategory } from '../../elements/drop-down-category/drop-down-category';
 
 @Component({
-  imports: [ButtonPriority, DropDownAssignedto, ButtonPrimary],
+  imports: [ButtonPriority, DropDownAssignedto, ButtonPrimary, DropDownCategory],
   selector: 'app-add-task-dialog',
   styleUrl: './add-task-dialog.scss',
   templateUrl: './add-task-dialog.html',

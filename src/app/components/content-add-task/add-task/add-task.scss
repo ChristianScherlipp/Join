@@ -7,6 +7,14 @@
     padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
     height: calc(100vh - 6rem);
     overflow-y: auto;
+
+    @include respond-below(1000px) {
+        height: calc(100vh - 6rem - 7.5rem);
+    }
+
+    @include respond-below(810px) {
+        padding-bottom: 0;
+    }
 }
 
 // Abstand Titel → Inhalt wie in Contacts (main-view.scss → .heading)
@@ -25,14 +33,31 @@
     flex-direction: column; 
     gap: 8.75rem;
 
+    @include respond-below(810px){
+            gap: 0;
+        }
+
     &__columns {
         display: flex;
         gap: 3rem;
+
+        @include respond-below(810px){
+            flex-direction: column;
+        }
     }
 
     &__actions {
         display: flex;
         justify-content: space-between;
+
+        @include respond-below(810px){
+            position: sticky;
+            bottom: 0;
+            padding-bottom: fluid(24, 64);
+            background-color: #F6F7F8;
+            z-index: 1;
+            justify-content: flex-end;
+        }
 
         ::ng-deep .btn-primary {
             font-family: inherit;
@@ -44,8 +69,27 @@
 
         p{
             display: flex;
-            align-items: end;
-            font-size: 1.25rem;
+            align-self: flex-end;
+            gap: 0.25rem;
+            margin: 0;
+            line-height: 1.2;
+            font-size: 1rem;
+
+            @include respond-below(810px){
+            display: none;
+        }
+        }
+    }
+
+    &__required-note {
+        display: none;
+
+        @include respond-below(810px){
+            display: flex;
+            gap: 0.25rem;
+            margin: 0;
+            line-height: 1.2;
+            font-size: 1rem;
         }
     }
 
@@ -54,8 +98,40 @@
         justify-content: flex-end;
         gap: 2rem;
 
+         @include respond-below(810px){
+            margin-top: 50px;
+            gap: fluid(16, 32, 320, 810);
+        }
+
         ::ng-deep .btn-primary {
             font-size: 1.31rem;
+
+            @include respond-below(810px){
+                height: fluid(40, 48, 320, 810);
+                padding: 0 fluid(12, 16, 320, 810);
+                font-size: fluid(16, 18, 320, 810);
+
+                img {
+                    width: fluid(16, 20, 320, 810);
+                    height: fluid(16, 20, 320, 810);
+                }
+            }
+        }
+
+        ::ng-deep .btn-cancel {
+            width: 7.875rem;
+
+            @include respond-below(810px){
+                width: auto;
+            }
+        }
+
+        ::ng-deep .btn-createTask {
+            width: 13rem;
+
+            @include respond-below(810px){
+                width: auto;
+            }
         }
     }
 
@@ -76,6 +152,10 @@
     &__divider {
         width: 1px;
         background-color: #686868;
+
+        @include respond-below(810px){
+            display: none;
+        }
     }
 
     &__label {
@@ -83,6 +163,31 @@
         flex-direction: column;
         gap: 0.5rem;
         font-size: 1.25rem;
+
+        @include respond-below(810px){
+            font-size: 1rem;
+        }
+    }
+
+    // Titel + Sternchen wie in drop-down-category (.category__label)
+    &__title {
+        display: flex;
+        gap: 0.25rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    &__required {
+        align-self: flex-start;
+        position: relative;
+        top: -0.01rem;
+        width: auto;
+        height: 0.7rem;
+        filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
+        
+        &-note{
+            margin-top: 1rem;
+        }
     }
 
     &__input {
@@ -111,11 +216,6 @@
                 color: #686868;
             }
         }
-    }
-
-    .star {
-        color: #FF8090;
-        font-size: 1.5rem;
     }
 
 }

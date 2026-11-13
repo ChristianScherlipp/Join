@@ -6,7 +6,6 @@ import { ContentHelp } from './components/content-help/content-help';
 import { AddTask } from './components/content-add-task/add-task/add-task'; 
 import { AddTaskDialog } from './components/content-add-task/add-task-dialog/add-task-dialog'; 
 import { ContentBoard } from './components/content-board/content-board';
-import { AddTask } from './components/content-add-task/add-task/add-task'; // TEMPORAL: borrar antes del commit
 
 export const routes: Routes = [
   { path: 'board', 

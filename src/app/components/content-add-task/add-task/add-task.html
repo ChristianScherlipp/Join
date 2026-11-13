@@ -6,7 +6,10 @@
     <div class="task-form__columns">
       <div class="task-form__column task-form__column--left">
         <label class="task-form__label">
-          <p>Title<span class="star">*</span></p>
+          <p class="task-form__title">
+            Title
+            <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
+          </p>
           <input class="task-form__input task-form__input--text" type="text" placeholder="Enter a title" />
         </label>
         <label class="task-form__label">
@@ -14,7 +17,10 @@
           <textarea class="task-form__input task-form__input--text" rows="4" placeholder="Enter a description"></textarea>
         </label>
         <label class="task-form__label">
-          <span>Due date<span class="star">*</span></span>
+          <p class="task-form__title">
+            Due date
+            <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
+          </p>
           <input required onclick="this.showPicker()" class="task-form__input task-form__input--text" type="date"/>
         </label>
       </div>
@@ -24,22 +30,26 @@
       <div class="task-form__column task-form__column--right">
         <app-button-priority></app-button-priority>
         <app-drop-down-assignedto></app-drop-down-assignedto>
-        <label class="task-form__label">
-          <span>Category<span class="star">*</span></span>
-          <input class="task-form__input" type="text" />
-        </label>
+        <app-drop-down-category></app-drop-down-category>
         <label class="task-form__label">
           Subtasks
           <input class="task-form__input task-form__input--text" type="text" placeholder="Add new subtask" />
         </label>
       </div>
     </div>
+    <p class="task-form__required-note">
+        <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
+        This field is required
+      </p>
 
     <div class="task-form__actions">
-      <p><span class="star">*</span>This field is required</p>
+      <p>
+        <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
+        This field is required
+      </p>
       <div class="task-form__buttons">
-        <app-button-primary typeStr="cancel" widthStr="7.875rem">Clear</app-button-primary>
-        <app-button-primary typeStr="createTask" widthStr="13rem" buttonType="submit">Create task</app-button-primary>
+        <app-button-primary typeStr="cancel">Clear</app-button-primary>
+        <app-button-primary typeStr="createTask" buttonType="submit">Create task</app-button-primary>
       </div>
     </div>
   </form>
