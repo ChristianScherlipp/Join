@@ -1,0 +1,42 @@
+:host {
+  display: inline-block;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 32px;
+  padding: 0 4px;
+  border: none;
+  background: transparent;
+  color: #2a3647;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+
+  img {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover:not(:disabled) {
+    color: #007fae;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #29abe2;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
