@@ -8,24 +8,24 @@
         </div>
     </header>
 
-    <div class="board__columns">
-        @for (column of columns; track column.id) {
-        <section class="board__column">
-            <header class="board__column-head">
-                <h2 class="board__column-title">{{ column.title }}</h2>
-                @if (column.canAdd) {
-                <button class="board__plus" type="button">
-                    <img class="board__plus-icon" src="assets/icons/plus-dark.svg" alt="Add task">
-                </button>
-                }
-            </header>
+ <div class="board__columns">
+    @for (column of columns; track column.id) {
+    <section class="board__column">
+        <header class="board__column-head">
+            <h2 class="board__column-title">{{ column.title }}</h2>
+            @if (column.canAdd) {
+            <button class="board__plus" type="button" aria-label="Add task">
+                <span class="board__plus-icon"></span>
+            </button>
+            }
+        </header>
 
-            <div class="board__cards">
-                <app-task-card></app-task-card>
-                <app-task-card></app-task-card>
-                <app-task-card></app-task-card>
-            </div>
-        </section>
-        }
-    </div>
+        <div class="board__cards">
+            @for (task of tasksByStatus()[column.id]; track task.id) {
+            <app-task-card [task]="task" />
+            }
+        </div>
+    </section>
+    }
+</div>
 </section>
