@@ -25,6 +25,10 @@ button {
     height: 24px;
   }
 
+  img.is-check {
+    filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%) hue-rotate(175deg) brightness(89%) contrast(91%);
+  }
+
   &:hover:not(:disabled) {
     color: #007fae;
   }

@@ -1,9 +1,6 @@
-<button type="button" [disabled]="isDisabled()" (click)="actionClicked.emit()">
-    @if (typeStr() === 'edit') {
-    <img src="assets/icons/edit.svg" alt="" />
-    <span>Edit</span>
-    } @else {
-    <img src="assets/icons/delete.svg" alt="" />
-    <span>Delete</span>
+<button type="button" [attr.aria-label]="label()" [disabled]="isDisabled()" (click)="actionClicked.emit()">
+    <img [class.is-check]="typeStr() === 'save'" [src]="iconSrc()" alt="" />
+    @if (needText()) {
+    <span>{{ label() }}</span>
     }
 </button>
