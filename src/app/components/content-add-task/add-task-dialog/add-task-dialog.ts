@@ -3,9 +3,10 @@ import { ButtonPriority } from '../../elements/button-priority/button-priority';
 import { DropDownAssignedto } from '../../elements/drop-down-assignedto/drop-down-assignedto';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
 import { DropDownCategory } from '../../elements/drop-down-category/drop-down-category';
+import { Subtask } from '../../elements/subtask/subtask';
 
 @Component({
-  imports: [ButtonPriority, DropDownAssignedto, ButtonPrimary, DropDownCategory],
+  imports: [ButtonPriority, DropDownAssignedto, ButtonPrimary, DropDownCategory, Subtask],
   selector: 'app-add-task-dialog',
   styleUrl: './add-task-dialog.scss',
   templateUrl: './add-task-dialog.html',
