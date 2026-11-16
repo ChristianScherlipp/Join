@@ -45,6 +45,7 @@
         width: 100%;
         height: 3rem; // 48px
         padding: 0 1rem;
+        border: none;
         border-radius: 0.625rem;
         background: $background-primary;
         box-shadow: 0 0 4px rgb(0 0 0 / 25%);
@@ -53,10 +54,6 @@
         font-size: 1.25rem;
         text-align: left;
         cursor: pointer;
-    }
-
-    &__box.is-open &__field {
-        border-color: $background-secondary;
     }
 
     // Pfeil als Dreieck, zeigt offen nach oben.

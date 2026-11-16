@@ -37,7 +37,11 @@ export class ContactService {
 
   channel: RealtimeChannel | undefined;
 
+  //Zählt, wie viele Stellen die Live-Verbindung gerade nutzen.
+  private subscribers = 0;
+
   subscribeToContacts(): void {
+    this.subscribers++;
     if (this.channel) return;
 
     this.channel = this.supabase
@@ -50,7 +54,11 @@ export class ContactService {
       .subscribe();
   }
 
+  //Beendet die Live-Verbindung erst, wenn sie niemand mehr nutzt.
   unsubscribeFromContacts(): void {
+    this.subscribers = Math.max(0, this.subscribers - 1);
+    if (this.subscribers > 0) return;
+
     if (this.channel) {
       this.supabase.removeChannel(this.channel);
       this.channel = undefined;
