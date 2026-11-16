@@ -1,9 +1,9 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
-$column-width: 15.75rem;   
-$column-gap: 1.5rem;       
-$board-max-width: 4 * $column-width + 3 * $column-gap;   
+$column-width: 15.75rem;
+$column-gap: 1.5rem;
+$board-max-width: 4 * $column-width + 3 * $column-gap;
 
 
 .board {
@@ -19,7 +19,7 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: $board-max-width;  
+    max-width: $board-max-width;
     padding-right: 1.5rem;
 
     h1 {
@@ -40,7 +40,7 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     border-radius: 0.5rem;
     background: none;
     cursor: pointer;
-    transition: transform 150ms ease, border-color 0.2s ease;
+    transition: transform 150ms ease, border-color 0.2s ease, box-shadow 0.2s ease;
     will-change: transform;
 }
 
@@ -80,6 +80,7 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     line-height: 1.2;
     color: $text-blue;
 }
+
 .board__actions {
     display: flex;
     align-items: center;
@@ -88,35 +89,21 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
 
 .board__columns {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, $column-width));   
-    gap: $column-gap;                                         
+    grid-template-columns: repeat(4, minmax(0, $column-width));
+    gap: $column-gap;
     margin-top: 3rem;
+    max-width: $board-max-width;
     flex: 1;
     min-height: 0;
-
-    h2 {
-        margin: 0;
-        font-size: 1.25rem;
-        color: $text-blue;
-    }
 }
 
 .board__column {
     display: flex;
     flex-direction: column;
     min-height: 0;
+    min-width: 0;
 }
 
-.board__column-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 2.875rem;
-    padding-left: 0.625rem;
-    padding-right: 1rem;
-    margin-bottom: 0.72rem;
-
-}
 
 .board__cards {
     display: flex;

@@ -11,7 +11,7 @@ export interface Task {
   description: string | null;
   date: string | null;
   worker_id: number[] | null;
-  subtask: string | null;
+  subtask: Subtask[] | null;
   category: TaskCategory | null;
   priority: TaskPriority | null;
   status: TaskStatus | null;
@@ -27,3 +27,8 @@ export type TaskCreate = Omit<Task, 'id' | 'created_at'>;
 
 // Beim Ändern dürfen einzelne Felder übergeben werden.
 export type TaskUpdate = Partial<TaskCreate>;
+
+export interface Subtask {  
+  title: string;
+  completed: boolean;
+}

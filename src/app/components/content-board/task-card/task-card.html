@@ -1,23 +1,44 @@
 <article class="task-card">
-    <span class="task-card__label">User Story</span>
+    @switch (task().category) {
+    @case ('User Story') {
+    <span class="task-card__label task-card__label--user">User Story</span>
+    }
+    @case ('Technical Task') {
+    <span class="task-card__label task-card__label--technical">Technical Task</span>
+    }
+    }
 
     <div class="task-card__text">
-        <h3 class="task-card__title">Kochwelt Page & Recipe Recommender</h3>
-        <p class="task-card__description">Build start page with recipe recommendation...</p>
+        <h3 class="task-card__title">{{ task().title }}</h3>
+        @if (task().description) {
+        <p class="task-card__description">{{ task().description }}</p>
+        }
     </div>
+    @if (subtasksTotal() > 0) {
     <div class="task-card__progress">
         <div class="task-card__track">
-            <div class="task-card__fill" style="width: 50%"></div>
+            <div class="task-card__fill" [style.width.%]="progress()"></div>
         </div>
-        <span>1/2 Subtasks</span>
+        <span class="task-card__subtasks ">{{ subtasksDone() }}/{{ subtasksTotal() }} Subtasks</span>
     </div>
-
+    }
     <div class="task-card__footer">
         <div class="task-card__assignees">
-            <app-initial-icon name="Anton Mayer" class="task-card__avatar"></app-initial-icon>
-            <app-initial-icon name="Emmanuel Mauer" class="task-card__avatar"></app-initial-icon>
-            <app-initial-icon name="Marcel Bauer" class="task-card__avatar"></app-initial-icon>
+            @for (contact of task().assignedContacts; track contact.id) {
+            <app-initial-icon [name]="contact.name" class="task-card__avatar" />
+            }
         </div>
+
+        @switch (task().priority) {
+        @case ('low') {
         <span class="task-card__priority task-card__priority--low" role="img" aria-label="Priority low"></span>
+        }
+        @case ('medium') {
+        <span class="task-card__priority task-card__priority--medium" role="img" aria-label="Priority medium"></span>
+        }
+        @case ('urgent') {
+        <span class="task-card__priority task-card__priority--urgent" role="img" aria-label="Priority urgent"></span>
+        }
+        }
     </div>
 </article>
