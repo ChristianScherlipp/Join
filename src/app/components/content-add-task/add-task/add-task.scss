@@ -7,17 +7,25 @@
     padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
     height: calc(100vh - 6rem);
     overflow-y: auto;
+    overflow-x: hidden;
 
     @include respond-below(1000px) {
         height: calc(100vh - 6rem - 7.5rem);
     }
 
-    @include respond-below(810px) {
+    @include respond-below(360px) {
+        height: calc(100vh - 6rem - 7.5rem + 20px);
+    }
+
+    @include respond-below(1100px) {
         padding-bottom: 0;
+    }
+
+    @media (min-width: 1101px) and (max-width: 1400px) {
+        padding-inline: 2rem;
     }
 }
 
-// Abstand Titel → Inhalt wie in Contacts (main-view.scss → .heading)
 .heading {
     margin-bottom: 48px;
     h1 {
@@ -33,7 +41,7 @@
     flex-direction: column; 
     gap: 8.75rem;
 
-    @include respond-below(810px){
+    @include respond-below(1100px){
             gap: 0;
         }
 
@@ -41,8 +49,12 @@
         display: flex;
         gap: 3rem;
 
-        @include respond-below(810px){
+        @include respond-below(1100px){
             flex-direction: column;
+        }
+
+        @media (min-width: 1101px) and (max-width: 1400px) {
+            gap: 1.5rem;
         }
     }
 
@@ -50,13 +62,16 @@
         display: flex;
         justify-content: space-between;
 
-        @include respond-below(810px){
+        @include respond-below(1100px){
             position: sticky;
             bottom: 0;
             padding-bottom: fluid(24, 64);
             background-color: #F6F7F8;
             z-index: 1;
             justify-content: flex-end;
+
+            margin-inline: calc(-1 * fluid(16, 96));
+            padding-inline: fluid(16, 96);
         }
 
         ::ng-deep .btn-primary {
@@ -75,7 +90,7 @@
             line-height: 1.2;
             font-size: 1rem;
 
-            @include respond-below(810px){
+            @include respond-below(1100px){
             display: none;
         }
         }
@@ -84,7 +99,7 @@
     &__required-note {
         display: none;
 
-        @include respond-below(810px){
+        @include respond-below(1100px){
             display: flex;
             gap: 0.25rem;
             margin: 0;
@@ -98,22 +113,22 @@
         justify-content: flex-end;
         gap: 2rem;
 
-         @include respond-below(810px){
+         @include respond-below(1100px){
             margin-top: 50px;
-            gap: fluid(16, 32, 320, 810);
+            gap: fluid(16, 32, 320, 1100);
         }
 
         ::ng-deep .btn-primary {
             font-size: 1.31rem;
 
-            @include respond-below(810px){
-                height: fluid(40, 48, 320, 810);
-                padding: 0 fluid(12, 16, 320, 810);
-                font-size: fluid(16, 18, 320, 810);
+            @include respond-below(1100px){
+                height: fluid(40, 48, 320, 1100);
+                padding: 0 fluid(12, 16, 320, 1100);
+                font-size: fluid(16, 18, 320, 1100);
 
                 img {
-                    width: fluid(16, 20, 320, 810);
-                    height: fluid(16, 20, 320, 810);
+                    width: fluid(16, 20, 320, 1100);
+                    height: fluid(16, 20, 320, 1100);
                 }
             }
         }
@@ -121,7 +136,7 @@
         ::ng-deep .btn-cancel {
             width: 7.875rem;
 
-            @include respond-below(810px){
+            @include respond-below(1100px){
                 width: auto;
             }
         }
@@ -129,7 +144,7 @@
         ::ng-deep .btn-createTask {
             width: 13rem;
 
-            @include respond-below(810px){
+            @include respond-below(1100px){
                 width: auto;
             }
         }
@@ -137,6 +152,7 @@
 
     &__column {
         flex: 1;
+        min-width: 0;
         display: flex;
         flex-direction: column;
 
@@ -146,6 +162,11 @@
 
         &--right {
             gap: 1.5rem;
+            min-width: 27.5rem;
+
+            @include respond-below(1100px) {
+                min-width: 0;
+            }
         }
     }
 
@@ -153,7 +174,7 @@
         width: 1px;
         background-color: #686868;
 
-        @include respond-below(810px){
+        @include respond-below(1100px){
             display: none;
         }
     }
@@ -164,12 +185,11 @@
         gap: 0.5rem;
         font-size: 1.25rem;
 
-        @include respond-below(810px){
+        @include respond-below(1100px){
             font-size: 1rem;
         }
     }
 
-    // Titel + Sternchen wie in drop-down-category (.category__label)
     &__title {
         display: flex;
         gap: 0.25rem;
@@ -192,9 +212,12 @@
 
     &__input {
         padding: 0.75rem 1.31rem;
-        border: 1px solid #D1D1D1;
+        border: 1px solid #686868;
         border-radius: 0.625rem;
         font-size: 1rem;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
 
         &:hover{
             cursor: pointer;
