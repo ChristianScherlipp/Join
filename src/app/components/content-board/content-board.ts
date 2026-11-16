@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ButtonPrimary } from '../elements/button-primary/button-primary';
 import { TaskCard } from './task-card/task-card';
+import { SearchInput } from '../elements/search-input/search-input';
 
 @Component({
-  imports: [ButtonPrimary, TaskCard],
+  imports: [ButtonPrimary, TaskCard, SearchInput],
   selector: 'app-content-board',
   styleUrl: './content-board.scss',
   templateUrl: './content-board.html',
@@ -15,4 +16,6 @@ export class ContentBoard {
     { id: 'awaitFeedback', title: 'Await feedback', canAdd: true },
     { id: 'done', title: 'Done', canAdd: false },
   ];
+
+  noResult = signal(false);
 }

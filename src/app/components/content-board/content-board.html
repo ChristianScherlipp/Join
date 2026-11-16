@@ -3,7 +3,7 @@
         <h1>Board</h1>
 
         <div class="board__actions">
-            <div class="board__search-placeholder">Suche</div>
+            <app-search-input [(noResult)]="noResult" />
             <app-button-primary typeStr="addTask" widthStr="10rem">Add task</app-button-primary>
         </div>
     </header>

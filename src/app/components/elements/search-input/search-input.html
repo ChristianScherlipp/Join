@@ -1,0 +1,20 @@
+<!--bsp. HTML <app-search-input [(noResult)]="noResult" (searched)="onSearch($event)" (cleared)="onSearchCleared()" />
+        TS import { SearchInput } from '../elements/search-input/search-input';
+        TS imports: [SearchInput]-->
+
+<section class="search" [class.is-error]="noResult()">
+    <input
+        class="search__input"
+        type="text"
+        placeholder="Find Task"
+        aria-label="Find Task"
+        autocomplete="off"
+        [value]="value()"
+        (input)="onInput($event)"
+        (blur)="onBlur()"
+    >
+    <span class="search__divider" aria-hidden="true"></span>
+    <button type="button" class="search__btn" aria-label="Search" (click)="search()">
+        <img class="search__icon" src="assets/icons/search.svg" alt="">
+    </button>
+</section>
