@@ -18,7 +18,7 @@
             (click)="toggleList()"
             [class.category__field--error]="fieldError.isVisible('category')"
         >
-            <span class="category__value">{{ selectedCategory() ?? 'Select task category' }}</span>
+            <span class="category__value" [class.category__placeholder]="!selectedCategory()">{{ selectedCategory() ?? 'Select task category' }}</span>
             <span class="category__arrow" aria-hidden="true"></span>
         </button>
 
