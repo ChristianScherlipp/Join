@@ -1,6 +1,4 @@
-<!-- task-dialog.html -->
-
-<dialog #dialog aria-labelledby="task-title" [attr.aria-busy]="taskService.saving()"
+<dialog open #dialog aria-labelledby="task-title" [attr.aria-busy]="taskService.saving()"
   (cancel)="$event.preventDefault(); close()">
   <header>
     <p>{{ task().category || 'Task' }}</p>
@@ -28,17 +26,12 @@
       <dd>{{ task().priority || '–' }}</dd>
     </dl>
 
-    <dl class="priority">
-      <dt>Status:</dt>
-      <dd>{{ task().status || '–' }}</dd>
-    </dl>
-
     <section>
       <h2>Assigned to:</h2>
 
       <ul>
         @for (id of task().worker_id || []; track id) {
-        <li>{{ contactName(id) }}</li>
+        <li><app-initial-icon [name]="contactName(id)" [withShadow]="false" style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contactName(id) }}</li>
         } @empty {
         <li>Niemand zugewiesen</li>
         }

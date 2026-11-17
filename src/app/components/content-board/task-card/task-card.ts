@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 import { TaskWithContacts } from '../../../interfaces/task';
 
@@ -30,4 +30,6 @@ export class TaskCard {
   readonly progress = computed(() =>
     this.subtasksTotal() === 0 ? 0 : (this.subtasksDone() / this.subtasksTotal()) * 100
   );
+
+  readonly opened = output<void>();
 }
