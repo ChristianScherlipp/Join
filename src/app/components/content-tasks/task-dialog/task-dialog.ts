@@ -1,5 +1,3 @@
-// task-dialog.ts
-
 import {
   AfterViewInit,
   Component,
@@ -15,11 +13,12 @@ import { DatePipe } from '@angular/common';
 import { TaskWithContacts } from '../../../interfaces/task';
 import { TaskService } from '../../../services/task-service';
 import { ButtonEditDelete } from '../../elements/button-edit-delete/button-edit-delete';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
 
 @Component({
   selector: 'app-task-dialog',
-  imports: [DatePipe, ButtonEditDelete],
+  imports: [DatePipe, ButtonEditDelete, InitialIcon],
   templateUrl: './task-dialog.html',
   styleUrl: './task-dialog.scss',
 })

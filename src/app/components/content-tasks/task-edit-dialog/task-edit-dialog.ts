@@ -1,5 +1,3 @@
-// task-edit-dialog.ts
-
 import {
   AfterViewInit,
   Component,
@@ -10,10 +8,11 @@ import {
   OnInit,
   output,
   viewChild,
+  signal
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import {
-  Subtask,
+
   TaskCategory,
   TaskPriority,
   TaskStatus,
@@ -24,6 +23,10 @@ import { ContactService } from '../../../services/contact-service';
 import { ButtonPrimary } from '../../elements/button-primary/button-primary';
 import { ButtonPriority } from '../../elements/button-priority/button-priority';
 import { ButtonEditDelete } from '../../elements/button-edit-delete/button-edit-delete';
+import { DropDownAssignedto } from '../../elements/drop-down-assignedto/drop-down-assignedto';
+import { DropDownCategory } from '../../elements/drop-down-category/drop-down-category';
+import { Subtask, ISubtask } from '../../elements/subtask/subtask';
+import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
 @Component({
   selector: 'app-task-edit-dialog',
@@ -32,11 +35,17 @@ import { ButtonEditDelete } from '../../elements/button-edit-delete/button-edit-
     ButtonPrimary,
     ButtonPriority,
     ButtonEditDelete,
+    DropDownAssignedto,
+    DropDownCategory,
+    Subtask,
+    InitialIcon
   ],
   templateUrl: './task-edit-dialog.html',
   styleUrl: './task-edit-dialog.scss',
 })
 export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
+
+
   readonly task = input.required<TaskWithContacts>();
 
   readonly closed = output<void>();
@@ -62,7 +71,7 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   status: TaskStatus | '' = '';
 
   workerIds: number[] = [];
-  subtasks: Subtask[] = [];
+  subtasks = signal<ISubtask[]>([]);
 
   newSubtask = '';
   editingSubtaskIndex: number | null = null;
@@ -90,7 +99,6 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     this.status = task.status ?? '';
 
     this.workerIds = [...(task.worker_id ?? [])];
-    this.subtasks = (task.subtask ?? []).map(subtask => ({ ...subtask }));
 
     this.taskService.errorMessage.set('');
     void this.contactService.getUsers();
@@ -124,83 +132,65 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  addSubtask(): void {
-    if (this.taskService.saving()) return;
+  // addSubtask(): void {
+  //   if (this.taskService.saving()) return;
 
-    const title = this.newSubtask.trim();
+  //   const title = this.newSubtask.trim();
 
-    if (!title) return;
+  //   if (!title) return;
 
-    if (!this.commitSubtaskEdit()) return;
+  //   if (!this.commitSubtaskEdit()) return;
 
-    this.subtasks = [...this.subtasks, { title, completed: false }];
-    this.newSubtask = '';
-    this.subtaskError = '';
-  }
+  //   this.newSubtask = '';
+  //   this.subtaskError = '';
+  // }
 
-  startSubtaskEdit(index: number): void {
-    if (this.taskService.saving()) return;
-    if (this.editingSubtaskIndex === index) return;
-    if (!this.commitSubtaskEdit()) return;
+  // startSubtaskEdit(index: number): void {
+  //   if (this.taskService.saving()) return;
+  //   if (this.editingSubtaskIndex === index) return;
+  //   if (!this.commitSubtaskEdit()) return;
+  //   setTimeout(() => {
+  //     const input = this.subtaskEditInput()?.nativeElement;
+  //     input?.focus();
+  //     input?.select();
+  //   });
+  // }
 
-    const subtask = this.subtasks[index];
-    if (!subtask) return;
+  // commitSubtaskEdit(): boolean {
+  //   if (this.editingSubtaskIndex === null) return true;
 
-    this.editingSubtaskIndex = index;
-    this.editingSubtaskTitle = subtask.title;
-    this.subtaskError = '';
+  //   const title = this.editingSubtaskTitle.trim();
 
-    // Warten, bis Angular das bedingt eingeblendete Eingabefeld erstellt hat.
-    setTimeout(() => {
-      const input = this.subtaskEditInput()?.nativeElement;
-      input?.focus();
-      input?.select();
-    });
-  }
+  //   if (!title) {
+  //     this.subtaskError = 'Bitte einen Titel für die Unteraufgabe eingeben.';
+  //     this.subtaskEditInput()?.nativeElement.focus();
+  //     return false;
+  //   }
 
-  commitSubtaskEdit(): boolean {
-    if (this.editingSubtaskIndex === null) return true;
+  //   const index = this.editingSubtaskIndex;
 
-    const title = this.editingSubtaskTitle.trim();
+  //   this.cancelSubtaskEdit();
+  //   return true;
+  // }
 
-    if (!title) {
-      this.subtaskError = 'Bitte einen Titel für die Unteraufgabe eingeben.';
-      this.subtaskEditInput()?.nativeElement.focus();
-      return false;
-    }
+  // cancelSubtaskEdit(): void {
+  //   this.editingSubtaskIndex = null;
+  //   this.editingSubtaskTitle = '';
+  //   this.subtaskError = '';
+  // }
 
-    const index = this.editingSubtaskIndex;
+  // removeSubtask(index: number): void {
+  //   if (this.taskService.saving()) return;
 
-    this.subtasks = this.subtasks.map((subtask, currentIndex) =>
-      currentIndex === index ? { ...subtask, title } : subtask
-    );
-
-    this.cancelSubtaskEdit();
-    return true;
-  }
-
-  cancelSubtaskEdit(): void {
-    this.editingSubtaskIndex = null;
-    this.editingSubtaskTitle = '';
-    this.subtaskError = '';
-  }
-
-  removeSubtask(index: number): void {
-    if (this.taskService.saving()) return;
-
-    this.subtasks = this.subtasks.filter(
-      (_, currentIndex) => currentIndex !== index
-    );
-
-    if (this.editingSubtaskIndex === index) {
-      this.cancelSubtaskEdit();
-    } else if (
-      this.editingSubtaskIndex !== null &&
-      this.editingSubtaskIndex > index
-    ) {
-      this.editingSubtaskIndex--;
-    }
-  }
+  //   if (this.editingSubtaskIndex === index) {
+  //     this.cancelSubtaskEdit();
+  //   } else if (
+  //     this.editingSubtaskIndex !== null &&
+  //     this.editingSubtaskIndex > index
+  //   ) {
+  //     this.editingSubtaskIndex--;
+  //   }
+  // }
 
   async save(form: NgForm): Promise<void> {
     if (this.taskService.saving()) return;
@@ -208,7 +198,7 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     this.submitted = true;
     this.validationMessage = '';
 
-    if (!this.commitSubtaskEdit()) return;
+    // if (!this.commitSubtaskEdit()) return;
 
     if (
       form.invalid ||
@@ -223,23 +213,6 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const subtasks = this.subtasks.map(subtask => ({
-      title: subtask.title.trim(),
-      completed: subtask.completed,
-    }));
-
-    if (subtasks.some(subtask => !subtask.title)) {
-      this.subtaskError = 'Jede Unteraufgabe benötigt einen Titel.';
-      return;
-    }
-
-    if (this.newSubtask.trim()) {
-      subtasks.push({
-        title: this.newSubtask.trim(),
-        completed: false,
-      });
-    }
-
     const success = await this.taskService.updateTask(this.task().id, {
       title: this.title.trim(),
       description: this.description,
@@ -250,7 +223,6 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
       worker_id: this.workerIds.length
         ? [...new Set(this.workerIds)]
         : null,
-      subtask: subtasks,
     });
 
     if (success) {

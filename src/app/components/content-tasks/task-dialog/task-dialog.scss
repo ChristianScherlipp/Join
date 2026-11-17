@@ -23,6 +23,8 @@ dialog {
   color: $background-secondary;
   font-family: 'Inter', sans-serif;
 
+  z-index: 999;
+
   &[open] {
     display: flex;
     flex-direction: column;
@@ -94,7 +96,7 @@ header {
   padding: 16px 48px;
   overflow-y: auto;
 
-  > * {
+  >* {
     flex-shrink: 0;
   }
 
@@ -147,6 +149,11 @@ ol {
     margin-bottom: 8px;
     font-size: 16px;
     overflow-wrap: anywhere;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 7px;
 
     &:last-child {
       margin-bottom: 0;
@@ -233,6 +240,7 @@ button {
 }
 
 @media (max-width: 1000px) {
+
   header,
   footer {
     padding: 20px 24px;
