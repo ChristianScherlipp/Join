@@ -179,6 +179,20 @@
         }
     }
 
+    &__group {
+        position: relative;
+    }
+
+    &__field-error {
+        position: absolute;
+        top: 100%;
+        left: 1.3rem;
+        margin-top: 0.25rem;
+        color: #E60026;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
     &__label {
         display: flex;
         flex-direction: column;
@@ -218,9 +232,15 @@
         width: 100%;
         min-width: 0;
         box-sizing: border-box;
+        outline: none;
 
         &:hover{
             cursor: pointer;
+        }
+
+        &--error,
+        &--error:focus {
+            border-color: #E60026;
         }
 
         &--text {

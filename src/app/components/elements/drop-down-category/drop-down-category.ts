@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, inject, model, signal } from '@angular/core';
+import { FieldError } from '../../../services/field-error';
 
 export type Category = 'Technical Task' | 'User Story';
 
@@ -10,6 +11,7 @@ export type Category = 'Technical Task' | 'User Story';
 })
 export class DropDownCategory {
     private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+    readonly fieldError = inject(FieldError);
 
     readonly categories: Category[] = ['Technical Task', 'User Story'];
 
@@ -25,6 +27,7 @@ export class DropDownCategory {
     //Übernimmt die Auswahl und schließt die Liste.
     selectCategory(option: Category): void {
         this.selectedCategory.set(option);
+        this.fieldError.check('category', option);
         this.closeList();
     }
 
@@ -40,6 +43,10 @@ export class DropDownCategory {
     @HostListener('document:click', ['$event'])
     closeOnOutsideClick(event: MouseEvent): void {
         if (!this.host.nativeElement.contains(event.target as Node)) {
+            // Nur prüfen, wenn die Liste offen war.
+            if (this.isOpen()) {
+                this.fieldError.check('category', this.selectedCategory() ?? '');
+            }
             this.closeList();
         }
     }
