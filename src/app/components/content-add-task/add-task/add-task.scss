@@ -41,6 +41,11 @@
     flex-direction: column; 
     gap: 8.75rem;
 
+    // 2 columnas de 440px + 2 gaps de 3rem + divider de 1px
+    @media (min-width: 1101px) {
+        max-width: calc(61rem + 1px);
+    }
+
     @include respond-below(1100px){
             gap: 0;
         }
@@ -156,6 +161,10 @@
         display: flex;
         flex-direction: column;
 
+        @media (min-width: 1101px) {
+            max-width: 27.5rem; // 440px
+        }
+
         &--left {
             gap: 2rem;
         }
@@ -198,6 +207,7 @@
         flex-direction: column;
         gap: 0.5rem;
         font-size: 1.25rem;
+        color: $text-darkblue;
 
         @include respond-below(1100px){
             font-size: 1rem;
@@ -249,10 +259,18 @@
             color: #000000;
             font-weight: 400;
 
+            @include respond-below(1100px) {
+                font-size: 1rem;
+            }
+
             &::placeholder {
                 font-family: inherit;
                 font-size: 1.25rem;
                 color: #686868;
+
+                @include respond-below(1100px) {
+                    font-size: 1rem;
+                }
             }
 
             &[type="date"]:invalid::-webkit-datetime-edit {
