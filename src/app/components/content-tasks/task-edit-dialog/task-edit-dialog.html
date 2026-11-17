@@ -1,81 +1,228 @@
-<dialog open aria-labelledby="task-dialog-title">
+<!-- task-edit-dialog.html -->
+
+<dialog #dialog aria-labelledby="task-dialog-title" [attr.aria-busy]="taskService.saving()"
+    (cancel)="$event.preventDefault(); close()">
     <header class="dialog-header">
         <h1 id="task-dialog-title">Edit Task</h1>
 
-        <button class="close-button" type="button" aria-label="Dialog schließen">
+        <button class="close-button" type="button" aria-label="Dialog schließen" [disabled]="taskService.saving()"
+            (click)="close()">
             ×
         </button>
     </header>
 
-    <form id="task-form" class="task-form">
-        <section class="form-column" aria-label="Aufgabendetails">
-            <label class="field">
-                <span>Title<span class="required">*</span></span>
+    <form class="task-form" #form="ngForm" (ngSubmit)="save(form)" novalidate>
+        <fieldset class="edit-fields" [disabled]="taskService.saving()">
+            <section class="form-column" aria-label="Aufgabendetails">
+                <label class="field">
+                    <span>Title<span class="required">*</span></span>
 
-                <input type="text" name="title" placeholder="Enter a title" required />
-            </label>
+                    <input type="text" name="title" [(ngModel)]="title" #titleField="ngModel"
+                        placeholder="Enter a title" required pattern=".*\S.*" />
 
-            <label class="field">
-                <span>Description</span>
+                    @if (
+                    (titleField.touched || submitted) &&
+                    (!title.trim() || titleField.invalid)
+                    ) {
+                    <span class="error">Bitte einen Titel eingeben.</span>
+                    }
+                </label>
 
-                <textarea name="description" placeholder="Enter a Description" rows="4"></textarea>
-            </label>
+                <label class="field">
+                    <span>Description</span>
 
-            <label class="field">
-                <span>Due date<span class="required">*</span></span>
+                    <textarea name="description" [(ngModel)]="description" placeholder="Enter a Description"
+                        rows="4"></textarea>
+                </label>
 
-                <input type="date" name="dueDate" required />
-            </label>
-        </section>
+                <label class="field">
+                    <span>Due date<span class="required">*</span></span>
 
-        <section class="form-column" aria-label="Zuordnung und Priorität">
-            <fieldset class="priority-field">
-                <app-button-priority></app-button-priority>
-            </fieldset>
+                    <input type="date" name="date" [(ngModel)]="date" #dateField="ngModel" required />
 
-            <label class="field">
-                <span>Assigned to</span>
+                    @if (
+                    (dateField.touched || submitted) &&
+                    dateField.invalid
+                    ) {
+                    <span class="error">Bitte ein gültiges Datum wählen.</span>
+                    }
+                </label>
+            </section>
 
-                <select name="assignedTo">
-                    <option value="" disabled selected>
-                        Select contacts to assign
-                    </option>
-                    <option value="a">Name A</option>
-                    <option value="b">Name B</option>
-                    <option value="c">Name C</option>
-                    <option value="d">Name D</option>
-                </select>
-            </label>
+            <section class="form-column" aria-label="Zuordnung und Priorität">
+                <div class="priority-field">
+                    <app-button-priority [(selected)]="priority"></app-button-priority>
 
-            <label class="field">
-                <span>Category<span class="required">*</span></span>
+                    @if (submitted && !priority) {
+                    <p class="error">Bitte eine Priorität wählen.</p>
+                    }
+                </div>
 
-                <select name="category" required>
-                    <option value="" disabled selected>
-                        Select task category
-                    </option>
-                    <option value="technical">Technical Task</option>
-                    <option value="user-story">User Story</option>
-                </select>
-            </label>
+                <fieldset class="contacts-field">
+                    <legend>Assigned to</legend>
 
-            <label class="field">
-                <span>Subtasks</span>
+                    @if (contactService.loading()) {
+                    <p role="status">Kontakte werden geladen…</p>
+                    }
 
-                <input type="text" name="subtask" placeholder="Add new subtask" />
-            </label>
-        </section>
+                    @if (contactService.errorMessage()) {
+                    <p class="error" role="alert">
+                        {{ contactService.errorMessage() }}
+                    </p>
+
+                    <app-button-primary typeStr="light" buttonType="button"
+                        [isDisabled]="contactService.loading() || taskService.saving()"
+                        (click)="contactService.getUsers()">
+                        Erneut laden
+                    </app-button-primary>
+                    }
+
+                    <div class="contact-list">
+                        @for (contact of contactService.sortedUsers(); track contact.id) {
+                        <label class="contact-option">
+                            <input type="checkbox" [checked]="workerIds.includes(contact.id)"
+                                (change)="toggleWorker(contact.id)" />
+
+                            <span>{{ contact.name }}</span>
+                        </label>
+                        }
+
+                        @for (id of missingWorkerIds(); track id) {
+                        <label class="contact-option">
+                            <input type="checkbox" [checked]="true" (change)="toggleWorker(id)" />
+
+                            <span>Kontakt #{{ id }}</span>
+                        </label>
+                        }
+                    </div>
+                </fieldset>
+
+                <label class="field">
+                    <span>Category<span class="required">*</span></span>
+
+                    <select name="category" [(ngModel)]="category" #categoryField="ngModel" required>
+                        <option value="" disabled>Select task category</option>
+                        <option value="Technical Task">Technical Task</option>
+                        <option value="User Story">User Story</option>
+                    </select>
+
+                    @if (
+                    (categoryField.touched || submitted) &&
+                    categoryField.invalid
+                    ) {
+                    <span class="error">Bitte eine Kategorie wählen.</span>
+                    }
+                </label>
+
+                <label class="field">
+                    <span>Status<span class="required">*</span></span>
+
+                    <select name="status" [(ngModel)]="status" #statusField="ngModel" required>
+                        <option value="" disabled>Select status</option>
+
+                        @for (item of statuses; track item.value) {
+                        <option [value]="item.value">{{ item.label }}</option>
+                        }
+                    </select>
+
+                    @if (
+                    (statusField.touched || submitted) &&
+                    statusField.invalid
+                    ) {
+                    <span class="error">Bitte einen Status wählen.</span>
+                    }
+                </label>
+
+                <section class="subtasks" aria-labelledby="subtasks-title">
+                    <h2 id="subtasks-title">Subtasks</h2>
+
+                    <div class="subtask-add">
+                        <input type="text" name="newSubtask" [(ngModel)]="newSubtask" placeholder="Add new subtask"
+                            aria-label="Neue Unteraufgabe" (keydown.enter)="$event.preventDefault(); addSubtask()" />
+
+                        <app-button-primary typeStr="addTaskSmall" buttonType="button"
+                            [isDisabled]="taskService.saving() || !newSubtask.trim()" (click)="addSubtask()">
+                            <span class="visually-hidden">Unteraufgabe hinzufügen</span>
+                        </app-button-primary>
+                    </div>
+
+                    <ul class="subtask-list">
+                        @for (subtask of subtasks; track $index; let index = $index) {
+                        <li class="subtask-row" [class.subtask-row--editing]="editingSubtaskIndex === index">
+                            @if (editingSubtaskIndex === index) {
+                            <input #subtaskEditInput class="subtask-edit-input" type="text" name="editingSubtaskTitle"
+                                [(ngModel)]="editingSubtaskTitle" [ngModelOptions]="{ standalone: true }"
+                                aria-label="Titel der Unteraufgabe bearbeiten"
+                                [attr.aria-invalid]="subtaskError ? 'true' : null"
+                                (keydown.enter)="$event.preventDefault(); commitSubtaskEdit()" (keydown.escape)="
+                      $event.preventDefault();
+                      $event.stopPropagation();
+                      cancelSubtaskEdit()
+                    " />
+
+                            <div class="subtask-actions subtask-actions--editing">
+                                <app-button-edit-delete typeStr="delete" [isDisabled]="taskService.saving()"
+                                    (actionClicked)="removeSubtask(index)"></app-button-edit-delete>
+
+                                <span class="action-divider" aria-hidden="true"></span>
+
+                                <button class="subtask-confirm" type="button" aria-label="Unteraufgabe übernehmen"
+                                    [disabled]="taskService.saving()" (click)="commitSubtaskEdit()">
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </div>
+                            } @else {
+                            <span class="subtask-bullet" aria-hidden="true">•</span>
+
+                            <span class="subtask-title">{{ subtask.title }}</span>
+
+                            <div class="subtask-actions">
+                                <app-button-edit-delete typeStr="edit" [isDisabled]="taskService.saving()"
+                                    (actionClicked)="startSubtaskEdit(index)"></app-button-edit-delete>
+
+                                <span class="action-divider" aria-hidden="true"></span>
+
+                                <app-button-edit-delete typeStr="delete" [isDisabled]="taskService.saving()"
+                                    (actionClicked)="removeSubtask(index)"></app-button-edit-delete>
+                            </div>
+                            }
+                        </li>
+                        }
+                    </ul>
+
+                    @if (subtaskError) {
+                    <p class="error" role="alert">{{ subtaskError }}</p>
+                    }
+                </section>
+            </section>
+        </fieldset>
+
+        @if (validationMessage) {
+        <p class="error" role="alert">{{ validationMessage }}</p>
+        }
+
+        @if (taskService.errorMessage()) {
+        <p class="error" role="alert">
+            {{ taskService.errorMessage() }}
+        </p>
+        }
     </form>
 
     <footer class="dialog-footer">
-        <p>
-            <span class="required">*</span>This field is required
-        </p>
+        <p><span class="required">*</span>This field is required</p>
 
         <div class="footer-actions">
+            <app-button-primary typeStr="cancel" buttonType="button" [isDisabled]="taskService.saving()"
+                (click)="close()">
+                Cancel
+            </app-button-primary>
 
-            <app-button-primary typeStr="createTask" buttonType="button"   widthStr="77px" heightStr="61px">
-                Ok
+            <app-button-primary typeStr="createTask" buttonType="button" [isDisabled]="taskService.saving()"
+                (click)="save(form)">
+                {{ taskService.saving() ? 'Saving…' : 'Ok' }}
             </app-button-primary>
         </div>
     </footer>
