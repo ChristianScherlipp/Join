@@ -8,24 +8,26 @@
         </div>
     </header>
 
- <div class="board__columns">
-    @for (column of columns; track column.id) {
-    <section class="board__column">
-        <header class="board__column-head">
-            <h2 class="board__column-title">{{ column.title }}</h2>
-            @if (column.canAdd) {
-            <button class="board__plus" type="button" aria-label="Add task">
-                <span class="board__plus-icon"></span>
-            </button>
-            }
-        </header>
+    <div class="board__columns">
+        @for (column of columns; track column.id) {
+        <section class="board__column">
+            <header class="board__column-head">
+                <h2 class="board__column-title">{{ column.title }}</h2>
+                @if (column.canAdd) {
+                <button class="board__plus" type="button" aria-label="Add task">
+                    <span class="board__plus-icon"></span>
+                </button>
+                }
+            </header>
 
-        <div class="board__cards">
-            @for (task of tasksByStatus()[column.id]; track task.id) {
-            <app-task-card [task]="task" />
-            }
-        </div>
-    </section>
-    }
-</div>
+            <div class="board__cards">
+                @for (task of tasksByStatus()[column.id]; track task.id) {
+                <app-task-card [task]="task" />
+                } @empty {
+                <div class="board__empty">No tasks {{ column.title }}</div>
+                }
+            </div>
+        </section>
+        }
+    </div>
 </section>
