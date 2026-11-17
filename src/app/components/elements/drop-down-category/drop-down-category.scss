@@ -6,6 +6,21 @@
     flex-direction: column;
     gap: 0.5rem;
     max-width: 100%;
+    position: relative;
+
+    &__field-error {
+        position: absolute;
+        top: 100%;
+        left: 1.3rem;
+        margin-top: 0.25rem;
+        color: #E60026;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    &__field--error {
+        border: 1px solid #E60026;
+    }
 
     &__label {
         display: flex;

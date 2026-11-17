@@ -16,6 +16,7 @@
             aria-haspopup="listbox"
             [attr.aria-expanded]="isOpen()"
             (click)="toggleList()"
+            [class.category__field--error]="fieldError.isVisible('category')"
         >
             <span class="category__value">{{ selectedCategory() ?? 'Select task category' }}</span>
             <span class="category__arrow" aria-hidden="true"></span>
@@ -38,4 +39,7 @@
             </ul>
         }
     </section>
+     @if (fieldError.isVisible('category')) {
+          <span class="category__field-error" role="alert">{{ fieldError.message('category') }}</span>
+        }
 </section>

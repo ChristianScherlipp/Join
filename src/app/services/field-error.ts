@@ -32,10 +32,39 @@ function checkPhone(value:string): string {
     return isValid ? '' : 'Please enter a valid Phone number(max. 15 digits)';
 }
 
+function checkTitle(value: string): string {
+    // Titel darf nicht leer sein (nur Leerzeichen zählen als leer).
+    return value.trim() ? '' : REQUIRED;
+}
+
+function checkDueDate(value: string): string {
+    if (!value) {
+        return REQUIRED;
+    }
+    // Heutiges Datum als "JJJJ-MM-TT" (lokale Zeit), damit man Texte vergleichen kann.
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const today = `${now.getFullYear()}-${month}-${day}`;
+    // Datum darf nicht in der Vergangenheit liegen.
+    return value >= today ? '' : 'Date must not be in the past';
+}
+
+function checkCategory(value: string): string {
+    // Es muss eine Kategorie ausgewählt sein.
+    return value ? '' : REQUIRED;
+}
+
 const rules: Record<string, Rule> = {
     name: checkName,
     email: checkEmail,
-    phone: checkPhone,
+    phone: checkPhone
+}
+
+const addTaskRules: Record<string, Rule> = {
+    title: checkTitle,
+    dueDate: checkDueDate,
+    category: checkCategory
 }
 
 @Service()
@@ -48,7 +77,8 @@ export class FieldError {
     * true = gültig, false = ungültig.
     */
     check(field: string, value: string): boolean {
-        const message = rules[field](value);
+        const rule = rules[field] ?? addTaskRules[field];
+        const message = rule(value);
 
         if (message) {
             this.show(field, message);

@@ -149,14 +149,34 @@ dialog {
         filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
     }
 
+    &__group {
+        position: relative;
+    }
+
+    &__field-error {
+        position: absolute;
+        top: 100%;
+        left: 1.3rem;
+        margin-top: 0.25rem;
+        color: #E60026;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
     &__input {
         padding: 0.75rem 1.31rem;
         border: 1px solid #686868;
         border-radius: 0.625rem;
         font-size: 1rem;
+        outline: none;
 
         &:hover {
             cursor: pointer;
+        }
+
+        &--error,
+        &--error:focus {
+            border-color: #E60026;
         }
 
         &--text {
