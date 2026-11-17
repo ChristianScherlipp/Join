@@ -24,8 +24,11 @@
     }
     <div class="task-card__footer">
         <div class="task-card__assignees">
-            @for (contact of task().assignedContacts; track contact.id) {
+            @for (contact of visibleContacts(); track contact.id) {
             <app-initial-icon [name]="contact.name" class="task-card__avatar" />
+            }
+            @if (hasMoreContacts()) {
+            <span class="task-card__more">+{{ hiddenContacts() }}</span>
             }
         </div>
 

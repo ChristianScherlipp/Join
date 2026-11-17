@@ -140,3 +140,12 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
         display: none;
     }
 }
+
+.board__empty {
+  padding: 0.9rem 1rem;               
+  border: 1px dashed $border-input;            
+  border-radius: 0.625rem;            
+  background-color: $background-grey;            
+  color:$text-grey;                        
+  text-align: center;
+}
