@@ -25,7 +25,11 @@ export class AddTaskDialog implements AfterViewInit {
     this.dialog.nativeElement.showModal();
   }
 
+  open(): void {
+    this.dialog.nativeElement.showModal();
+  }
+
   close(): void {
-  this.dialog.nativeElement.close();
-}
+    this.dialog.nativeElement.close();
+  }
 }

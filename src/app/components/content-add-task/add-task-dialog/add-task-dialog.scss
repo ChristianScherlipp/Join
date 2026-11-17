@@ -6,6 +6,17 @@ dialog {
     border: none;
     border-radius: 2rem;
     padding: 4rem 4.625rem;
+    box-sizing: border-box;
+    max-width: 95vw;
+    max-height: 95vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    @include respond-below(1100px) {
+        width: 95vw;
+        padding: fluid(24, 64) fluid(16, 74);
+        border-radius: fluid(16, 32);
+    }
 
     transform: translateX(100vw); 
     transition:
@@ -65,14 +76,33 @@ dialog {
     flex-direction: column;
     gap: 3.75rem;
 
+    // 2 columnas de 440px + 2 gaps de 3rem + divider de 1px
+    @media (min-width: 1101px) {
+        max-width: calc(61rem + 1px);
+    }
+
+    @include respond-below(1100px) {
+        gap: 2rem;
+    }
+
     &__columns {
         display: flex;
         gap: 3rem;
+
+        @include respond-below(1100px) {
+            flex-direction: column;
+            gap: 2rem;
+        }
     }
 
     &__actions {
         display: flex;
         justify-content: space-between;
+
+        @include respond-below(1100px) {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
 
         ::ng-deep .btn-primary {
             font-family: inherit;
@@ -89,6 +119,10 @@ dialog {
             margin: 0;
             line-height: 1.2;
             font-size: 1rem;
+
+            @include respond-below(1100px) {
+                align-self: flex-start;
+            }
         }
     }
 
@@ -97,15 +131,51 @@ dialog {
         justify-content: flex-end;
         gap: 2rem;
 
+        @include respond-below(1100px) {
+            gap: fluid(16, 32, 320, 1100);
+        }
+
         ::ng-deep .btn-primary {
             font-size: 1.31rem;
+
+            @include respond-below(1100px) {
+                height: fluid(40, 48, 320, 1100);
+                padding: 0 fluid(12, 16, 320, 1100);
+                font-size: fluid(16, 18, 320, 1100);
+
+                img {
+                    width: fluid(16, 20, 320, 1100);
+                    height: fluid(16, 20, 320, 1100);
+                }
+            }
+        }
+
+        ::ng-deep .btn-cancel {
+            width: 7.875rem;
+
+            @include respond-below(1100px) {
+                width: auto;
+            }
+        }
+
+        ::ng-deep .btn-createTask {
+            width: 13rem;
+
+            @include respond-below(1100px) {
+                width: auto;
+            }
         }
     }
 
     &__column {
         flex: 1;
+        min-width: 0;
         display: flex;
         flex-direction: column;
+
+        @media (min-width: 1101px) {
+            max-width: 27.5rem; // 440px
+        }
 
         &--left {
             gap: 2rem;
@@ -119,6 +189,10 @@ dialog {
     &__divider {
         width: 1px;
         background-color: #686868;
+
+        @include respond-below(1100px) {
+            display: none;
+        }
     }
 
     &__label {
@@ -126,6 +200,7 @@ dialog {
         flex-direction: column;
         gap: 0.5rem;
         font-size: 1.25rem;
+        color: $text-darkblue;
 
         @include respond-below(810px){
             font-size: 1rem;
@@ -168,6 +243,9 @@ dialog {
         border: 1px solid #686868;
         border-radius: 0.625rem;
         font-size: 1rem;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         outline: none;
 
         &:hover {
@@ -185,10 +263,18 @@ dialog {
             color: #000000;
             font-weight: 400;
 
+            @include respond-below(810px) {
+                font-size: 1rem;
+            }
+
             &::placeholder {
                 font-family: inherit;
                 font-size: 1.25rem;
                 color: #686868;
+
+                @include respond-below(810px) {
+                    font-size: 1rem;
+                }
             }
 
             &[type="date"]:invalid::-webkit-datetime-edit {
