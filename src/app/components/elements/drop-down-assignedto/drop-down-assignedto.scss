@@ -9,7 +9,7 @@
 
     &__label {
         margin: 0;
-        color: $text-secondary;
+        color: $text-darkblue;
         font-size: 1.25rem;
         line-height: 1.2;
 
@@ -34,6 +34,7 @@
         border-radius: 0.625rem;
         background: $background-primary;
         box-shadow: 0 0 4px rgb(0 0 0 / 25%);
+        cursor: pointer;
     }
 
     &__input {
@@ -45,11 +46,7 @@
         color: $text-secondary;
         font-family: inherit;
         font-size: 1.25rem;
-
-        &::placeholder {
-            color: $text-secondary;
-            opacity: 1;
-        }
+        cursor: pointer;
     }
 
     &__toggle {
@@ -121,8 +118,8 @@
 
     &__avatar {
         flex-shrink: 0;
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2.625rem;
+        height: 2.625rem;
     }
 
     &__name {
@@ -148,7 +145,7 @@
     }
 
     &__chip {
-        width: 2rem;
-        height: 2rem;
+        width: 2.625rem;
+        height: 2.625rem;
     }
 }
