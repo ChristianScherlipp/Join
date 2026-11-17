@@ -6,7 +6,6 @@ dialog {
   left: 50%;
   right: auto;
   bottom: auto;
-  margin: 0;
   transform: translate(-50%, -50%);
 
   box-sizing: border-box;
@@ -14,7 +13,7 @@ dialog {
   max-width: calc(100% - 32px);
   height: auto;
   max-height: calc(100dvh - 32px);
-
+  margin: 0;
   padding: 0;
   overflow: hidden;
 
@@ -29,6 +28,10 @@ dialog {
     flex-direction: column;
     align-items: stretch;
   }
+
+  &::backdrop {
+    background: rgb(0 0 0 / 35%);
+  }
 }
 
 p,
@@ -37,13 +40,12 @@ dd {
   font-size: 16px;
 }
 
-dt{
+dt {
+  color: #42526e;
   font-size: 16px;
   font-weight: 700;
-  color: #42526E;
 }
 
-/* Header und Footer bleiben außerhalb des Scrollbereichs. */
 header,
 footer {
   position: static;
@@ -63,28 +65,42 @@ header {
     padding: 4px 16px;
     border-radius: 8px;
     background: aquamarine;
+    overflow-wrap: anywhere;
+  }
+
+  button {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 24px;
+
+    &:hover:not(:disabled) {
+      background: #f1f2f3;
+    }
   }
 }
 
-.hyphen {
-  color: #D1D1D1;
-  font-size: x-large;
-}
-
-/* Nur der mittlere Inhalt scrollt. */
 .dialog-content {
+  display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
+  gap: 24px;
+
   min-height: 0;
   padding: 16px 48px;
   overflow-y: auto;
 
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-
-  /* Die Inhalte behalten ihre Höhe, statt zusammengedrückt zu werden. */
-  >* {
+  > * {
     flex-shrink: 0;
+  }
+
+  p {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
   }
 }
 
@@ -98,9 +114,9 @@ section {
 
   h2 {
     margin: 0 0 12px;
+    color: #42526e;
     font-size: 16px;
     font-weight: 700;
-    color: #42526E;
   }
 }
 
@@ -130,32 +146,93 @@ ol {
   li {
     margin-bottom: 8px;
     font-size: 16px;
+    overflow-wrap: anywhere;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.subtask-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+
+  input {
+    flex-shrink: 0;
+    margin: 0;
+    accent-color: $background-secondary;
+
+    &:disabled {
+      cursor: wait;
+    }
   }
 
-  li:last-child {
-    margin-bottom: 0;
+  span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
   }
+}
+
+.completed {
+  text-decoration: line-through;
 }
 
 footer {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
 }
 
-button {
-  font: inherit;
-  cursor: pointer;
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
-button:focus-visible {
-  outline: 2px solid #29abe2;
-  outline-offset: 3px;
+.hyphen {
+  color: #d1d1d1;
+  font-size: x-large;
+}
+
+button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid #29abe2;
+    outline-offset: 3px;
+  }
+
+  &:hover:not(:disabled) {
+    color: #29abe2;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
 }
 
 @media (max-width: 1000px) {
-
   header,
   footer {
     padding: 20px 24px;

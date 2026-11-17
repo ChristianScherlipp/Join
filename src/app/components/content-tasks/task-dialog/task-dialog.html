@@ -1,57 +1,101 @@
-<dialog open aria-labelledby="task-title">
-  <header>
-    <p>TAG</p>
+<!-- task-dialog.html -->
 
-    <button type="button" aria-label="Dialog schließen">
+<dialog #dialog aria-labelledby="task-title" [attr.aria-busy]="taskService.saving()"
+  (cancel)="$event.preventDefault(); close()">
+  <header>
+    <p>{{ task().category || 'Task' }}</p>
+
+    <button type="button" aria-label="Dialog schließen" [disabled]="taskService.saving()" (click)="close()">
       ×
     </button>
   </header>
 
-  <!-- Nur dieser Bereich scrollt. -->
   <div class="dialog-content">
     <section>
-      <h1 id="task-title">
-        Kochwelt Page & Recipe Recommender
-      </h1>
-
-      <p>Build start page with recipe recommendation.</p>
+      <h1 id="task-title">{{ task().title }}</h1>
+      <p>{{ task().description || 'Keine Beschreibung' }}</p>
     </section>
 
     <dl class="due-date">
       <dt>Due date:</dt>
-      <dd>12.11.2026</dd>
+      <dd>
+        {{ task().date ? (task().date | date:'dd.MM.yyyy') : '–' }}
+      </dd>
     </dl>
 
     <dl class="priority">
       <dt>Priority:</dt>
-      <dd>Medium</dd>
+      <dd>{{ task().priority || '–' }}</dd>
+    </dl>
+
+    <dl class="priority">
+      <dt>Status:</dt>
+      <dd>{{ task().status || '–' }}</dd>
     </dl>
 
     <section>
       <h2>Assigned to:</h2>
 
       <ul>
-        <li>Max Mustermann</li>
-        <li>Anna Müller</li>
-        <li>Anton Mayer</li>
+        @for (id of task().worker_id || []; track id) {
+        <li>{{ contactName(id) }}</li>
+        } @empty {
+        <li>Niemand zugewiesen</li>
+        }
       </ul>
+
+      @if (taskService.contactErrorMessage()) {
+      <p role="alert">{{ taskService.contactErrorMessage() }}</p>
+      }
     </section>
 
     <section>
       <h2>Subtasks</h2>
 
       <ul>
-        <li>Formular erstellen</li>
-        <li>Rezepte anzeigen</li>
-        <li>Empfehlungen hinzufügen</li>
-        <li>Speichern testen</li>
+        @for (subtask of task().subtask || []; track $index) {
+        <li>
+          <label class="subtask-option">
+            <input type="checkbox" [checked]="subtask.completed" [disabled]="taskService.saving()"
+              (change)="toggleSubtask($index)" />
+
+            <span [class.completed]="subtask.completed">
+              {{ subtask.title }}
+            </span>
+          </label>
+        </li>
+        } @empty {
+        <li>Keine Unteraufgaben</li>
+        }
       </ul>
     </section>
+
+    @if (taskService.errorMessage()) {
+    <p role="alert">{{ taskService.errorMessage() }}</p>
+    }
+
+    @if (confirmingDelete()) {
+    <div role="group" aria-label="Löschen bestätigen">
+      <p>Task endgültig löschen?</p>
+
+      <button type="button" [disabled]="taskService.saving()" (click)="deleteTask()">
+        Löschen bestätigen
+      </button>
+
+      <button type="button" [disabled]="taskService.saving()" (click)="confirmingDelete.set(false)">
+        Abbrechen
+      </button>
+    </div>
+    }
   </div>
 
   <footer>
-    <app-button-edit-delete typeStr="delete"></app-button-edit-delete>
-    <span aria-hidden="true" class="hyphen">|</span>
-    <app-button-edit-delete typeStr="edit"></app-button-edit-delete>
+    <fieldset class="dialog-actions" [disabled]="taskService.saving()">
+      <app-button-edit-delete typeStr="delete" (click)="confirmingDelete.set(true)"></app-button-edit-delete>
+
+      <span aria-hidden="true" class="hyphen">|</span>
+
+      <app-button-edit-delete typeStr="edit" (click)="edit.emit()"></app-button-edit-delete>
+    </fieldset>
   </footer>
 </dialog>
