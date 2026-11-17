@@ -5,7 +5,7 @@
     <div class="board__actions">
       <app-search-input [(noResult)]="noResult" />
 
-      <app-button-primary typeStr="addTask" widthStr="10rem">
+      <app-button-primary typeStr="addTask" widthStr="10rem" (click)="openAddTask()">
         Add task
       </app-button-primary>
     </div>
@@ -18,7 +18,7 @@
           <h2 class="board__column-title">{{ column.title }}</h2>
 
           @if (column.canAdd) {
-            <button class="board__plus" type="button" aria-label="Add task">
+            <button class="board__plus" type="button" aria-label="Add task" (click)="openAddTask(column.id)">
               <span class="board__plus-icon"></span>
             </button>
           }
@@ -38,6 +38,7 @@
     }
   </div>
 </section>
+<app-add-task-dialog />
 
 @if (selectedTask(); as task) {
   @if (editing()) {
