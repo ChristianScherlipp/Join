@@ -22,8 +22,7 @@ export class AddTaskDialog {
   dueDate = '';
   status: TaskStatus = 'todo';                                            
   open(status: TaskStatus = 'todo'): void {                               
-    this.status = status;                                                
-    console.log('Dialog geöffnet für:', this.status);                     
+    this.status = status;                                                                 
     this.dialog.nativeElement.showModal();
   }
 

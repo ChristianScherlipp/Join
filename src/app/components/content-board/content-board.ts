@@ -8,6 +8,14 @@ import { TaskStatus, TaskWithContacts } from '../../interfaces/task';
 import { TaskDialog } from '../content-tasks/task-dialog/task-dialog';
 import { TaskEditDialog } from '../content-tasks/task-edit-dialog/task-edit-dialog';
 import { AddTaskDialog } from '../content-add-task/add-task-dialog/add-task-dialog';
+import {
+  CdkDrag,
+  CdkDragDrop,                                                     
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,                                                   
+  transferArrayItem,                                                
+} from '@angular/cdk/drag-drop';
 
 interface BoardColumn {
   id: TaskStatus;
@@ -16,7 +24,7 @@ interface BoardColumn {
 }
 
 @Component({
-  imports: [ButtonPrimary, TaskCard, SearchInput, TaskDialog, TaskEditDialog, AddTaskDialog, ToastSuccess],
+  imports: [ButtonPrimary, TaskCard, SearchInput, TaskDialog, TaskEditDialog, AddTaskDialog, ToastSuccess, CdkDropListGroup, CdkDropList, CdkDrag],
   selector: 'app-content-board',
   styleUrl: './content-board.scss',
   templateUrl: './content-board.html',
@@ -24,6 +32,7 @@ interface BoardColumn {
 export class ContentBoard {
   private readonly taskService = inject(TaskService);
   private readonly addTaskDialog = viewChild.required(AddTaskDialog);
+  private readonly toast = viewChild(ToastSuccess);
 
   readonly tasksByStatus = this.taskService.tasksByStatus;
 
@@ -45,7 +54,10 @@ export class ContentBoard {
 
   noResult = signal(false);
   readonly searchText = signal('');
-  private readonly toast = viewChild(ToastSuccess);
+
+  // Während der Suche sind nicht alle Karten sichtbar → Drag & Drop aus.
+  readonly isSearching = computed(() => !!this.searchText().trim());       
+
   readonly visibleTasks = computed(() => {
     const tasks = this.tasksByStatus();
     const query = this.searchText().trim().toLowerCase();
@@ -71,12 +83,6 @@ export class ContentBoard {
   onSearchCleared(): void {
     this.searchText.set('');
   }
-  private updateNoResult(): void {
-    this.noResult.set(!this.hasMatch());
-    if (this.noResult()) {
-      this.toast()?.show('no result found');
-    }
-  }
 
   openAddTask(status: TaskStatus = 'todo') {
     this.addTaskDialog().open(status);
@@ -93,8 +99,36 @@ export class ContentBoard {
     this.editing.set(false);
   }
 
+  // Ordnet die Karten nach dem Loslassen neu und speichert Spalte + Position.
+  onDrop(event: CdkDragDrop<TaskWithContacts[]>, status: TaskStatus): void {   
+    const sameColumn = event.previousContainer === event.container;
+    if (sameColumn && event.previousIndex === event.currentIndex) return;
+
+    const target = [...event.container.data];
+    if (sameColumn) {
+      moveItemInArray(target, event.previousIndex, event.currentIndex);
+    } else {
+      const source = [...event.previousContainer.data];
+      transferArrayItem(source, target, event.previousIndex, event.currentIndex);
+    }
+
+    const changes = target.map((task, index) => ({
+      id: task.id,
+      status,
+      position: index + 1,
+    }));
+    this.taskService.updatePositions(changes);
+  }
+
+  private updateNoResult(): void {
+    this.noResult.set(!this.hasMatch());
+    if (this.noResult()) {
+      this.toast()?.show('no result found');
+    }
+  }
+
   private filterTasks(tasks: TaskWithContacts[], query: string): TaskWithContacts[] {
-    return tasks.filter(task => this.matchesQuery(task, query))
+    return tasks.filter(task => this.matchesQuery(task, query));
   }
 
   private matchesQuery(task: TaskWithContacts, query: string): boolean {

@@ -149,3 +149,20 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
   color:$text-grey;                        
   text-align: center;
 }
+
+// Platzhalter beim Ziehen: gleich groß wie die Karte, Aussehen wie "No tasks"
+.cdk-drag-placeholder {
+    position: relative;
+    visibility: hidden;
+}
+
+.cdk-drag-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    visibility: visible; 
+    z-index: 1;
+    border: 1px dashed $border-input;      
+    border-radius: 1.5rem;        
+          
+}

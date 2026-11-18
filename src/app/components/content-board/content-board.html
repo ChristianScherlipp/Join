@@ -11,29 +11,29 @@
     </div>
   </header>
 
-  <div class="board__columns">
+  <div class="board__columns" cdkDropListGroup>
     @for (column of columns; track column.id) {
-      <section class="board__column">
-        <header class="board__column-head">
-          <h2 class="board__column-title">{{ column.title }}</h2>
+    <section class="board__column">
+      <header class="board__column-head">
+        <h2 class="board__column-title">{{ column.title }}</h2>
 
-          @if (column.canAdd) {
-            <button class="board__plus" type="button" aria-label="Add task" (click)="openAddTask(column.id)">
-              <span class="board__plus-icon"></span>
-            </button>
-          }
-        </header>
+        @if (column.canAdd) {
+        <button class="board__plus" type="button" aria-label="Add task" (click)="openAddTask(column.id)">
+          <span class="board__plus-icon"></span>
+        </button>
+        }
+      </header>
 
-        <div class="board__cards">
-          @for (task of visibleTasks()[column.id]; track task.id) {
-            <app-task-card
-              [task]="task"
-              (opened)="openTask(task.id)"/>
-          } @empty {
-            <div class="board__empty">No tasks {{ column.title }}</div>
-          }
-        </div>
-      </section>
+      <div class="board__cards" cdkDropList [cdkDropListData]="visibleTasks()[column.id]"
+        [cdkDropListDisabled]="isSearching()" (cdkDropListDropped)="onDrop($event, column.id)">
+        @for (task of visibleTasks()[column.id]; track task.id) {
+        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag
+         />
+        } @empty {
+        <div class="board__empty">No tasks {{ column.title }}</div>
+        }
+      </div>
+    </section>
     }
   </div>
   <app-toast-success />
@@ -41,18 +41,9 @@
 <app-add-task-dialog />
 
 @if (selectedTask(); as task) {
-  @if (editing()) {
-    <app-task-edit-dialog
-      [task]="task"
-      (closed)="editing.set(false)"
-      (saved)="editing.set(false)"
-    />
-  } @else {
-    <app-task-dialog
-      [task]="task"
-      (closed)="closeTask()"
-      (edit)="editing.set(true)"
-      (deleted)="closeTask()"
-    />
-  }
+@if (editing()) {
+<app-task-edit-dialog [task]="task" (closed)="editing.set(false)" (saved)="editing.set(false)" />
+} @else {
+<app-task-dialog [task]="task" (closed)="closeTask()" (edit)="editing.set(true)" (deleted)="closeTask()" />
+}
 }
