@@ -60,6 +60,7 @@ export class AddTask {
       worker_id: this.assignedContacts().map((contact) => contact.id),
       subtask: this.subtasks().map((item) => ({ title: item.title, completed: false })),
       status: 'todo',
+      position: 0
     });
 
     // Bei einem Fehler bleiben die Eingaben erhalten.
