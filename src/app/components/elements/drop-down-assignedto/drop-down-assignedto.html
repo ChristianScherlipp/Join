@@ -12,7 +12,7 @@
                 placeholder="Select contacts to assign"
                 aria-label="Assigned to"
                 [value]="searchText()"
-                (focus)="openList()"
+                (click)="toggleList()"
                 (input)="onSearch($event)"
             >
             <button

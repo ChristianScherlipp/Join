@@ -37,6 +37,10 @@
         cursor: pointer;
     }
 
+    &__box.is-open &__field {
+        border: 1px solid $hover-primary;
+    }
+
     &__input {
         flex: 1;
         min-width: 0;

@@ -71,6 +71,10 @@
         cursor: pointer;
     }
 
+    &__box.is-open &__field {
+        border: 1px solid $hover-primary;
+    }
+
     // Platzhalter: gleiche Farbe wie der Standard-Placeholder der Inputs (Subtask).
     &__placeholder {
         color: #757575;

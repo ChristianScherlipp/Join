@@ -33,6 +33,10 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         border-radius: 0.625rem;
         background: $background-primary;
         box-shadow: 0 0 4px rgb(0 0 0 / 25%);
+
+        &:focus-within {
+            border: 1px solid $hover-primary;
+        }
     }
 
     &__input {
