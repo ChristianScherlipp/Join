@@ -3,7 +3,7 @@
     <h1>Board</h1>
 
     <div class="board__actions">
-      <app-search-input [(noResult)]="noResult" />
+      <app-search-input [(noResult)]="noResult" (searched)="onSearch($event)" (cleared)="onSearchCleared()" />
 
       <app-button-primary typeStr="addTask" widthStr="10rem" (click)="openAddTask()">
         Add task
@@ -25,11 +25,10 @@
         </header>
 
         <div class="board__cards">
-          @for (task of tasksByStatus()[column.id]; track task.id) {
+          @for (task of visibleTasks()[column.id]; track task.id) {
             <app-task-card
               [task]="task"
-              (opened)="openTask(task.id)"
-            />
+              (opened)="openTask(task.id)"/>
           } @empty {
             <div class="board__empty">No tasks {{ column.title }}</div>
           }
@@ -37,6 +36,7 @@
       </section>
     }
   </div>
+  <app-toast-success />
 </section>
 <app-add-task-dialog />
 
