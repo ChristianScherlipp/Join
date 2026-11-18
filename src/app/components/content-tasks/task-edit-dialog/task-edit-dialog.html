@@ -1,5 +1,3 @@
-<!-- task-edit-dialog.html -->
-
 <dialog #dialog aria-labelledby="task-dialog-title" [attr.aria-busy]="taskService.saving()"
     (cancel)="$event.preventDefault(); close()">
     <header class="dialog-header">
@@ -59,59 +57,13 @@
                 </div>
 
                 <fieldset class="contacts-field">
-                    <legend>Assigned to</legend>
-
-                    @if (contactService.loading()) {
-                    <p role="status">Kontakte werden geladen…</p>
-                    }
-
-                    @if (contactService.errorMessage()) {
-                    <p class="error" role="alert">
-                        {{ contactService.errorMessage() }}
-                    </p>
-
-                    <app-button-primary typeStr="light" buttonType="button"
-                        [isDisabled]="contactService.loading() || taskService.saving()"
-                        (click)="contactService.getUsers()">
-                        Erneut laden
-                    </app-button-primary>
-                    }
-
-                    <div class="contact-list">
-                        @for (contact of contactService.sortedUsers(); track contact.id) {
-                        <label class="contact-option">
-                            <input type="checkbox" [checked]="workerIds.includes(contact.id)"
-                                (change)="toggleWorker(contact.id)" />
-
-                            <span>{{ contact.name }}</span>
-                        </label>
-                        }
-
-                        @for (id of missingWorkerIds(); track id) {
-                        <label class="contact-option">
-                            <input type="checkbox" [checked]="true" (change)="toggleWorker(id)" />
-
-                            <span>Kontakt #{{ id }}</span>
-                        </label>
-                        }
-                    </div>
+                    <app-drop-down-assignedto></app-drop-down-assignedto>
                 </fieldset>
 
+
+
                 <label class="field">
-                    <span>Category<span class="required">*</span></span>
-
-                    <select name="category" [(ngModel)]="category" #categoryField="ngModel" required>
-                        <option value="" disabled>Select task category</option>
-                        <option value="Technical Task">Technical Task</option>
-                        <option value="User Story">User Story</option>
-                    </select>
-
-                    @if (
-                    (categoryField.touched || submitted) &&
-                    categoryField.invalid
-                    ) {
-                    <span class="error">Bitte eine Kategorie wählen.</span>
-                    }
+                    <app-drop-down-category></app-drop-down-category>
                 </label>
 
                 <label class="field">
@@ -134,68 +86,7 @@
                 </label>
 
                 <section class="subtasks" aria-labelledby="subtasks-title">
-                    <h2 id="subtasks-title">Subtasks</h2>
-
-                    <div class="subtask-add">
-                        <input type="text" name="newSubtask" [(ngModel)]="newSubtask" placeholder="Add new subtask"
-                            aria-label="Neue Unteraufgabe" (keydown.enter)="$event.preventDefault(); addSubtask()" />
-
-                        <app-button-primary typeStr="addTaskSmall" buttonType="button"
-                            [isDisabled]="taskService.saving() || !newSubtask.trim()" (click)="addSubtask()">
-                            <span class="visually-hidden">Unteraufgabe hinzufügen</span>
-                        </app-button-primary>
-                    </div>
-
-                    <ul class="subtask-list">
-                        @for (subtask of subtasks; track $index; let index = $index) {
-                        <li class="subtask-row" [class.subtask-row--editing]="editingSubtaskIndex === index">
-                            @if (editingSubtaskIndex === index) {
-                            <input #subtaskEditInput class="subtask-edit-input" type="text" name="editingSubtaskTitle"
-                                [(ngModel)]="editingSubtaskTitle" [ngModelOptions]="{ standalone: true }"
-                                aria-label="Titel der Unteraufgabe bearbeiten"
-                                [attr.aria-invalid]="subtaskError ? 'true' : null"
-                                (keydown.enter)="$event.preventDefault(); commitSubtaskEdit()" (keydown.escape)="
-                      $event.preventDefault();
-                      $event.stopPropagation();
-                      cancelSubtaskEdit()
-                    " />
-
-                            <div class="subtask-actions subtask-actions--editing">
-                                <app-button-edit-delete typeStr="delete" [isDisabled]="taskService.saving()"
-                                    (actionClicked)="removeSubtask(index)"></app-button-edit-delete>
-
-                                <span class="action-divider" aria-hidden="true"></span>
-
-                                <button class="subtask-confirm" type="button" aria-label="Unteraufgabe übernehmen"
-                                    [disabled]="taskService.saving()" (click)="commitSubtaskEdit()">
-                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            } @else {
-                            <span class="subtask-bullet" aria-hidden="true">•</span>
-
-                            <span class="subtask-title">{{ subtask.title }}</span>
-
-                            <div class="subtask-actions">
-                                <app-button-edit-delete typeStr="edit" [isDisabled]="taskService.saving()"
-                                    (actionClicked)="startSubtaskEdit(index)"></app-button-edit-delete>
-
-                                <span class="action-divider" aria-hidden="true"></span>
-
-                                <app-button-edit-delete typeStr="delete" [isDisabled]="taskService.saving()"
-                                    (actionClicked)="removeSubtask(index)"></app-button-edit-delete>
-                            </div>
-                            }
-                        </li>
-                        }
-                    </ul>
-
-                    @if (subtaskError) {
-                    <p class="error" role="alert">{{ subtaskError }}</p>
-                    }
+                    <app-subtask [(subtasks)]="subtasks"></app-subtask>
                 </section>
             </section>
         </fieldset>

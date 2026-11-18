@@ -1,4 +1,5 @@
-<article class="task-card">
+<article class="task-card" role="button" tabindex="0" [attr.aria-label]="task().title"
+    (click)="opened.emit()" (keydown.enter)="opened.emit()" (keydown.space)="$event.preventDefault(); opened.emit()">
     @switch (task().category) {
     @case ('User Story') {
     <span class="task-card__label task-card__label--user">User Story</span>

@@ -9,6 +9,9 @@ import { ButtonPrimary } from '../../elements/button-primary/button-primary';
 import { Category, DropDownCategory } from '../../elements/drop-down-category/drop-down-category';
 import { ISubtask, Subtask } from '../../elements/subtask/subtask';
 import { ToastSuccess } from '../../elements/toast-succsess/toast-succsess';
+import { DropDownCategory } from '../../elements/drop-down-category/drop-down-category';
+import { Subtask } from '../../elements/subtask/subtask';
+import { TaskStatus } from '../../../interfaces/task';                    
 
 @Component({
   imports: [ButtonPriority, DropDownAssignedto, ButtonPrimary, DropDownCategory, Subtask, FormsModule, ToastSuccess],
@@ -49,6 +52,10 @@ export class AddTaskDialog {
    */
   open(): void {
     this.clear();
+  status: TaskStatus = 'todo';                                            
+  open(status: TaskStatus = 'todo'): void {                               
+    this.status = status;                                                
+    console.log('Dialog geöffnet für:', this.status);                     
     this.dialog.nativeElement.showModal();
   }
 
