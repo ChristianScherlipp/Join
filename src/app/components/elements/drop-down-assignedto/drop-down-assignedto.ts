@@ -6,6 +6,9 @@ import { InitialIcon } from '../initial-icon/initial-icon';
 // Das Dropdown braucht von einem Kontakt nur id und nam.
 type Contact = Pick<IUser, 'id' | 'name'>;
 
+//So viele Initial-Icons werden unter dem Feld angezeigt, der Rest als Zahl
+const MAX_VISIBLE = 3;
+
 @Component({
   imports: [InitialIcon],
   selector: 'app-drop-down-assignedto',
@@ -30,6 +33,15 @@ export class DropDownAssignedto implements OnInit, OnDestroy {
     const term = this.searchText().trim().toLowerCase();
     return this.contacts().filter((contact) => contact.name.toLowerCase().includes(term));
   });
+
+  readonly visibleContacts = computed(() => 
+    this.selectedContacts().slice(0,MAX_VISIBLE));
+
+  readonly hasMoreContacts = computed(() =>
+    this.selectedContacts().length > MAX_VISIBLE);
+
+  readonly hiddenContacts = computed(() =>
+    this.selectedContacts().length - MAX_VISIBLE);
 
   constructor() {
     effect(() => this.removeDeletedFromSelection());
