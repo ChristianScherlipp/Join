@@ -15,6 +15,7 @@ export interface Task {
   category: TaskCategory | null;
   priority: TaskPriority | null;
   status: TaskStatus | null;
+  position: number | null;
 }
 
 // Nur für die Anzeige: Kontakte werden im Service ergänzt.
@@ -31,4 +32,10 @@ export type TaskUpdate = Partial<TaskCreate>;
 export interface Subtask {  
   title: string;
   completed: boolean;
+}
+// Neue Spalte und Position einer Karte nach Drag & Drop.
+export interface TaskPositionChange {
+  id: number;
+  status: TaskStatus;
+  position: number;
 }

@@ -3,6 +3,7 @@ import {
     Task,
     TaskCreate,
     TaskStatus,
+    TaskPositionChange,
     TaskUpdate,
     TaskWithContacts,
 } from '../interfaces/task';
@@ -12,7 +13,7 @@ import { ContactService } from './contact-service';
 
 const TASK_COLUMNS =
     'id, created_at, title, date, worker_id, subtask, ' +
-    'category, priority, description, status';
+    'category, priority, description, status, position';
 
 interface LoadContext {
     load: number;
@@ -95,6 +96,17 @@ export class TaskService {
         return this.updateTask(id, { status });
     }
 
+    // Speichert Spalte und Position mehrerer Tasks (Drag & Drop).
+    async updatePositions(changes: TaskPositionChange[]): Promise<boolean> {
+        if (changes.length === 0) return true;
+        const saved = await this.save(
+            () => this.changePositions(changes),
+            'Die Reihenfolge konnte nicht gespeichert werden.',
+        );
+        if (!saved) await this.getTasks();
+        return saved;
+    }
+
     // Ersetzt die zugewiesenen Kontakt-IDs ohne Duplikate.
     updateWorkers(id: number, contactIds: number[]): Promise<boolean> {
         return this.updateTask(id, {
@@ -129,9 +141,11 @@ export class TaskService {
         });
     }
 
-    // Liefert Tasks eines bestimmten Status.
+    // Liefert Tasks eines Status, sortiert nach Position (leere ans Ende).
     private filterByStatus(status: TaskStatus): TaskWithContacts[] {
-        return this.tasksWithContacts().filter(task => task.status === status);
+        return this.tasksWithContacts()
+            .filter(task => task.status === status)
+            .sort((a, b) => (a.position ?? Infinity) - (b.position ?? Infinity));
     }
 
     // Merkt sich den Zustand beim Start einer Ladeanfrage.
@@ -187,6 +201,29 @@ export class TaskService {
             .single<Task>();
         if (error) throw error;
         this.prependTask(data);
+    }
+
+    // Ändert die Positionen zuerst lokal und speichert sie dann in Supabase.
+    private async changePositions(changes: TaskPositionChange[]): Promise<void> {
+        this.applyPositions(changes);
+        const results = await Promise.all(
+            changes.map(({ id, status, position }) =>
+                this.supabase.from('task').update({ status, position }).eq('id', id),
+            ),
+        );
+        const failed = results.find(result => result.error);
+        if (failed?.error) throw failed.error;
+    }
+
+    // Übernimmt neue Spalte und Position in die lokale Liste.
+    private applyPositions(changes: TaskPositionChange[]): void {
+        const changeById = new Map(changes.map(change => [change.id, change]));
+        this.taskState.update(tasks =>
+            tasks.map(task => {
+                const change = changeById.get(task.id);
+                return change ? { ...task, status: change.status, position: change.position } : task;
+            }),
+        );
     }
 
     // Aktualisiert den Task in Supabase und anschließend lokal.
