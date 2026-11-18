@@ -1,441 +1,245 @@
 @use 'abstract/variables' as *;
 
 :host {
-    font-family: 'Inter', Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    transform: translate(-50%, -50%);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
 
-    width: 525px;
-    max-width: calc(100% - 32px);
-    max-height: calc(100dvh - 32px);
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+  width: 525px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100dvh - 32px);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 
-    border: none;
-    border-radius: 30px;
-    background: #fff;
-    color: $background-secondary;
-    font-family: inherit;
+  border: none;
+  border-radius: 30px;
+  background: #fff;
+  color: $background-secondary;
+  font-family: inherit;
 
-    &[open] {
-        display: flex;
-        flex-direction: column;
-    }
+  &[open] {
+    display: flex;
+    flex-direction: column;
+  }
 
-    &::backdrop {
-        background: rgb(0 0 0 / 35%);
-    }
+  &::backdrop {
+    background: rgb(0 0 0 / 35%);
+  }
 }
 
+/* Bleibt oberhalb des scrollbaren Formulars sichtbar. */
 .dialog-header {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 24px 40px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 40px;
 
-    h1 {
-        margin: 0;
-        color: #000;
-        font-size: 48px;
-        font-weight: 700;
-        line-height: 1.2;
-        overflow-wrap: anywhere;
-    }
+  h1 {
+    margin: 0;
+    color: #000;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
 }
 
 .close-button {
-    display: grid;
-    flex-shrink: 0;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  align-content: center;
 
-    border: none;
-    border-radius: 50%;
-    background: transparent;
-    color: $background-secondary;
-    font-size: 24px;
-    cursor: pointer;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: $background-secondary;
+  font-size: 2rem;
+  cursor: pointer;
 
-    &:hover:not(:disabled) {
-        background: #f1f2f3;
-    }
+  &:hover:not(:disabled) {
+    background: #f1f2f3;
+  }
 
-    &:focus-visible {
-        outline: 2px solid #29abe2;
-        outline-offset: 3px;
-    }
+  &:focus-visible {
+    outline: 2px solid $text-darkblue;
+    outline-offset: 3px;
+  }
 
-    &:disabled {
-        opacity: 0.5;
-        cursor: wait;
-    }
+  &:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
 }
 
+/* Nur das Formular scrollt. */
 .task-form {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 24px;
 
-    min-height: 0;
-    margin: 0;
-    padding: 0 40px 16px;
-    overflow-y: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0 40px 16px;
+  overflow-y: auto;
 
-    >* {
-        flex-shrink: 0;
-    }
+  > * {
+    flex-shrink: 0;
+  }
 }
 
 .edit-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    min-width: 0;
-    margin: 0;
-    padding: 0;
-    border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
 
-    &:disabled {
-        opacity: 0.65;
-        pointer-events: none;
-    }
+  &:disabled {
+    opacity: 0.65;
+    pointer-events: none;
+  }
 }
 
 .form-column {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
 }
 
 .required {
-    color: #ff8190;
+  color: #ff8190;
 }
 
+/* Eingabefelder, die direkt zu diesem Template gehören. */
 .field input,
-textarea,
-select,
-.subtask-add>input {
-    width: 100%;
-    min-width: 0;
-    min-height: 44px;
-    padding: 10px 14px;
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 14px;
 
-    border: 1px solid #a8a8a8;
-    border-radius: 8px;
-    background: #fff;
-    color: #000;
-    font: inherit;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 4px rgb(0 0 0 / 25%);
+  font: inherit;
 
-    &:focus {
-        border-color: #29abe2;
-        outline: 2px solid rgb(41 171 226 / 15%);
-    }
+  &:focus {
+    border-color: $text-darkblue;
+    outline: 2px solid rgb(41 171 226 / 15%);
+  }
 
-    &.ng-invalid.ng-touched {
-        border-color: #b42318;
-    }
-}
+  &.ng-invalid.ng-touched {
+    border-color: #b42318;
+  }
 
-input::placeholder,
-textarea::placeholder {
+  &::placeholder {
     color: #737373;
+  }
 }
 
-textarea {
-    min-height: 108px;
-    resize: vertical;
+.field textarea {
+  min-height: 108px;
+  resize: vertical;
 }
 
 .priority-field {
-    min-width: 0;
+  min-width: 0;
 
-    app-button-priority {
-        display: block;
-    }
+  app-button-priority {
+    display: block;
+  }
 }
 
 .contacts-field {
-    min-width: 0;
-    margin: 0;
-    padding: 0;
-    border: none;
-
-    legend {
-        margin-bottom: 8px;
-        padding: 0;
-        font-size: 16px;
-    }
-}
-
-.contact-list {
-    max-height: 180px;
-    overflow-y: auto;
-}
-
-.contact-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    cursor: pointer;
-
-    input {
-        flex-shrink: 0;
-        margin: 0;
-        accent-color: $background-secondary;
-    }
-
-    span {
-        min-width: 0;
-        overflow-wrap: anywhere;
-    }
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 
 .subtasks {
-    min-width: 0;
-
-    h2 {
-        margin: 0 0 8px;
-        font-size: 16px;
-        font-weight: 400;
-    }
-}
-
-.subtask-add {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    >input {
-        flex: 1;
-        min-width: 0;
-    }
-
-    app-button-primary {
-        flex-shrink: 0;
-    }
-}
-
-.subtask-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin: 12px 0 0;
-    padding: 0;
-    list-style: none;
-}
-
-.subtask-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 36px;
-    padding: 4px 12px;
-    border-radius: 8px;
-
-    &:hover,
-    &:focus-within {
-        background: #f1f1f1;
-    }
-
-    &:hover .subtask-actions,
-    &:focus-within .subtask-actions {
-        opacity: 1;
-    }
-}
-
-.subtask-bullet {
-    flex-shrink: 0;
-    color: #000;
-}
-
-.subtask-title {
-    flex: 1;
-    min-width: 0;
-    color: #000;
-    font-size: 14px;
-    overflow-wrap: anywhere;
-}
-
-.subtask-actions {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    gap: 4px;
-    opacity: 0;
-
-    app-button-edit-delete {
-        display: inline-flex;
-        align-items: center;
-    }
-}
-
-.action-divider {
-    flex-shrink: 0;
-    width: 1px;
-    height: 20px;
-    background: #d1d1d1;
-}
-
-.subtask-row--editing {
-    border-bottom: 1px solid #29abe2;
-    border-radius: 0;
-    background: #fff;
-
-    &:hover,
-    &:focus-within {
-        background: #fff;
-    }
-}
-
-.subtask-edit-input {
-    flex: 1;
-    width: 100%;
-    min-width: 0;
-    min-height: 28px;
-    padding: 0;
-
-    border: none;
-    border-radius: 0;
-    outline: none;
-    background: transparent;
-    color: #000;
-    font: inherit;
-    font-size: 14px;
-
-    &[aria-invalid='true'] {
-        box-shadow: inset 0 -1px #b42318;
-    }
-}
-
-.subtask-actions--editing {
-    opacity: 1;
-}
-
-.subtask-confirm {
-    display: grid;
-    flex-shrink: 0;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    padding: 2px;
-
-    border: none;
-    border-radius: 4px;
-    background: transparent;
-    color: $background-secondary;
-    cursor: pointer;
-
-    svg {
-        width: 24px;
-        height: 24px;
-    }
-
-    &:hover:not(:disabled) {
-        background: #e7f6fc;
-        color: #29abe2;
-    }
-
-    &:focus-visible {
-        outline: 2px solid #29abe2;
-        outline-offset: 2px;
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: wait;
-    }
+  min-width: 0;
 }
 
 .error {
-    margin: 4px 0 0;
-    color: #b42318;
-    font-size: 14px;
-    overflow-wrap: anywhere;
+  margin: 4px 0 0;
+  color: #b42318;
+  font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
+/* Bleibt unterhalb des Formulars sichtbar. */
 .dialog-footer {
-    display: flex;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 24px 40px;
-    background: #fff;
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 40px;
+  background: #fff;
 
-    p {
-        margin: 0;
-        color: #000;
-        font-size: 13px;
-    }
+  p {
+    margin: 0;
+    color: #000;
+    font-size: 13px;
+  }
 }
 
 .footer-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-left: auto;
-}
-
-.visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-    border: 0;
-}
-
-@media (hover: none) {
-    .subtask-actions {
-        opacity: 1;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-left: auto;
 }
 
 @media (max-width: 1000px) {
-    .dialog-header {
-        padding: 24px;
+  .dialog-header {
+    padding: 24px;
 
-        h1 {
-            font-size: 36px;
-        }
+    h1 {
+      font-size: 36px;
     }
+  }
 
-    .task-form {
-        padding: 0 24px 16px;
-    }
+  .task-form {
+    padding: 0 24px 16px;
+  }
 
-    .dialog-footer {
-        padding: 20px 24px;
-    }
+  .dialog-footer {
+    padding: 20px 24px;
+  }
 }
