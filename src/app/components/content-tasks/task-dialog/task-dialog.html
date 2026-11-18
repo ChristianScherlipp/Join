@@ -1,7 +1,20 @@
-<dialog open #dialog aria-labelledby="task-title" [attr.aria-busy]="taskService.saving()"
-  (cancel)="$event.preventDefault(); close()">
+<dialog
+  #dialog
+  aria-labelledby="task-dialog-title"
+  [attr.aria-busy]="taskService.saving()"
+  (cancel)="$event.preventDefault(); close()"
+  (click)="closeOnOutsideClick($event)"
+>
   <header>
-    <p>{{ task().category || 'Task' }}</p>
+    <!-- <p>{{ task().category || 'Task' }}</p> -->
+    @switch (task().category) {
+    @case ('User Story') {
+    <span class="task-card__label task-card__label--user">User Story</span>
+    }
+    @case ('Technical Task') {
+    <span class="task-card__label task-card__label--technical">Technical Task</span>
+    }
+    }
 
     <button type="button" aria-label="Dialog schließen" [disabled]="taskService.saving()" (click)="close()">
       ×
@@ -31,7 +44,8 @@
 
       <ul>
         @for (id of task().worker_id || []; track id) {
-        <li><app-initial-icon [name]="contactName(id)" [withShadow]="false" style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contactName(id) }}</li>
+        <li><app-initial-icon [name]="contactName(id)" [withShadow]="false"
+            style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contactName(id) }}</li>
         } @empty {
         <li>Niemand zugewiesen</li>
         }
@@ -45,20 +59,20 @@
     <section>
       <h2>Subtasks</h2>
 
-      <ul>
-        @for (subtask of task().subtask || []; track $index) {
+      <ul class="subtask-list">
+        @for (
+        subtask of task().subtask ?? [];
+        track $index;
+        let index = $index
+        ) {
         <li>
-          <label class="subtask-option">
-            <input type="checkbox" [checked]="subtask.completed" [disabled]="taskService.saving()"
-              (change)="toggleSubtask($index)" />
+          <button class="subtask-button" type="button" [disabled]="taskService.saving()"
+            [attr.aria-pressed]="subtask.completed" (click)="toggleSubtask(index)">
+            <span class="subtask-icon" [class.completed]="subtask.completed" aria-hidden="true"></span>
 
-            <span [class.completed]="subtask.completed">
-              {{ subtask.title }}
-            </span>
-          </label>
+            <span>{{ subtask.title }}</span>
+          </button>
         </li>
-        } @empty {
-        <li>Keine Unteraufgaben</li>
         }
       </ul>
     </section>

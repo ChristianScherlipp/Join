@@ -10,7 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { TaskWithContacts } from '../../../interfaces/task';
+import { Task, TaskWithContacts } from '../../../interfaces/task';
 import { TaskService } from '../../../services/task-service';
 import { ButtonEditDelete } from '../../elements/button-edit-delete/button-edit-delete';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
@@ -23,6 +23,7 @@ import { InitialIcon } from '../../elements/initial-icon/initial-icon';
   styleUrl: './task-dialog.scss',
 })
 export class TaskDialog implements AfterViewInit, OnDestroy {
+  
   readonly task = input.required<TaskWithContacts>();
 
   readonly closed = output<void>();
@@ -32,10 +33,26 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   readonly taskService = inject(TaskService);
   readonly confirmingDelete = signal(false);
 
+
   readonly dialog =
     viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
 
   private readonly opener = document.activeElement as HTMLElement | null;
+
+  closeOnOutsideClick(event: MouseEvent): void {
+  const dialog = event.currentTarget as HTMLDialogElement;
+  const bounds = dialog.getBoundingClientRect();
+
+  const isOutside =
+    event.clientX < bounds.left ||
+    event.clientX > bounds.right ||
+    event.clientY < bounds.top ||
+    event.clientY > bounds.bottom;
+
+  if (event.target === dialog && isOutside) {
+    this.close();
+  }
+}
 
   ngAfterViewInit(): void {
     this.dialog().nativeElement.showModal();
@@ -75,4 +92,6 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
       this.deleted.emit();
     }
   }
+
+
 }
