@@ -18,7 +18,8 @@
         line-height: 1;
     }
 
-    &__field--error {
+    &__field.category__field--error,
+    &__box.is-open &__field.category__field--error {
         border: 1px solid #E60026;
     }
 
