@@ -61,7 +61,7 @@
                     This field is required
                 </p>
                 <div class="task-form__buttons">
-                    <app-button-primary typeStr="cancel" (click)="clear()">Clear</app-button-primary>
+                    <app-button-primary typeStr="cancel" (click)="close()">Cancel</app-button-primary>
                     <app-button-primary typeStr="createTask" buttonType="submit" [isDisabled]="taskService.saving() || !isFormValid()">Create
                         task</app-button-primary>
                 </div>
