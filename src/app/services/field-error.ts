@@ -100,6 +100,12 @@ export class FieldError {
         return Object.keys(rules).every((field) => !rules[field](values[field] ?? ''));
     }
 
+    // Prüft ein einzelnes Feld still, ohne Meldung anzuzeigen.
+    isFieldValid(field: string, value: string): boolean {
+        const rule = rules[field] ?? addTaskRules[field];
+        return !rule(value);
+    }
+
     isVisible(field: string): boolean {
         return !!this.messages()[field];
     }
