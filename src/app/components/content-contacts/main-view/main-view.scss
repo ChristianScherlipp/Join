@@ -234,7 +234,7 @@ a {
   .mobile-actions {
     position: fixed;
     right: 16px;
-    bottom: 145px;
+    bottom: calc(5rem + 25px);
     z-index: 5;
     display: block;
 

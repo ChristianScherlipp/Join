@@ -12,12 +12,12 @@
     overflow-y: auto;
     overflow-x: hidden;
 
-    @include respond-below(1000px) {
-        height: calc(100vh - 6rem - 7.5rem);
+    @include respond-below(1100px) {
+        height: calc(100vh - 6rem - 5rem);
     }
 
     @include respond-below(360px) {
-        height: calc(100vh - 6rem - 7.5rem + 20px);
+        height: calc(100vh - 6rem - 5rem + 20px);
     }
 
     @include respond-below(1100px) {

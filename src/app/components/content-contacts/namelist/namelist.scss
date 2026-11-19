@@ -170,7 +170,7 @@ app-initial-icon {
   .mobile-add-button {
     position: fixed;
     right: 20px;
-    bottom: 145px;;
+    bottom: calc(5rem + 25px);
     z-index: 2;
     display: grid;
     place-items: center;
