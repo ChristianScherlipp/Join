@@ -1,5 +1,6 @@
 @use 'abstract/variables' as *;
 @use '../../../styles.scss' as *;
+@use 'abstract/mixins' as *;
 
 .nav-bar {
   width: 14.5rem;
@@ -99,73 +100,78 @@
 
 //Responsive design
 
-@media (max-width: 1000px) {
-  .nav-bar {
+.nav-bar {
+  @include respond-below(1100px) {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: auto;
-    min-height: 5rem;
-    flex-direction: row;   
+    height: 7.5rem;
+    flex-direction: row;
     z-index: 10;
   }
+}
 
-  .nav-logo,
-  .legal-styles {
+.nav-logo,
+.legal-styles {
+  @include respond-below(1100px) {
     display: none;
   }
+}
 
-  .menu {
-    width: 100%;
-    height: 100%;
+.menu {
+  @include respond-below(1100px) {
+    width: auto;
+    flex: 1;
+    height: auto;
     flex-direction: row;
     justify-content: space-between;
-    gap: 0;
-    margin: 20px 20px;
+    align-items: stretch;
+    gap: 0.25rem;
+    margin: 0 20px;
   }
 
-  .menu-link {
+  @include respond-below(360px) {
+    margin: 0 8px;
+  }
+
+  li {
+    @include respond-below(1100px) {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+    }
+  }
+}
+
+.menu-link {
+  @include respond-below(1100px) {
     width: 100%;
-    height: calc(100% - 10px);
-    margin: 5px auto;
-    padding: 0.5rem 0.5rem;
+    max-width: 100px;
+    height: auto;
+    margin: 0 auto;
+    justify-content: center;
+    padding: 0.5rem 0.25rem;
     font-size: 1rem;
     text-align: center;
     line-height: 1.2;
     display: flex;
     flex-direction: column;
 
+    &:hover{
+      border-radius: 20px;
+    }
+
     &.router-link-active {
       border-radius: 20px;
     }
+
+    span {
+      hyphens: auto;
+    }
   }
 
-  .menu-link span {
-    hyphens: auto;
-  }
-
-  .menu-link {
-    max-width: 7rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .menu-link {
-    max-width: 140px;
-  }
-
-  .menu {
-    margin: 20px 20px;
-  }
-}
-
-@media (max-width: 360px) {
-  .menu-link {
-    max-width: 80px;
-  }
-
-  .menu {
-    margin: 10px 10px;
+  @include respond-below(400px) {
+    font-size: 0.85rem;
   }
 }
