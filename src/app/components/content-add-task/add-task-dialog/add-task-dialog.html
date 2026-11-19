@@ -1,4 +1,4 @@
-<dialog #dialog closedby="any">
+<dialog #dialog closedby="any" (cancel)="onCancel($event)" (close)="resetForm()">
     <header class="heading">
         <h1>Add Task</h1>
         <button class="heading__close" type="button" (click)="close()">
