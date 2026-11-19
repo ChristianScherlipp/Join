@@ -63,7 +63,7 @@
           <li><app-initial-icon [name]="contactName(id)" [withShadow]="false"
               style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contactName(id) }}</li>
           } @empty {
-          <li>Niemand zugewiesen</li>
+          <li class="empty">no user assigned</li>
           }
         </ul>
 
@@ -90,32 +90,20 @@
             <span>{{ subtask.title }}</span>
           </button>
         </li>
-        }
+        }@empty {
+        <li class="empty">no subtasks</li>}
       </ul>
     </section>
 
     @if (taskService.errorMessage()) {
     <p role="alert">{{ taskService.errorMessage() }}</p>
     }
-
-    @if (confirmingDelete()) {
-    <div role="group" aria-label="Löschen bestätigen">
-      <p>Task endgültig löschen?</p>
-
-      <button type="button" [disabled]="taskService.saving()" (click)="deleteTask()">
-        Löschen bestätigen
-      </button>
-
-      <button type="button" [disabled]="taskService.saving()" (click)="confirmingDelete.set(false)">
-        Abbrechen
-      </button>
-    </div>
-    }
   </div>
 
   <footer>
     <fieldset class="dialog-actions" [disabled]="taskService.saving()">
-      <app-button-edit-delete typeStr="delete" (click)="confirmingDelete.set(true)"></app-button-edit-delete>
+      <app-button-edit-delete typeStr="delete" [isDisabled]="taskService.saving()"
+        (actionClicked)="deleteTask()"></app-button-edit-delete>
 
       <span aria-hidden="true" class="hyphen">|</span>
 

@@ -31,7 +31,6 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   readonly deleted = output<void>();
 
   readonly taskService = inject(TaskService);
-  readonly confirmingDelete = signal(false);
 
 
   readonly dialog =
