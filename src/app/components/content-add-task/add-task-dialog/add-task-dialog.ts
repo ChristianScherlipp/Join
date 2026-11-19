@@ -52,11 +52,18 @@ export class AddTaskDialog {
   }
 
   /**
-   * Leert das Formular und schließt den Dialog, sofern gerade nicht gespeichert wird.
+   * Verhindert das Schließen per Klick außerhalb oder Esc, während gespeichert wird.
+   */
+  onCancel(event: Event): void {
+    if (this.taskService.saving()) event.preventDefault();
+  }
+
+  /**
+   * Schließt den Dialog, sofern gerade nicht gespeichert wird.
+   * Das Formular wird über das (close)-Event geleert.
    */
   close(): void {
     if (this.taskService.saving()) return;
-    this.resetForm();
     this.dialog.nativeElement.close();
   }
 
@@ -105,7 +112,7 @@ export class AddTaskDialog {
   }
 
   // Leert das Formular und die Fehlermeldungen für die nächste Aufgabe.
-  private resetForm(): void {
+  resetForm(): void {
     this.taskForm.resetForm();
     this.title = '';
     this.description = '';

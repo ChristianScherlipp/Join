@@ -8,13 +8,19 @@ dialog {
     padding: 4rem 4.625rem;
     box-sizing: border-box;
     max-width: 95vw;
+    height: 870px;
     max-height: 95vh;
     overflow-y: auto;
     scrollbar-width: none;
     box-shadow: 0px 0px 4px 0px #00000066;
 
+    @include respond-below(1175px) {
+        padding-inline: calc((95vw - 969px) / 2);
+    }
+
     @include respond-below(1100px) {
         width: 95vw;
+        height: auto;
         padding: fluid(24, 64) fluid(16, 74);
         border-radius: fluid(16, 32);
     }
@@ -26,7 +32,15 @@ dialog {
         overlay 0.4s allow-discrete;
 
     &[open] {
-        transform: translateX(0); 
+        display: flex;
+        flex-direction: column;
+        transform: translateX(0);
+    }
+
+    section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     @starting-style {
@@ -75,11 +89,11 @@ dialog {
 .task-form {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 3.75rem;
 
-    // 2 columnas de 440px + 2 gaps de 3rem + divider de 1px
     @media (min-width: 1101px) {
-        max-width: calc(61rem + 1px);
+        max-width: calc(60.5rem + 1px);
     }
 
     @include respond-below(1100px) {
@@ -88,7 +102,7 @@ dialog {
 
     &__columns {
         display: flex;
-        gap: 3rem;
+        gap: 2.75rem;
 
         @include respond-below(1100px) {
             flex-direction: column;
@@ -99,6 +113,7 @@ dialog {
     &__actions {
         display: flex;
         justify-content: space-between;
+        margin-top: auto;
 
         @include respond-below(1100px) {
             flex-direction: column;
@@ -175,7 +190,7 @@ dialog {
         flex-direction: column;
 
         @media (min-width: 1101px) {
-            max-width: 27.5rem; // 440px
+            flex: 0 0 27.5rem;
         }
 
         &--left {
