@@ -8,12 +8,15 @@ import { TaskStatus, TaskWithContacts } from '../../interfaces/task';
 import { TaskDialog } from '../content-tasks/task-dialog/task-dialog';
 import { TaskEditDialog } from '../content-tasks/task-edit-dialog/task-edit-dialog';
 import { AddTaskDialog } from '../content-add-task/add-task-dialog/add-task-dialog';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 import {
   CdkDrag,
   CdkDragDrop,
   CdkDragMove,
   CdkDragPreview,
-  CdkDragStart,
   CdkDropList,
   CdkDropListGroup,
 } from '@angular/cdk/drag-drop';
@@ -25,16 +28,17 @@ interface BoardColumn {
 }
 
 @Component({
-  imports: [ButtonPrimary, TaskCard, SearchInput, TaskDialog, TaskEditDialog, AddTaskDialog, ToastSuccess, CdkDropListGroup, CdkDropList, CdkDrag, CdkDragPreview],
+  imports: [ButtonPrimary, TaskCard, SearchInput, TaskDialog, TaskEditDialog, AddTaskDialog, ToastSuccess, CdkDropListGroup, CdkDropList, CdkDrag, CdkDragPreview, CdkScrollable],
   selector: 'app-content-board',
   styleUrl: './content-board.scss',
   templateUrl: './content-board.html',
 })
 export class ContentBoard {
   private readonly taskService = inject(TaskService);
+  private readonly document = inject(DOCUMENT);
+  private readonly breakpoints = inject(BreakpointObserver);
   private readonly addTaskDialog = viewChild.required(AddTaskDialog);
   private readonly toast = viewChild(ToastSuccess);
-  private readonly document = inject(DOCUMENT);
 
   readonly tasksByStatus = this.taskService.tasksByStatus;
 
@@ -45,6 +49,12 @@ export class ContentBoard {
     this.taskService.tasksWithContacts().find(
       task => task.id === this.selectedTaskId()
     ) ?? null
+  );
+
+  // true, wenn das Board schmaler als 1100px ist (Karten liegen dann nebeneinander).
+  readonly isNarrow = toSignal(
+    this.breakpoints.observe('(max-width: 1100px)').pipe(map(state => state.matches)),
+    { initialValue: false },
   );
 
   readonly columns: BoardColumn[] = [
@@ -118,6 +128,18 @@ export class ContentBoard {
     this.taskService.updatePositions(changes);
   }
 
+  // Neigt die gezogene Karte in Zugrichtung (rechts → 3deg, links → -3deg).
+  onDragMoved(event: CdkDragMove): void {
+    const x = event.distance.x;
+    const tilt = x > 20 ? '3deg' : x < -20 ? '-3deg' : '0deg';
+    this.setDragStyle('--drag-tilt', tilt);
+  }
+
+  // Stellt die Karte nach dem Loslassen wieder gerade.
+  onDragEnded(): void {
+    this.setDragStyle('--drag-tilt', '0deg');
+  }
+
   // Findet in der vollen Liste die Stelle, die zum Platz in der sichtbaren Liste passt.
   private findInsertIndex(
     fullList: TaskWithContacts[],
@@ -131,27 +153,6 @@ export class ContentBoard {
     if (lastVisible) return fullList.findIndex(task => task.id === lastVisible.id) + 1;
 
     return 0;
-  }
-
-  onDragStarted(event: CdkDragStart): void {
-    const card = event.source.element.nativeElement.getBoundingClientRect();
-    const pointer = 'touches' in event.event ? event.event.touches[0] : event.event;
-    const x = pointer.clientX - card.left;
-    const y = pointer.clientY - card.top;
-    this.setDragStyle('--drag-origin', `${x}px ${y}px`);
-    this.setDragStyle('--drag-tilt', '0deg');
-  }
-
-  // Neigt die Karte sanft, je nachdem ob sie links oder rechts vom Startpunkt ist.
-  onDragMoved(event: CdkDragMove): void {
-    const x = event.distance.x;
-    const tilt = x > 20 ? '3deg' : x < -20 ? '-3deg' : '0deg';
-    this.setDragStyle('--drag-tilt', tilt);
-  }
-
-  // Nach dem Loslassen wieder gerade.
-  onDragEnded(): void {
-    this.setDragStyle('--drag-tilt', '0deg');
   }
 
   // Schreibt eine CSS-Variable ganz oben ins Dokument, damit die Vorschau sie lesen kann.
