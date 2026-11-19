@@ -149,3 +149,36 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
   color:$text-grey;                        
   text-align: center;
 }
+
+// Platzhalter beim Ziehen: gleich groß wie die Karte, Aussehen wie "No tasks"
+.cdk-drag-placeholder {
+    position: relative;
+    visibility: hidden;
+}
+
+.cdk-drag-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    visibility: visible; 
+    z-index: 1;
+    border: 1px dashed $border-input;      
+    border-radius: 1.5rem;        
+          
+}
+// Andere Karten rutschen weich zur Seite, während gezogen wird
+.board__cards.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// Nach dem Loslassen gleitet die Karte weich an ihren Platz
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.board__preview > app-task-card {
+    display: block;
+    rotate: var(--drag-tilt, 0deg);
+    transition: rotate 400ms cubic-bezier(0.2, 0, 0, 1);
+    border-radius: 1.5rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
