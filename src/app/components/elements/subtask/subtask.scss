@@ -96,7 +96,30 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         padding: 0;
         overflow-y: auto;
         list-style: none;
+
+        @supports not selector(::-webkit-scrollbar) {
+            scrollbar-width: thin;
+            scrollbar-color: #c4c4c4 transparent;
+        }
+
+        &::-webkit-scrollbar {
+            width: 0.375rem;
+        }
+    
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background-color: #c4c4c4;
+            border-radius: 1rem;
+        }
+    
+        &::-webkit-scrollbar-button {
+            display: none;
+        }
     }
+
 
     &__item {
         display: flex;
