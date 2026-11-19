@@ -1,14 +1,23 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
+//Gleiche Maximalebreite wie das board (4 spalten + 3 abstaende).
+$page-max-width: 67.5rem;
+
 .help {
   height: calc(100vh - 6rem);
   overflow-y: auto;
-  padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
+  padding: fluid(48, 78) fluid(16, 96) fluid(24, 64) fluid(16, 96);
   font-size: 1rem;
+  overflow-wrap: anywhere;
 
- @include respond-below(1000px) {
-   height: calc(100vh - 6rem - 7.5rem);
+  @include respond-below(1100px) {
+    height: calc(100vh - 6rem - 7.5rem);
+  }
+
+  // Inhalt nicht breiter als das Board, der Scrollbereich bleibt volle Breite.
+  > * {
+    max-width: $page-max-width;
   }
 
   h1 {
@@ -18,13 +27,13 @@
   }
 
   h2 {
-    font-size: 1.6875rem;
+    font-size: fluid(20, 27);
     font-weight: 700;
     margin: fluid(24, 32) 0 fluid(8, 16) 0;
   }
 
   h3 {
-    font-size: 1.25rem;
+    font-size: fluid(16, 20);
     font-weight: 700;
     margin: 0;
   }
@@ -64,7 +73,7 @@
     &::before {
       content: counter(step) '.';
       grid-row: 1 / span 10;
-      font-size: 1.6875rem;
+      font-size: fluid(20, 27);
       font-weight: 700;
     }
 
