@@ -1,10 +1,5 @@
-<dialog
-  #dialog
-  aria-labelledby="task-dialog-title"
-  [attr.aria-busy]="taskService.saving()"
-  (cancel)="$event.preventDefault(); close()"
-  (click)="closeOnOutsideClick($event)"
->
+<dialog #dialog aria-labelledby="task-dialog-title" [attr.aria-busy]="taskService.saving()"
+  (cancel)="$event.preventDefault(); close()" (click)="closeOnOutsideClick($event)">
   <header>
     <!-- <p>{{ task().category || 'Task' }}</p> -->
     @switch (task().category) {
@@ -36,24 +31,46 @@
 
     <dl class="priority">
       <dt>Priority:</dt>
-      <dd>{{ task().priority || '–' }}</dd>
+      <dd>
+        @switch (task().priority) {
+        @case ('urgent') {
+        <span>Urgent</span>
+        <img class="priority-icon urgent" src="./assets/icons/prio-urgent.svg" alt="" />
+        }
+
+        @case ('medium') {
+        <span>Medium</span>
+        <img class="priority-icon medium" src="./assets/icons/prio-medium.svg" alt="" />
+        }
+
+        @case ('low') {
+        <span>Low</span>
+        <img class="priority-icon low" src="/assets/icons/prio-low.svg" alt="" />
+        }
+
+        @default {
+        <span>–</span>
+        }
+        }
+      </dd>
     </dl>
 
     <section>
       <h2>Assigned to:</h2>
+      <div class="assigned-list">
+        <ul>
+          @for (id of task().worker_id || []; track id) {
+          <li><app-initial-icon [name]="contactName(id)" [withShadow]="false"
+              style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contactName(id) }}</li>
+          } @empty {
+          <li>Niemand zugewiesen</li>
+          }
+        </ul>
 
-      <ul>
-        @for (id of task().worker_id || []; track id) {
-        <li><app-initial-icon [name]="contactName(id)" [withShadow]="false"
-            style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contactName(id) }}</li>
-        } @empty {
-        <li>Niemand zugewiesen</li>
+        @if (taskService.contactErrorMessage()) {
+        <p role="alert">{{ taskService.contactErrorMessage() }}</p>
         }
-      </ul>
-
-      @if (taskService.contactErrorMessage()) {
-      <p role="alert">{{ taskService.contactErrorMessage() }}</p>
-      }
+      </div>
     </section>
 
     <section>
