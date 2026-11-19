@@ -1,4 +1,4 @@
-<section class="board">
+<section class="board" cdkScrollable>
   <header class="board__head">
     <h1>Board</h1>
 
@@ -25,9 +25,13 @@
       </header>
 
       <div class="board__cards" cdkDropList [cdkDropListData]="visibleTasks()[column.id]"
+        [cdkDropListOrientation]="isNarrow() ? 'horizontal' : 'vertical'"
+        [cdkDropListAutoScrollStep]="8"  
         (cdkDropListDropped)="onDrop($event, column.id)">
         @for (task of visibleTasks()[column.id]; track task.id) {
-        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag (cdkDragMoved)="onDragMoved($event)"
+        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag 
+          [cdkDragStartDelay]="{ touch: 250, mouse: 0 }"
+          (cdkDragMoved)="onDragMoved($event)" 
           (cdkDragEnded)="onDragEnded()">
           <ng-template cdkDragPreview [matchSize]="true">
             <div class="board__preview">
