@@ -1,7 +1,7 @@
-<dialog #dialog aria-labelledby="task-dialog-title" [attr.aria-busy]="taskService.saving()"
-    (cancel)="$event.preventDefault(); close()">
+<dialog #dialog aria-labelledby="task-edit-dialog-title" [attr.aria-busy]="taskService.saving()"
+    (cancel)="$event.preventDefault(); close()" (click)="closeOnOutsideClick($event)">
     <header class="dialog-header">
-        <h1 id="task-dialog-title">Edit Task</h1>
+        <h1 id="task-edit-dialog-title">Edit Task</h1>
 
         <button class="close-button" type="button" aria-label="Dialog schließen" [disabled]="taskService.saving()"
             (click)="close()">
@@ -57,33 +57,8 @@
                 </div>
 
                 <fieldset class="contacts-field">
-                    <app-drop-down-assignedto></app-drop-down-assignedto>
+                    <app-drop-down-assignedto [(selectedContacts)]="selectedContacts"></app-drop-down-assignedto>
                 </fieldset>
-
-
-
-                <label class="field">
-                    <app-drop-down-category></app-drop-down-category>
-                </label>
-
-                <label class="field">
-                    <span>Status<span class="required">*</span></span>
-
-                    <select name="status" [(ngModel)]="status" #statusField="ngModel" required>
-                        <option value="" disabled>Select status</option>
-
-                        @for (item of statuses; track item.value) {
-                        <option [value]="item.value">{{ item.label }}</option>
-                        }
-                    </select>
-
-                    @if (
-                    (statusField.touched || submitted) &&
-                    statusField.invalid
-                    ) {
-                    <span class="error">Bitte einen Status wählen.</span>
-                    }
-                </label>
 
                 <section class="subtasks" aria-labelledby="subtasks-title">
                     <app-subtask [(subtasks)]="subtasks"></app-subtask>
@@ -106,13 +81,8 @@
         <p><span class="required">*</span>This field is required</p>
 
         <div class="footer-actions">
-            <app-button-primary typeStr="cancel" buttonType="button" [isDisabled]="taskService.saving()"
-                (click)="close()">
-                Cancel
-            </app-button-primary>
-
-            <app-button-primary typeStr="createTask" buttonType="button" [isDisabled]="taskService.saving()"
-                (click)="save(form)">
+            <app-button-primary typeStr="createTask" buttonType="button" widthStr="5.5625rem"
+                [isDisabled]="taskService.saving()" (click)="save(form)">
                 {{ taskService.saving() ? 'Saving…' : 'Ok' }}
             </app-button-primary>
         </div>

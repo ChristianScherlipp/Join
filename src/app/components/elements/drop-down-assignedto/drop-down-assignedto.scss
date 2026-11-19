@@ -10,12 +10,8 @@
     &__label {
         margin: 0;
         color: $text-darkblue;
-        font-size: 1.25rem;
+        font-size: fluid(16, 20);
         line-height: 1.2;
-
-        @include respond-below(810px) {
-            font-size: 1rem;
-        }
     }
 
     // Bezugspunkt fuer die aufklappende Liste.
@@ -49,7 +45,7 @@
         background: transparent;
         color: $text-secondary;
         font-family: inherit;
-        font-size: 1.25rem;
+        font-size: fluid(16, 20);
         cursor: pointer;
     }
 
@@ -106,7 +102,7 @@
         background: transparent;
         color: $text-secondary;
         font-family: inherit;
-        font-size: 1.25rem;
+        font-size: fluid(16, 20);
         text-align: left;
         cursor: pointer;
 
@@ -145,11 +141,29 @@
     &__selected {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
     }
 
     &__chip {
         width: 2.625rem;
         height: 2.625rem;
+    }
+
+    &__chip + &__chip {
+        margin-left: -0.675rem;
+    }
+
+    &__more {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: 2.626rem;
+        height: 2.625rem;
+        margin-left: -0.675rem;
+        border: 2px solid $background-primary;
+        border-radius: 50%;
+        background-color: $background-grey;
+        color: text-secondary;
+        font-size: 1rem;
     }
 }

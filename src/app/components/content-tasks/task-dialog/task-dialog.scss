@@ -42,15 +42,35 @@ dd {
   font-size: 16px;
 }
 
+.task-card__label {
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0.25rem 1rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  &--user {
+    background-color: $label-user;
+  }
+
+  &--technical {
+    background-color: $label-technical-task;
+  }
+}
+
 dt {
   color: #42526e;
   font-size: 16px;
   font-weight: 700;
 }
 
+/* Header und Footer bleiben außerhalb des Scrollbereichs. */
 header,
 footer {
-  position: static;
   flex: 0 0 auto;
   box-sizing: border-box;
   padding: 48px 40px;
@@ -63,13 +83,6 @@ header {
   justify-content: space-between;
   gap: 16px;
 
-  p {
-    padding: 4px 16px;
-    border-radius: 8px;
-    background: aquamarine;
-    overflow-wrap: anywhere;
-  }
-
   button {
     flex-shrink: 0;
     display: grid;
@@ -78,7 +91,8 @@ header {
     height: 32px;
     padding: 0;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 2rem;
+    align-content: center;
 
     &:hover:not(:disabled) {
       background: #f1f2f3;
@@ -86,6 +100,7 @@ header {
   }
 }
 
+/* Nur der mittlere Inhalt scrollt. */
 .dialog-content {
   display: flex;
   flex: 1 1 auto;
@@ -96,7 +111,7 @@ header {
   padding: 16px 48px;
   overflow-y: auto;
 
-  >* {
+  > * {
     flex-shrink: 0;
   }
 
@@ -139,53 +154,24 @@ section {
   }
 }
 
-ul,
-ol {
+ul {
   margin: 0;
   padding: 0;
   list-style: none;
 
   li {
-    margin-bottom: 8px;
-    font-size: 16px;
-    overflow-wrap: anywhere;
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 10px;
+    margin-bottom: 8px;
     padding: 7px;
+    font-size: 16px;
+    overflow-wrap: anywhere;
 
     &:last-child {
       margin-bottom: 0;
     }
   }
-}
-
-.subtask-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-
-  input {
-    flex-shrink: 0;
-    margin: 0;
-    accent-color: $background-secondary;
-
-    &:disabled {
-      cursor: wait;
-    }
-  }
-
-  span {
-    min-width: 0;
-    overflow-wrap: anywhere;
-    white-space: pre-wrap;
-  }
-}
-
-.completed {
-  text-decoration: line-through;
 }
 
 footer {
@@ -217,6 +203,7 @@ footer {
   font-size: x-large;
 }
 
+/* Gemeinsame Darstellung der nativen Buttons im Dialog. */
 button {
   border: 0;
   background: transparent;
@@ -225,12 +212,12 @@ button {
   cursor: pointer;
 
   &:focus-visible {
-    outline: 2px solid #29abe2;
+    outline: 2px solid $text-darkblue;
     outline-offset: 3px;
   }
 
   &:hover:not(:disabled) {
-    color: #29abe2;
+    color: $text-darkblue;
   }
 
   &:disabled {
@@ -239,8 +226,45 @@ button {
   }
 }
 
-@media (max-width: 1000px) {
+.subtask-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: left;
 
+  span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &:hover:not(:disabled) {
+    background: #f1f2f3;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+/* Die Maske bestimmt die Form, die Hintergrundfarbe die Iconfarbe. */
+.subtask-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  background-color: $background-secondary;
+
+  mask: url('/assets/icons/uncheckt.svg') center / contain no-repeat;
+
+  &.completed {
+    mask-image: url('/assets/icons/checkt.svg');
+  }
+}
+
+@media (max-width: 1000px) {
   header,
   footer {
     padding: 20px 24px;

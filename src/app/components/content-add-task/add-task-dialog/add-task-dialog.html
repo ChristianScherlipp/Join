@@ -1,4 +1,4 @@
-<dialog #dialog closedby="any">
+<dialog #dialog closedby="any" (cancel)="onCancel($event)" (close)="resetForm()">
     <header class="heading">
         <h1>Add Task</h1>
         <button class="heading__close" type="button" (click)="close()">
@@ -6,14 +6,15 @@
         </button>
     </header>
     <section>
-        <form #taskForm="ngForm" class="task-form">
+        <form #taskForm="ngForm" class="task-form" (ngSubmit)="createTask()">
             <div class="task-form__columns">
                 <div class="task-form__column task-form__column--left">
                     <div class="task-form__group">
                         <label class="task-form__label">
                             <p class="task-form__title">
                                 Title
-                                <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
+                                <img class="task-form__required" src="./assets/icons/asterisk.svg" alt=""
+                                    aria-hidden="true">
                             </p>
                             <input name="title" [(ngModel)]="title" (blur)="fieldError.check('title', title)"
                                 class="task-form__input task-form__input--text"
@@ -21,26 +22,28 @@
                                 placeholder="Enter a title" />
                         </label>
                         @if (fieldError.isVisible('title')) {
-                            <span class="task-form__field-error" role="alert">{{ fieldError.message('title') }}</span>
+                        <span class="task-form__field-error" role="alert">{{ fieldError.message('title') }}</span>
                         }
                     </div>
                     <label class="task-form__label">
                         Description
-                        <textarea class="task-form__input task-form__input--text" rows="4"
+                        <textarea name="description" [(ngModel)]="description"
+                            class="task-form__input task-form__input--text" rows="4"
                             placeholder="Enter a description"></textarea>
                     </label>
                     <div class="task-form__group">
                         <label class="task-form__label">
                             <p class="task-form__title">
                                 Due date
-                                <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
+                                <img class="task-form__required" src="./assets/icons/asterisk.svg" alt=""
+                                    aria-hidden="true">
                             </p>
                             <input name="dueDate" [(ngModel)]="dueDate" (blur)="fieldError.check('dueDate', dueDate)"
                                 required onclick="this.showPicker()" class="task-form__input task-form__input--text"
                                 [class.task-form__input--error]="fieldError.isVisible('dueDate')" type="date" />
                         </label>
                         @if (fieldError.isVisible('dueDate')) {
-                            <span class="task-form__field-error" role="alert">{{ fieldError.message('dueDate') }}</span>
+                        <span class="task-form__field-error" role="alert">{{ fieldError.message('dueDate') }}</span>
                         }
                     </div>
                 </div>
@@ -48,10 +51,10 @@
                 <div class="task-form__divider"></div>
 
                 <div class="task-form__column task-form__column--right">
-                    <app-button-priority></app-button-priority>
-                    <app-drop-down-assignedto></app-drop-down-assignedto>
-                    <app-drop-down-category></app-drop-down-category>
-                    <app-subtask></app-subtask>
+                    <app-button-priority [(selected)]="priority" />
+                    <app-drop-down-assignedto [(selectedContacts)]="assignedContacts" />
+                    <app-drop-down-category [(selectedCategory)]="category" />
+                    <app-subtask [(subtasks)]="subtasks" />
                 </div>
             </div>
 
@@ -61,11 +64,16 @@
                     This field is required
                 </p>
                 <div class="task-form__buttons">
-                    <app-button-primary typeStr="cancel">Clear</app-button-primary>
-                    <app-button-primary typeStr="createTask" buttonType="submit">Create
+                    <app-button-primary typeStr="cancel" (click)="close()">Cancel</app-button-primary>
+                    <app-button-primary typeStr="createTask" buttonType="submit"
+                        [isDisabled]="taskService.saving() || !isFormValid()">Create
                         task</app-button-primary>
                 </div>
+                @if (taskService.errorMessage()) {
+                <p class="task-form__field-error" role="alert">{{ taskService.errorMessage() }}</p>
+                }
             </div>
         </form>
     </section>
 </dialog>
+<app-toast-success #toast />

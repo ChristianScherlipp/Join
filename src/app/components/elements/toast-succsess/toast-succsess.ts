@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-toast-success',
@@ -6,6 +6,8 @@ import { Component, signal } from '@angular/core';
   styleUrl: './toast-succsess.scss',
 })
 export class ToastSuccess {
+  // 'side': entra desde la derecha. 'up': sube desde abajo hasta el centro.
+  readonly direction = input<'side' | 'up'>('side');
   readonly message = signal('');
   private timer?: number;
 

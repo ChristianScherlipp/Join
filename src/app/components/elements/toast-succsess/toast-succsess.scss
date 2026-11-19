@@ -30,3 +30,20 @@
     transform: translateX(50vw);     
   }
 }
+
+// Variante: sube desde abajo y se queda en el centro.
+.toast-success--up {
+  top: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  animation: toast-slide-up 0.5s ease-out forwards;
+}
+
+@keyframes toast-slide-up {
+  0% {
+    transform: translate(-50%, 50vh);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}

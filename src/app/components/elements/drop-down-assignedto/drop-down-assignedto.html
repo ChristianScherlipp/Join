@@ -53,8 +53,11 @@
 
     <!-- Ausgewählte Kontakte als Initial-Icons unter dem Feld. -->
     <div class="assign__selected">
-        @for (contact of selectedContacts(); track contact.id) {
+        @for (contact of visibleContacts(); track contact.id) {
             <app-initial-icon class="assign__chip" [name]="contact.name" />
+        }
+        @if (hasMoreContacts()) {
+            <span class="assign__more">+{{ hiddenContacts() }}</span>
         }
     </div>
 </section>
