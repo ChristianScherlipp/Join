@@ -14,7 +14,7 @@
             (input)="onInput($event)"
             (focus)="activateInput()"
             (blur)="deactivateInput()"
-            (keydown.enter)="addSubtask()"
+            (keydown.enter)="$event.preventDefault(); addSubtask()"
         >
         @if (isInputActive()) {
             <!-- mousedown verhindern, damit das Feld beim Klick den Fokus (und die Buttons) behält. -->
@@ -42,7 +42,7 @@
                             aria-label="Edit subtask"
                             [value]="editText()"
                             (input)="onEditInput($event)"
-                            (keydown.enter)="saveEdit()"
+                            (keydown.enter)="$event.preventDefault(); saveEdit()"
                         >
                         <div class="subtask__actions">
                             <app-button-edit-delete typeStr="delete" [needText]="false" (actionClicked)="deleteSubtask(item.id)" />
