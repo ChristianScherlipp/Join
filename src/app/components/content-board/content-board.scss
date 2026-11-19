@@ -60,6 +60,11 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     cursor: pointer;
     transition: transform 150ms ease, border-color 0.2s ease, box-shadow 0.2s ease;
     will-change: transform;
+
+    @include respond-below(1100px) {
+        width: 2rem;
+        height: 2rem;
+    }
 }
 
 .board__plus-icon {
@@ -69,6 +74,11 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     -webkit-mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
     mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
     transition: background-color 0.2s ease;
+
+    @include respond-below(1100px) {
+        width: 0.875rem;                         
+        height: 0.875rem;
+    }
 }
 
 .board__plus:hover {
@@ -81,6 +91,32 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     background-color: $hover-primary;
 }
 
+.board__add-mobile {
+    display: none;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: $background-secondary;
+    cursor: pointer;
+
+    @include respond-below(700px) {
+        display: flex;
+    }
+}
+
+.board__add-mobile-icon {
+    width: 1rem;
+    height: 1rem;
+    background-color: $background-primary;
+    -webkit-mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
+    mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
+}
+
 .board__column-head {
     display: flex;
     justify-content: space-between;
@@ -90,6 +126,13 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     padding-left: 0.625rem;
     padding-right: 1rem;
     margin-bottom: 0.72rem;
+
+    @include respond-below(1100px) {
+        min-height: auto;                        
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 1rem; 
+    }
 }
 
 .board__column-title {
@@ -97,6 +140,11 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     font-size: 1.25rem;
     line-height: 1.2;
     color: $text-blue;
+
+    @include respond-below(1100px) {
+        font-size: 1.6875rem;
+        font-weight: 700;
+    }
 }
 
 .board__actions {
@@ -105,9 +153,19 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     gap: 2rem;
 
     @include respond-below(1100px) {
-        flex-wrap: wrap;
-        gap: 1rem;
         width: 100%;
+    }
+}
+
+.board__add-desktop {
+    @include respond-below(700px) {
+        display: none;
+    }
+}
+
+.board__actions app-search-input {
+    @include respond-below(1100px) {
+        flex: 1;
     }
 }
 
