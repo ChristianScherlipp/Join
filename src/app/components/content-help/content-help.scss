@@ -12,15 +12,15 @@ $page-max-width: 67.5rem;
   overflow-wrap: anywhere;
 
   @include respond-below(1100px) {
-    height: calc(100vh - 6rem - 7.5rem);
+    height: calc(100vh - 6rem);
   }
 
- @include respond-below(1000px) {
-   height: calc(100vh - 6rem - 5rem);
+  
   // Inhalt nicht breiter als das Board, der Scrollbereich bleibt volle Breite.
   > * {
     max-width: $page-max-width;
-  }
+  
+}
 
   h1 {
     font-size: fluid(47, 61);
