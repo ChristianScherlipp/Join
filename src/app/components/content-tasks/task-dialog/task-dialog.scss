@@ -1,4 +1,11 @@
 @use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+$priority-icon-filters: (
+  urgent: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%),
+  medium: brightness(0) saturate(100%) invert(77%) sepia(49%) saturate(4972%) hue-rotate(1deg) brightness(106%) contrast(101%),
+  low: brightness(0) saturate(100%) invert(86%) sepia(75%) saturate(2803%) hue-rotate(32deg) brightness(95%) contrast(87%),
+);
 
 dialog {
   position: fixed;
@@ -39,7 +46,7 @@ dialog {
 p,
 dd {
   margin: 0;
-  font-size: 16px;
+  font-size: fluid(16,20);
 }
 
 .task-card__label {
@@ -64,7 +71,7 @@ dd {
 
 dt {
   color: #42526e;
-  font-size: 16px;
+  font-size: fluid(16,20);
   font-weight: 700;
 }
 
@@ -92,7 +99,7 @@ header {
     padding: 0;
     border-radius: 50%;
     font-size: 2rem;
-    align-content: center;
+    align-content: end;
 
     &:hover:not(:disabled) {
       background: #f1f2f3;
@@ -111,13 +118,38 @@ header {
   padding: 16px 48px;
   overflow-y: auto;
 
-  > * {
+  >* {
     flex-shrink: 0;
   }
 
   p {
     overflow-wrap: anywhere;
     white-space: pre-wrap;
+  }
+}
+
+.dialog-content,
+.task-form {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c4c4c4;
+    border-radius: 16px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
   }
 }
 
@@ -132,7 +164,7 @@ section {
   h2 {
     margin: 0 0 12px;
     color: #42526e;
-    font-size: 16px;
+    font-size: fluid(16,20);
     font-weight: 700;
   }
 }
@@ -151,6 +183,15 @@ section {
   dd {
     min-width: 0;
     overflow-wrap: anywhere;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
   }
 }
 
@@ -165,7 +206,7 @@ ul {
     gap: 10px;
     margin-bottom: 8px;
     padding: 7px;
-    font-size: 16px;
+    font-size: fluid(16,20);
     overflow-wrap: anywhere;
 
     &:last-child {
@@ -226,6 +267,85 @@ button {
   }
 }
 
+.assigned-list {
+  max-height: 178px;
+  overflow-y: auto;
+
+  >li {
+    min-height: 56px;
+    margin: 0;
+    padding: 7px;
+    box-sizing: border-box;
+  }
+
+  app-initial-icon {
+    flex-shrink: 0;
+  }
+
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c4c4c4;
+    border-radius: 16px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+.subtask-list {
+  max-height: 168px;
+  overflow-y: auto;
+
+  /* Drei Zeilen mit jeweils 56px Höhe. */
+  >li {
+    min-height: 56px;
+    margin: 0;
+    padding: 4px 0;
+    box-sizing: border-box;
+    font-size: fluid(16,20);
+  }
+
+  .subtask-button {
+    min-height: 48px;
+    box-sizing: border-box;
+  }
+
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c4c4c4;
+    border-radius: 16px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
 .subtask-button {
   display: flex;
   align-items: center;
@@ -264,7 +384,16 @@ button {
   }
 }
 
-@media (max-width: 1000px) {
+@each $priority, $icon-filter in $priority-icon-filters {
+  .priority-icon.#{$priority} {
+    filter: $icon-filter;
+  }
+}
+
+
+
+@media (max-width: 1100px) {
+
   header,
   footer {
     padding: 20px 24px;
@@ -276,5 +405,25 @@ button {
 
   section h1 {
     font-size: 36px;
+  }
+}
+
+@keyframes dialog-slide-in {
+  from {
+    transform: translate(50vw, -50%);
+  }
+
+  to {
+    transform: translate(-50%, -50%);
+  }
+}
+
+dialog[open] {
+  animation: dialog-slide-in 400ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog[open] {
+    animation: none;
   }
 }
