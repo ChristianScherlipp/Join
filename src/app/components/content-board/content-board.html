@@ -25,10 +25,16 @@
       </header>
 
       <div class="board__cards" cdkDropList [cdkDropListData]="visibleTasks()[column.id]"
-        [cdkDropListDisabled]="isSearching()" (cdkDropListDropped)="onDrop($event, column.id)">
+        (cdkDropListDropped)="onDrop($event, column.id)">
         @for (task of visibleTasks()[column.id]; track task.id) {
-        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag
-         />
+        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag (cdkDragMoved)="onDragMoved($event)"
+          (cdkDragEnded)="onDragEnded()">
+          <ng-template cdkDragPreview [matchSize]="true">
+            <div class="board__preview">
+              <app-task-card [task]="task" />
+            </div>
+          </ng-template>
+        </app-task-card>
         } @empty {
         <div class="board__empty">No tasks {{ column.title }}</div>
         }

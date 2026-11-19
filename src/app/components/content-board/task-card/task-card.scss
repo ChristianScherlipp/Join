@@ -9,6 +9,12 @@
   border-radius: 1.5rem;
   background-color: $background-primary;
   box-shadow: 0 0 0.625rem 0.1875rem rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;                  
+  cursor: grab;                                    
+  transition: border-color 150ms ease; 
+}
+.task-card:active {                                 
+  border-color: $hover-secondary;                             
 }
 
 .task-card__text {
