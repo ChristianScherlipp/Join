@@ -14,12 +14,8 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
     &__label {
         margin: 0;
         color: $text-darkblue;
-        font-size: 1.25rem;
+        font-size: fluid(16, 20);
         line-height: 1.2;
-
-        @include respond-below(810px) {
-            font-size: 1rem;
-        }
     }
 
     // Eingabefeld, gleiche Maße wie die Dropdowns.
@@ -47,7 +43,7 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         background: transparent;
         color: $text-secondary;
         font-family: inherit;
-        font-size: 1.25rem;
+        font-size: fluid(16, 20);
     }
 
     // Cancel und Check im Feld.
@@ -107,10 +103,26 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         padding: 0 0.5rem 0 1rem;
         color: $text-secondary;
         font-size: 1rem; // 16px
+        border-radius: 0.625rem;
+
+        &:not(&--editing):hover {
+            background: $hover-list;
+        }
 
         &--editing {
             border-bottom: 1px solid $hover-primary;
             background: $background-primary;
+        }
+    }
+
+    @media (hover: hover) and (min-width: 1101px) {
+        &__item:not(&__item--editing) &__actions {
+            opacity: 0;
+        }
+
+        &__item:hover &__actions,
+        &__item:focus-within &__actons {
+            opacity: 1;
         }
     }
 
