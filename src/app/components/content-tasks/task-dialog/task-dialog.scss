@@ -80,7 +80,7 @@ header,
 footer {
   flex: 0 0 auto;
   box-sizing: border-box;
-  padding: 48px 40px;
+  padding: 24px 40px;
   background: #fff;
 }
 
@@ -115,7 +115,7 @@ header {
   gap: 24px;
 
   min-height: 0;
-  padding: 16px 48px;
+  padding: 0px 48px;
   overflow-y: auto;
 
   >* {
@@ -316,6 +316,10 @@ button {
     padding: 4px 0;
     box-sizing: border-box;
     font-size: fluid(16,20);
+
+    &.empty{
+      padding: 7px;
+    }
   }
 
   .subtask-button {
@@ -388,6 +392,10 @@ button {
   .priority-icon.#{$priority} {
     filter: $icon-filter;
   }
+}
+
+.empty{
+  font-style: italic;
 }
 
 
