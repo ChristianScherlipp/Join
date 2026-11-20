@@ -34,10 +34,14 @@ export class AddTaskDialog {
   @ViewChild('toast')
   private toast!: ToastSuccess;
 
+  // Subtask-Komponente, um ihr Eingabefeld beim Zurücksetzen zu leeren.
+  @ViewChild(Subtask)
+  private subtaskComp!: Subtask;
+
   title = '';
   description = '';
   dueDate = '';
-  priority: TaskPriority | null = null;
+  priority: TaskPriority | null = 'medium';
   assignedContacts: IUser[] = [];
   category: TaskCategory | null = null;
   subtasks: ISubtask[] = [];
@@ -117,10 +121,11 @@ export class AddTaskDialog {
     this.title = '';
     this.description = '';
     this.dueDate = '';
-    this.priority = null;
+    this.priority = 'medium';
     this.assignedContacts = [];
     this.category = null;
     this.subtasks = [];
+    this.subtaskComp.clearInput();
     this.status = 'todo';
     this.fieldError.reset();
     this.taskService.errorMessage.set('');
