@@ -34,7 +34,7 @@
         (cdkDropListDropped)="onDrop($event, column.id)">
         @for (task of visibleTasks()[column.id]; track task.id) {
         <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag 
-          [cdkDragStartDelay]="{ touch: 250, mouse: 0 }"
+          [cdkDragStartDelay]="{ touch: 150, mouse: 0 }"
           (cdkDragMoved)="onDragMoved($event)" 
           (cdkDragEnded)="onDragEnded()">
           <ng-template cdkDragPreview [matchSize]="true">

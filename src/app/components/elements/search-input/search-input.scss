@@ -13,26 +13,29 @@
     background: $background-primary;
     // Rahmen als inset-Schatten, damit er keine Hoehe verbraucht (8 + 32 + 8 = 48px).
     box-shadow: inset 0 0 0 1px $search-border;
-    position: relative;  
+    position: relative;
 
-     
+
     @include respond-below(1100px) {
-        width: 19.5rem;                          
+        width: 19.5rem;
     }
-     @include respond-below(700px) {
-        width: 100%;                          
+
+    @include respond-below(700px) {
+        width: 100%;
+        flex: 1;
+        min-width: 0;
     }
 
 
     .search__hint {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin: 0.25rem 0 0;
-    color: $priority-high;           
-    font-size: 0.875rem;
-    white-space: nowrap;
-}
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin: 0.25rem 0 0;
+        color: $priority-high;
+        font-size: 0.875rem;
+        white-space: nowrap;
+    }
 
     &:hover {
         box-shadow: inset 0 0 0 1px $search-border-hover;

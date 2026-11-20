@@ -166,6 +166,7 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
 .board__actions app-search-input {
     @include respond-below(1100px) {
         flex: 1;
+        min-width: 0; 
     }
 }
 
