@@ -31,6 +31,10 @@ export class AddTask {
   @ViewChild('toast')
   private toast!: ToastSuccess;
 
+  // Subtask-Komponente, um ihr Eingabefeld beim Zurücksetzen zu leeren.
+  @ViewChild(Subtask)
+  private subtaskComp!: Subtask;
+
   // Eingaben aus den normalen Feldern (per ngModel).
   title = '';
   description = '';
@@ -84,6 +88,7 @@ export class AddTask {
     this.assignedContacts.set([]);
     this.category.set(null);
     this.subtasks.set([]);
+    this.subtaskComp.clearInput();
     this.fieldError.reset();
     this.taskService.errorMessage.set('');
   }
