@@ -40,25 +40,22 @@
     flex-direction: column; 
     gap: 4rem;
 
-    // 2 columnas de 440px + 2 gaps de 3rem + divider de 1px
-    @media (min-width: 1101px) {
-        max-width: calc(61rem + 1px);
-    }
+    // 2 columnas de 440px + divider de 1px + 2 gaps de las columnas
+    max-width: calc(55rem + 1px + 2 * #{fluid(24, 48, 1100, 1400)});
 
-    @include respond-below(1100px){
-            gap: 0;
-        }
+    @include respond-below(1100px) {
+        gap: 0;
+        max-width: none;
+    }
 
     &__columns {
         display: flex;
-        gap: 3rem;
+        // de 1.5rem (1100px) a 3rem (1400px), sin saltos
+        gap: fluid(24, 48, 1100, 1400);
 
-        @include respond-below(1100px){
+        @include respond-below(1100px) {
             flex-direction: column;
-        }
-
-        @media (min-width: 1101px) and (max-width: 1400px) {
-            gap: 1.5rem;
+            gap: 3rem;
         }
     }
 
@@ -160,8 +157,10 @@
         display: flex;
         flex-direction: column;
 
-        @media (min-width: 1101px) {
-            max-width: 27.5rem; // 440px
+        max-width: 27.5rem; // 440px
+
+        @include respond-below(1100px) {
+            max-width: none;
         }
 
         &--left {
