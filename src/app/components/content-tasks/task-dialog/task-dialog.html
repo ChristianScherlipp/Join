@@ -1,5 +1,6 @@
-<dialog #dialog aria-labelledby="task-dialog-title" [attr.aria-busy]="taskService.saving()"
-  (cancel)="$event.preventDefault(); close()" (click)="closeOnOutsideClick($event)">
+<dialog #dialog [class.is-closing]="isClosing()" aria-labelledby="task-dialog-title"
+  [attr.aria-busy]="taskService.saving()" (cancel)="$event.preventDefault(); close()"
+  (click)="closeOnOutsideClick($event)">
   <header>
     <!-- <p>{{ task().category || 'Task' }}</p> -->
     @switch (task().category) {
@@ -19,7 +20,7 @@
   <div class="dialog-content">
     <section>
       <h1 id="task-title">{{ task().title }}</h1>
-      <p>{{ task().description || 'Keine Beschreibung' }}</p>
+      <p>{{ task().description }}</p>
     </section>
 
     <dl class="due-date">
@@ -87,7 +88,9 @@
             [attr.aria-pressed]="subtask.completed" (click)="toggleSubtask(index)">
             <span class="subtask-icon" [class.completed]="subtask.completed" aria-hidden="true"></span>
 
-            <span>{{ subtask.title }}</span>
+            <span [class.subtask-completed]="subtask.completed">
+              {{ subtask.title }}
+            </span>
           </button>
         </li>
         }@empty {
@@ -107,7 +110,8 @@
 
       <span aria-hidden="true" class="hyphen">|</span>
 
-      <app-button-edit-delete typeStr="edit" (click)="edit.emit()"></app-button-edit-delete>
+      <app-button-edit-delete typeStr="edit" (click)="edit.emit()"
+        (actionClicked)="openEdit()"></app-button-edit-delete>
     </fieldset>
   </footer>
 </dialog>

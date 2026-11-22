@@ -8,6 +8,7 @@ import {
     TaskWithContacts,
 } from '../interfaces/task';
 import { IUser } from '../interfaces/iuser';
+import { Subject } from 'rxjs';
 import { Supabase } from './supabase';
 import { ContactService } from './contact-service';
 
@@ -37,6 +38,7 @@ export class TaskService {
     readonly tasks = this.taskState.asReadonly();
     readonly loading = this.loadingState.asReadonly();
     readonly saving = this.savingState.asReadonly();
+    readonly taskDeleted = new Subject<void>();
 
     readonly errorMessage = signal('');
     readonly contactErrorMessage = this.contactService.errorMessage;
@@ -115,11 +117,23 @@ export class TaskService {
     }
 
     // Löscht einen Task.
+    // async deleteTask(id: number): Promise<boolean> {
+    //     return this.save(
+    //         () => this.removeTask(id),
+    //         'Der Task konnte nicht gelöscht werden.',
+    //     );
+    // }
     async deleteTask(id: number): Promise<boolean> {
-        return this.save(
+        const success = await this.save(
             () => this.removeTask(id),
-            'Der Task konnte nicht gelöscht werden.',
+            'Der Task konnte nicht gelöscht werden.'
         );
+
+        if (success) {
+            this.taskDeleted.next();
+        }
+
+        return success;
     }
 
     // Verknüpft die Task-Liste mit den geladenen Kontakten.
