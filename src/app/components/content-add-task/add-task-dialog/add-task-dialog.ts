@@ -9,8 +9,17 @@ import { DropDownCategory } from '../../elements/drop-down-category/drop-down-ca
 import { ISubtask, Subtask } from '../../elements/subtask/subtask';
 import { ToastSuccess } from '../../elements/toast-succsess/toast-succsess';
 import { IUser } from '../../../interfaces/iuser';
-import { TaskCategory, TaskPriority, TaskStatus } from '../../../interfaces/task';
+import {
+  Subtask as TaskSubtask,
+  TaskCategory,
+  TaskCreate,
+  TaskPriority,
+  TaskStatus,
+} from '../../../interfaces/task';
 
+/**
+ * Dialog for creating a task directly from a column of the board.
+ */
 @Component({
   imports: [ButtonPriority, DropDownAssignedto, ButtonPrimary, DropDownCategory, Subtask, FormsModule, ToastSuccess],
   providers: [FieldError],
@@ -23,18 +32,15 @@ export class AddTaskDialog {
   readonly fieldError = inject(FieldError);
   readonly taskService = inject(TaskService);
 
-  // Meldet der Hauptkomponente, dass ein Task erstellt wurde.
+  /** Tells the parent component that a task was created. */
   readonly created = output<void>();
 
-  // Zugriff auf das Formular, um es zurückzusetzen.
   @ViewChild('taskForm')
   private taskForm!: NgForm;
 
-  // Toast, der nach dem Speichern angezeigt wird.
   @ViewChild('toast')
   private toast!: ToastSuccess;
 
-  // Subtask-Komponente, um ihr Eingabefeld beim Zurücksetzen zu leeren.
   @ViewChild(Subtask)
   private subtaskComp!: Subtask;
 
@@ -48,7 +54,10 @@ export class AddTaskDialog {
   status: TaskStatus = 'todo';
 
   /**
-   * Öffnet den Dialog für die Spalte, aus der er geöffnet wurde.
+   * Opens the dialog for the column it was opened from.
+   *
+   * @param {TaskStatus} [status='todo'] - The status of the new task.
+   * @returns {void}
    */
   open(status: TaskStatus = 'todo'): void {
     this.status = status;
@@ -56,15 +65,20 @@ export class AddTaskDialog {
   }
 
   /**
-   * Verhindert das Schließen per Klick außerhalb oder Esc, während gespeichert wird.
+   * Prevents closing by outside click or Esc while saving.
+   *
+   * @param {Event} event - The cancel event of the dialog.
+   * @returns {void}
    */
   onCancel(event: Event): void {
     if (this.taskService.saving()) event.preventDefault();
   }
 
   /**
-   * Schließt den Dialog, sofern gerade nicht gespeichert wird.
-   * Das Formular wird über das (close)-Event geleert.
+   * Closes the dialog unless it is currently saving.
+   * The form is cleared via the close event.
+   *
+   * @returns {void}
    */
   close(): void {
     if (this.taskService.saving()) return;
@@ -72,32 +86,24 @@ export class AddTaskDialog {
   }
 
   /**
-   * Prüft still, ob alle Pflichtfelder gültig sind (für den Create-Button).
+   * Silently checks whether all required fields are valid (for the create button).
+   *
+   * @returns {boolean} true if title, date and category are filled in.
    */
   isFormValid(): boolean {
     return !!this.title.trim() && !!this.dueDate && !!this.category;
   }
 
   /**
-   * Legt die neue Aufgabe in der Spalte an, aus der der Dialog geöffnet wurde.
-   * Bei Erfolg wird der Dialog geschlossen und ein Toast angezeigt.
+   * Creates the task in the column the dialog was opened from.
+   * On success the dialog is closed and a toast is shown.
+   * On error the dialog and input are kept.
+   *
+   * @returns {Promise<void>}
    */
   async createTask(): Promise<void> {
     if (this.taskService.saving() || !this.validate()) return;
-    const saved = await this.taskService.addTask({
-      title: this.title.trim(),
-      description: this.description.trim() || null,
-      date: this.dueDate,
-      worker_id: this.assignedContacts.map((contact) => contact.id),
-      subtask: this.subtasks.length
-        ? this.subtasks.map(({ title }) => ({ title, completed: false }))
-        : null,
-      category: this.category,
-      priority: this.priority,
-      status: this.status,
-      position: 0,
-    });
-    // Bei einem Fehler bleiben Dialog und Eingaben erhalten.
+    const saved = await this.taskService.addTask(this.buildTask());
     if (saved) {
       this.close();
       this.toast.show('Task added to board');
@@ -105,17 +111,11 @@ export class AddTaskDialog {
     }
   }
 
-  // Prüft alle Pflichtfelder auf einmal, damit alle Fehler (auch Kategorie) rot angezeigt werden.
-  private validate(): boolean {
-    const results = [
-      this.fieldError.check('title', this.title),
-      this.fieldError.check('dueDate', this.dueDate),
-      this.fieldError.check('category', this.category ?? ''),
-    ];
-    return results.every(Boolean);
-  }
-
-  // Leert das Formular und die Fehlermeldungen für die nächste Aufgabe.
+  /**
+   * Clears the form and the error messages for the next task.
+   *
+   * @returns {void}
+   */
   resetForm(): void {
     this.taskForm.resetForm();
     this.title = '';
@@ -129,5 +129,48 @@ export class AddTaskDialog {
     this.status = 'todo';
     this.fieldError.reset();
     this.taskService.errorMessage.set('');
+  }
+
+  /**
+   * Builds the data of the new task from the input.
+   *
+   * @returns {TaskCreate} The data for the service.
+   */
+  private buildTask(): TaskCreate {
+    return {
+      title: this.title.trim(),
+      description: this.description.trim() || null,
+      date: this.dueDate,
+      worker_id: this.assignedContacts.map((contact) => contact.id),
+      subtask: this.toSubtasks(),
+      category: this.category,
+      priority: this.priority,
+      status: this.status,
+      position: 0,
+    };
+  }
+
+  /**
+   * Converts the subtasks of the form into the data for Supabase.
+   *
+   * @returns {TaskSubtask[] | null} The subtasks or null if there are none.
+   */
+  private toSubtasks(): TaskSubtask[] | null {
+    if (!this.subtasks.length) return null;
+    return this.subtasks.map(({ title }) => ({ title, completed: false }));
+  }
+
+  /**
+   * Validates all required fields at once so that all errors (including category) are shown.
+   *
+   * @returns {boolean} true if all required fields are valid.
+   */
+  private validate(): boolean {
+    const results = [
+      this.fieldError.check('title', this.title),
+      this.fieldError.check('dueDate', this.dueDate),
+      this.fieldError.check('category', this.category ?? ''),
+    ];
+    return results.every(Boolean);
   }
 }

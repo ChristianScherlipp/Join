@@ -4,12 +4,14 @@ import {
   HostListener,
   input,
   output,
-  signal,
   ViewChild,
 } from '@angular/core';
 import { IUser } from '../../../interfaces/iuser';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
+/**
+ * Contact card with the details of the selected contact.
+ */
 @Component({
   selector: 'app-main-view',
   imports: [InitialIcon],
@@ -17,21 +19,23 @@ import { InitialIcon } from '../../elements/initial-icon/initial-icon';
   styleUrl: './main-view.scss',
 })
 export class MainView {
-  // Erhält den ausgewählten Kontakt von der Hauptkomponente.
+  /** The selected contact from the parent component. */
   readonly contact = input<IUser | null>(null);
 
-  // Meldet den Wunsch, den ausgewählten Kontakt zu bearbeiten.
+  /** Emits the request to edit the selected contact. */
   readonly editRequested = output<void>();
 
-  // Meldet den Löschwunsch an die Hauptkomponente.
+  /** Emits the delete request to the parent component. */
   readonly deleteRequested = output<void>();
 
-  // Zugriff auf das mobile Menü im HTML.
   @ViewChild('actionMenu')
   private actionMenu?: ElementRef<HTMLDetailsElement>;
 
   /**
-   * Schließt das Menü, wenn außerhalb davon geklickt wird.
+   * Closes the mobile menu when clicking outside of it.
+   *
+   * @param {MouseEvent} event - The click event.
+   * @returns {void}
    */
   @HostListener('document:click', ['$event'])
   closeMenuOnOutsideClick(event: MouseEvent): void {

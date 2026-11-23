@@ -1,9 +1,17 @@
 import { IUser } from './iuser';
 
+/** The four columns of the Kanban board. */
 export type TaskStatus = 'todo' | 'progress' | 'await' | 'done';
+
+/** Possible priorities of a task. */
 export type TaskPriority = 'low' | 'medium' | 'urgent';
+
+/** Possible categories of a task. */
 export type TaskCategory = 'User Story' | 'Technical Task';
 
+/**
+ * A task from the "task" table.
+ */
 export interface Task {
   id: number;
   created_at: string | null;
@@ -18,22 +26,30 @@ export interface Task {
   position: number | null;
 }
 
-// Nur für die Anzeige: Kontakte werden im Service ergänzt.
+/**
+ * A task with its assigned contacts, for display only.
+ */
 export interface TaskWithContacts extends Task {
   assignedContacts: IUser[];
 }
 
-// Diese Daten werden beim Erstellen an Supabase geschickt.
+/** This data is sent to Supabase when creating a task. */
 export type TaskCreate = Omit<Task, 'id' | 'created_at'>;
 
-// Beim Ändern dürfen einzelne Felder übergeben werden.
+/** When updating, individual fields may be passed. */
 export type TaskUpdate = Partial<TaskCreate>;
 
-export interface Subtask {  
+/**
+ * A subtask with title and completed status.
+ */
+export interface Subtask {
   title: string;
   completed: boolean;
 }
-// Neue Spalte und Position einer Karte nach Drag & Drop.
+
+/**
+ * New column and position of a card after drag & drop.
+ */
 export interface TaskPositionChange {
   id: number;
   status: TaskStatus;

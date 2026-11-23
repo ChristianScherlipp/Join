@@ -2,44 +2,49 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { IUser } from '../interfaces/iuser';
 import { Supabase } from './supabase';
 import { PostgrestError, RealtimeChannel } from '@supabase/supabase-js';
-import { defaultEquals } from '@angular/core/primitives/signals';
 
+/**
+ * Manages all contacts: loading, creating, updating, deleting and live updates.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class ContactService {
   private readonly supabase = inject(Supabase).supabase;
 
-  // Die geladenen Kontakte.
+  /** The loaded contacts. */
   readonly users = signal<IUser[]>([]);
 
-  // Der ausgewählte Kontakt bleibt erhalten, auch wenn die Seite gewechselt wird.
+  /** The selected contact, kept even after switching pages. */
   readonly selectedContact = signal<IUser | null>(null);
 
-  // Zeigt an, ob gerade geladen oder gespeichert wird.
+  /** Shows whether data is currently being loaded. */
   readonly loading = signal(false);
+
+  /** Shows whether data is currently being saved. */
   readonly saving = signal(false);
 
-  // Diese Meldung wird bei einem Fehler im HTML angezeigt.
+  /** Error message for the UI. */
   readonly errorMessage = signal('');
 
-  // readonly contactService = inject(ContactService);
-
-
-
-  // Sortiert eine Kopie der Kontakte alphabetisch.
-  // Die ursprüngliche Liste wird dabei nicht verändert.
+  /** Copy of the contacts, sorted alphabetically by name. */
   readonly sortedUsers = computed(() =>
     [...this.users()].sort((firstContact, secondContact) =>
       firstContact.name.localeCompare(secondContact.name, 'de')
     )
   );
 
+  /** The realtime connection to the "contacts" table. */
   channel: RealtimeChannel | undefined;
 
-  //Zählt, wie viele Stellen die Live-Verbindung gerade nutzen.
   private subscribers = 0;
 
+  /**
+   * Starts the live connection and counts its users.
+   * An already open connection is reused.
+   *
+   * @returns {void}
+   */
   subscribeToContacts(): void {
     this.subscribers++;
     if (this.channel) return;
@@ -54,7 +59,11 @@ export class ContactService {
       .subscribe();
   }
 
-  //Beendet die Live-Verbindung erst, wenn sie niemand mehr nutzt.
+  /**
+   * Closes the live connection only when nobody uses it anymore.
+   *
+   * @returns {void}
+   */
   unsubscribeFromContacts(): void {
     this.subscribers = Math.max(0, this.subscribers - 1);
     if (this.subscribers > 0) return;
@@ -66,70 +75,38 @@ export class ContactService {
   }
 
   /**
-   * Lädt die Kontakte aus Supabase.
-   * Bei einem Fehler wird eine Meldung gesetzt.
+   * Loads the contacts from Supabase.
+   * On error a message is set.
+   *
+   * @returns {Promise<void>}
    */
   async getUsers(): Promise<void> {
     this.loading.set(true);
     this.errorMessage.set('');
 
     try {
-      const { data, error } = await this.supabase
-        .from('contacts')
-        .select('id, name, email, phone');
-
-      if (error) {
-        throw error;
-      }
-
-      // Falls keine Daten zurückkommen, verwenden wir eine leere Liste.
-      this.users.set(data ?? []);
-    } catch (error) {
-      console.error('Kontakte laden fehlgeschlagen:', error);
-
-      this.errorMessage.set(
-        'Die Kontakte konnten nicht geladen werden.'
-      );
+      this.users.set(await this.fetchContacts());
+    } catch {
+      this.errorMessage.set('Die Kontakte konnten nicht geladen werden.');
     } finally {
-      // Wird bei Erfolg und bei einem Fehler ausgeführt.
       this.loading.set(false);
     }
   }
 
   /**
-   * Speichert einen neuen Kontakt.
-   * Omit bedeutet: Die ID wird nicht mitgegeben.
-   * Die Datenbank erzeugt sie automatisch.
+   * Saves a new contact. The database generates the ID.
    *
-   * true = gespeichert, false = fehlgeschlagen.
+   * @param {Omit<IUser, 'id'>} contact - The contact without an ID.
+   * @returns {Promise<boolean>} true = saved, false = failed.
    */
   async addContact(contact: Omit<IUser, 'id'>): Promise<boolean> {
-    this.saving.set(true);
-    this.errorMessage.set('');
+    this.beginSaving();
 
     try {
-      const { data, error } = await this.supabase
-        .from('contacts')
-        .insert(contact)
-        .select('id, name, email, phone')
-        .single();
-
-      if (error) {
-        throw error;
-      }
-
-      // Ergänzt die Liste um den gespeicherten Kontakt inklusive ID.
-      this.users.update((contacts) => [...contacts, data]);
-      this.selectedContact.set(data);
-
+      this.rememberContact(await this.insertContact(contact));
       return true;
-    } catch (error) {
-      console.error('Kontakt speichern fehlgeschlagen:', error);
-
-      this.errorMessage.set(
-        'Der Kontakt konnte nicht gespeichert werden.'
-      );
-
+    } catch {
+      this.errorMessage.set('Der Kontakt konnte nicht gespeichert werden.');
       return false;
     } finally {
       this.saving.set(false);
@@ -137,49 +114,32 @@ export class ContactService {
   }
 
   /**
-   * Löscht den Kontakt mit der übergabenen ID.
-   * true = gelöscht, false = fehlgeschlagen.
-   * Die Liste wird danach über die Realtime-verbindung neu geladen 
+   * Deletes the contact with the given ID.
+   * The list is then reloaded through the realtime connection.
+   *
+   * @param {number} id - The ID of the contact.
+   * @returns {Promise<boolean>} true = deleted, false = failed.
    */
-  // async deleteContact(id: number): Promise<boolean> {
-  //   this.saving.set(true);
-  //   this.errorMessage.set('');
-
-  //   const { error } = await this.supabase.from('contacts').delete().eq('id', id);
-
-  //   const failed = this.hasFailed(error, 'Der Kontakt konnte nicht gelöscht werden.');
-
-  //   if (!failed && this.selectedContact()?.id === id) {
-  //     this.selectedContact.set(null);
-  //   }
-
-  //   return !failed;
-  // }
-
   async deleteContact(id: number): Promise<boolean> {
-    this.saving.set(true);
-    this.errorMessage.set('');
-
+    this.beginSaving();
     const { error } = await this.supabase.from('contacts').delete().eq('id', id);
-
     this.saving.set(false);
-
     const failed = this.hasFailed(error, 'Der Kontakt konnte nicht gelöscht werden.');
-
     if (!failed && this.selectedContact()?.id === id) {
       this.selectedContact.set(null);
     }
-
     return !failed;
   }
 
   /**
-  * Ändert den Kontakt mit der übergebenen ID.
-  * true = gespeichert, false = fehlgeschlagen.
-  */
+   * Updates the contact with the given ID.
+   *
+   * @param {number} id - The ID of the contact.
+   * @param {Omit<IUser, 'id'>} changes - The new values.
+   * @returns {Promise<boolean>} true = saved, false = failed.
+   */
   async updateContact(id: number, changes: Omit<IUser, 'id'>): Promise<boolean> {
-    this.saving.set(true);
-    this.errorMessage.set('');
+    this.beginSaving();
     const { error } = await this.supabase.from('contacts').update(changes).eq('id', id);
     this.saving.set(false);
     const failed = this.hasFailed(error, 'Der Kontakt konnte nicht geändert werden.');
@@ -189,13 +149,70 @@ export class ContactService {
     return !failed;
   }
 
-  //Gibt true zurück, wenn ein fehler vorliegt, und setzt dann die Meldung für die oberfläche.
+  /**
+   * Starts a write operation and clears the old error message.
+   *
+   * @returns {void}
+   */
+  private beginSaving(): void {
+    this.saving.set(true);
+    this.errorMessage.set('');
+  }
+
+  /**
+   * Adds the saved contact to the list and selects it.
+   *
+   * @param {IUser} saved - The saved contact including its ID.
+   * @returns {void}
+   */
+  private rememberContact(saved: IUser): void {
+    this.users.update((contacts) => [...contacts, saved]);
+    this.selectedContact.set(saved);
+  }
+
+  /**
+   * Queries all contacts in Supabase.
+   *
+   * @returns {Promise<IUser[]>} The contacts, an empty list if there is no data.
+   * @throws The Supabase error if the query fails.
+   */
+  private async fetchContacts(): Promise<IUser[]> {
+    const { data, error } = await this.supabase
+      .from('contacts')
+      .select('id, name, email, phone');
+    if (error) throw error;
+    return data ?? [];
+  }
+
+  /**
+   * Inserts a contact into Supabase.
+   *
+   * @param {Omit<IUser, 'id'>} contact - The contact without an ID.
+   * @returns {Promise<IUser>} The saved contact including its ID.
+   * @throws The Supabase error if saving fails.
+   */
+  private async insertContact(contact: Omit<IUser, 'id'>): Promise<IUser> {
+    const { data, error } = await this.supabase
+      .from('contacts')
+      .insert(contact)
+      .select('id, name, email, phone')
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  /**
+   * Checks whether an error occurred and then sets the message for the UI.
+   *
+   * @param {PostgrestError | null} error - The error of the database query.
+   * @param {string} message - The message for the user.
+   * @returns {boolean} true if an error occurred.
+   */
   private hasFailed(error: PostgrestError | null, message: string): boolean {
     if (!error) {
       return false;
     }
 
-    console.error(message, error);
     this.errorMessage.set(message);
     return true;
   }

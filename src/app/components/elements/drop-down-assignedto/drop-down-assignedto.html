@@ -1,6 +1,3 @@
-<!--bsp. HTML <app-drop-down-assignedto /> 
-        TS import { DropDownAssignedto } from '../../elements/drop-down-assignedto/drop-down-assignedto' und das signal auch importieren;
-        TS imports: [DropDownAssignedto],-->
 <section class="assign">
     <p class="assign__label">Assigned to</p>
 
@@ -51,7 +48,6 @@
         }
     </section>
 
-    <!-- Ausgewählte Kontakte als Initial-Icons unter dem Feld. -->
     <div class="assign__selected">
         @for (contact of visibleContacts(); track contact.id) {
             <app-initial-icon class="assign__chip" [name]="contact.name" />

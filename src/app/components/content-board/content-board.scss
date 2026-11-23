@@ -5,7 +5,6 @@ $column-width: 15.75rem;
 $column-gap: 1.5rem;
 $board-max-width: 4 * $column-width + 3 * $column-gap;
 
-
 .board {
     height: calc(100vh - 6rem);
     overflow: hidden;
@@ -58,7 +57,7 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     border-radius: 0.5rem;
     background: none;
     cursor: pointer;
-    transition: transform 150ms ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
     will-change: transform;
 
     @include respond-below(1100px) {
@@ -73,7 +72,7 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     background-color: $background-secondary;
     -webkit-mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
     mask: url('/assets/icons/plus-dark.svg') center / contain no-repeat;
-    transition: background-color 0.2s ease;
+    transition: background-color 100ms ease;
 
     @include respond-below(1100px) {
         width: 0.875rem;                         
@@ -200,7 +199,6 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     }
 }
 
-
 .board__cards {
     display: flex;
     flex-direction: column;
@@ -212,14 +210,12 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     margin: -1rem -0.9375rem -1rem -1rem;
     padding: 1rem 0.5625rem 1rem 1rem;
 
-    /* Nur Firefox */
-    @supports not selector(::-webkit-scrollbar) {
+        @supports not selector(::-webkit-scrollbar) {
         scrollbar-width: thin;
         scrollbar-color: #c4c4c4 transparent;
     }
 
-    /* Chrome, Edge, Safari */
-    &::-webkit-scrollbar {
+        &::-webkit-scrollbar {
         width: 0.375rem;
     }
 
@@ -273,7 +269,6 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
     text-align: center;
 }
 
-// Platzhalter beim Ziehen: gleich groß wie die Karte, Aussehen wie "No tasks"
 .cdk-drag-placeholder {
     position: relative;
     visibility: hidden;
@@ -290,12 +285,10 @@ $board-max-width: 4 * $column-width + 3 * $column-gap;
 
 }
 
-// Andere Karten rutschen weich zur Seite, während gezogen wird
 .board__cards.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-// Nach dem Loslassen gleitet die Karte weich an ihren Platz
 .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

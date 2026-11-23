@@ -1,4 +1,4 @@
-import { Component, computed,input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 
 const ICONS = {
   edit: 'assets/icons/edit.svg',
@@ -8,6 +8,9 @@ const ICONS = {
 
 const LABELS = { edit: 'Edit', delete: 'Delete', save: 'Save' }
 
+/**
+ * Button for editing, deleting or saving, optionally with icon only.
+ */
 @Component({
   imports: [],
   selector: 'app-button-edit-delete',
@@ -20,9 +23,9 @@ export class ButtonEditDelete {
 
     readonly isDisabled = input(false);
 
-    //false = nur das Icon, ohne Text.
+    /** false = icon only, without text. */
     readonly needText = input(true);
-  
+
     readonly actionClicked = output<void>();
 
     readonly iconSrc = computed(() => ICONS[this.typeStr()]);

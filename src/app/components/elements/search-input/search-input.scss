@@ -5,16 +5,14 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 19.5rem; // 312px
+    width: 19.5rem;
     max-width: 100%;
-    height: 3rem; // 48px
-    padding: 0.5rem 1rem; // 8px oben/unten, 16px links/rechts
+    height: 3rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.625rem;
     background: $background-primary;
-    // Rahmen als inset-Schatten, damit er keine Hoehe verbraucht (8 + 32 + 8 = 48px).
     box-shadow: inset 0 0 0 1px $search-border;
     position: relative;
-
 
     @include respond-below(1100px) {
         width: 19.5rem;
@@ -25,7 +23,6 @@
         flex: 1;
         min-width: 0;
     }
-
 
     .search__hint {
         position: absolute;
@@ -53,7 +50,7 @@
         background: transparent;
         color: $text-secondary;
         font-family: inherit;
-        font-size: 1.25rem; // 20px
+        font-size: 1.25rem;
 
         &::placeholder {
             color: $border-color;
@@ -61,7 +58,6 @@
         }
     }
 
-    // Keine Treffer: Text in $priority-high.
     &.is-error &__input {
         color: $priority-high;
     }
@@ -78,7 +74,7 @@
         flex-shrink: 0;
         align-items: center;
         justify-content: center;
-        width: 2rem; // 32px
+        width: 2rem;
         height: 2rem;
         padding: 0;
         border: none;
@@ -92,7 +88,7 @@
     }
 
     &__icon {
-        width: 1.0988rem; // 17,58px
+        width: 1.0988rem;
         height: 1.0988rem;
     }
 

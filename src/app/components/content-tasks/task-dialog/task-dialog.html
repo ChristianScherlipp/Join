@@ -2,7 +2,6 @@
   [attr.aria-busy]="taskService.saving()" (cancel)="$event.preventDefault(); close()"
   (click)="closeOnOutsideClick($event)">
   <header>
-    <!-- <p>{{ task().category || 'Task' }}</p> -->
     @switch (task().category) {
     @case ('User Story') {
     <span class="task-card__label task-card__label--user">User Story</span>

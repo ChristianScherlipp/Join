@@ -10,7 +10,7 @@
             <img src="./assets/icons/cancel.svg" alt="Icon Close" />
         </button>
         <app-initial-icon class="edit-area__avatar" [name]="previewName()" [withShadow]="true" />
-        <form class="edit-area__form" #editForm="ngForm" (ngSubmit)="saveContact()">
+        <form class="edit-area__form" #editForm="ngForm" (ngSubmit)="saveContact()" novalidate>
             <div class="edit-area__group">
                 <label class="edit-area__field" [class.edit-area__field--error]="fieldError.isVisible('name')">
                     <input (blur)="fieldError.check('name', formData.name); updatePreview(formData.name)" class="edit-area__input" type="text" name="name" placeholder="Name" [(ngModel)]="formData.name" required />

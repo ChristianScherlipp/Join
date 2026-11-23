@@ -1,7 +1,6 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
-//Gleiche Maximalebreite wie das board (4 spalten + 3 abstaende).
 $page-max-width: 67.5rem;
 
 .privacy-policy {
@@ -12,7 +11,6 @@ $page-max-width: 67.5rem;
   overflow-wrap: anywhere;
   padding-bottom: calc(6.5rem + 2rem);
 
-  // Inhalt nicht breiter als das Board, der Scrollbereich bleibt volle Breite.
   > * {
     max-width: $page-max-width;
   }

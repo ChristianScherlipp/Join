@@ -13,9 +13,11 @@ import {
 import { FormsModule, NgForm } from '@angular/forms';
 
 import {
+  Subtask as TaskSubtask,
   TaskCategory,
   TaskPriority,
   TaskStatus,
+  TaskUpdate,
   TaskWithContacts,
 } from '../../../interfaces/task';
 import { IUser } from '../../../interfaces/iuser';
@@ -28,11 +30,16 @@ import { ButtonPriority } from '../../elements/button-priority/button-priority';
 import { DropDownAssignedto } from '../../elements/drop-down-assignedto/drop-down-assignedto';
 import { Subtask, ISubtask } from '../../elements/subtask/subtask';
 
-// Behält den Erledigt-Status vorhandener Subtasks im Formular.
+/**
+ * A subtask in the form. Keeps the completed status of existing subtasks.
+ */
 interface EditableSubtask extends ISubtask {
   completed?: boolean;
 }
 
+/**
+ * Dialog for editing an existing task.
+ */
 @Component({
   selector: 'app-task-edit-dialog',
   imports: [
@@ -62,10 +69,9 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
 
   private closeTimer?: ReturnType<typeof setTimeout>;
 
-  // Steuert die CSS-Klasse für die Schließanimation.
+  /** Controls the CSS class for the closing animation. */
   readonly isClosing = signal(false);
 
-  // Eingabewerte des Formulars.
   title = '';
   description = '';
   date = '';
@@ -82,7 +88,9 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   submitted = false;
 
   /**
-   * Übernimmt die vorhandenen Task-Daten in das Formular.
+   * Copies the existing task data into the form.
+   *
+   * @returns {void}
    */
   ngOnInit(): void {
     const task = this.task();
@@ -90,46 +98,28 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     this.title = task.title ?? '';
     this.description = task.description ?? '';
     this.date = task.date ?? '';
-
     this.category = task.category ?? '';
     this.priority = task.priority;
     this.status = task.status ?? '';
-
-    // Übernimmt die bereits zugewiesenen Kontakte.
-    this.selectedContacts = (task.worker_id ?? []).map(id => {
-      const contact = task.assignedContacts.find(
-        contact => contact.id === id
-      );
-
-      return {
-        id: id,
-        name: contact?.name ?? `Kontakt #${id}`,
-      };
-    });
-
-    // Ergänzt lokale IDs und erhält vorhandene Häkchen.
-    this.subtasks.set(
-      (task.subtask ?? []).map((subtask, index) => ({
-        id: index + 1,
-        title: subtask.title,
-        completed: subtask.completed,
-      }))
-    );
-
+    this.selectedContacts = this.mapAssignedContacts(task);
+    this.subtasks.set(this.mapSubtasks(task));
     this.taskService.errorMessage.set('');
-
     void this.contactService.getUsers();
   }
 
   /**
-   * Öffnet den Dialog, sobald das HTML bereitsteht.
+   * Opens the dialog as soon as the HTML is ready.
+   *
+   * @returns {void}
    */
   ngAfterViewInit(): void {
     this.dialog().nativeElement.showModal();
   }
 
   /**
-   * Räumt den Timer auf und gibt den Fokus zurück.
+   * Cleans up the timer and returns the focus.
+   *
+   * @returns {void}
    */
   ngOnDestroy(): void {
     clearTimeout(this.closeTimer);
@@ -137,27 +127,9 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Spielt die Schließanimation ab und führt danach
-   * die übergebene Aktion aus.
-   */
-  private closeWithAnimation(action: () => void): void {
-    if (this.isClosing()) {
-      return;
-    }
-
-    this.isClosing.set(true);
-
-    const reducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-
-    this.closeTimer = setTimeout(() => {
-      action();
-    }, reducedMotion ? 0 : 400);
-  }
-
-  /**
-   * Meldet das Schließen nach Ablauf der Animation.
+   * Reports the closing after the animation has finished.
+   *
+   * @returns {void}
    */
   close(): void {
     if (this.taskService.saving()) {
@@ -168,7 +140,10 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Erkennt Klicks außerhalb des Dialogfensters.
+   * Detects clicks outside the dialog window.
+   *
+   * @param {MouseEvent} event - The click event.
+   * @returns {void}
    */
   closeOnOutsideClick(event: MouseEvent): void {
     const dialog = event.currentTarget as HTMLDialogElement;
@@ -186,59 +161,122 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Prüft und speichert das Formular.
-   * Nach erfolgreichem Speichern läuft die Schließanimation.
+   * Validates and saves the form.
+   * After saving successfully the closing animation runs.
+   *
+   * @param {NgForm} form - The form of the dialog.
+   * @returns {Promise<void>}
    */
   async save(form: NgForm): Promise<void> {
-    if (this.taskService.saving() || this.isClosing()) {
-      return;
-    }
+    if (this.taskService.saving() || this.isClosing()) return;
 
     this.submitted = true;
     this.validationMessage = '';
 
-    if (
-      form.invalid ||
-      !this.title.trim() ||
-      !this.date ||
-      !this.category ||
-      !this.priority ||
-      !this.status
-    ) {
-      form.control.markAllAsTouched();
+    if (!this.isFormValid(form)) return this.showValidationError(form);
 
-      this.validationMessage =
-        'Bitte alle Pflichtfelder ausfüllen.';
-
-      return;
-    }
-
-    const success = await this.taskService.updateTask(
-      this.task().id,
-      {
-        title: this.title.trim(),
-        description: this.description,
-        date: this.date,
-        category: this.category,
-        priority: this.priority,
-        status: this.status,
-
-        // Übernimmt die aktuelle Auswahl aus dem Dropdown.
-        worker_id: this.selectedContacts.map(
-          contact => contact.id
-        ),
-
-        // Speichert ohne lokale Formular-ID.
-        // Neue Subtasks sind zunächst nicht erledigt.
-        subtask: this.subtasks().map(subtask => ({
-          title: subtask.title,
-          completed: subtask.completed ?? false,
-        })),
-      }
-    );
+    const success = await this.taskService.updateTask(this.task().id, this.buildChanges());
 
     if (success) {
       this.closeWithAnimation(() => this.saved.emit());
     }
+  }
+
+  /**
+   * Marks all fields as touched and shows the message for missing required fields.
+   *
+   * @param {NgForm} form - The form of the dialog.
+   * @returns {void}
+   */
+  private showValidationError(form: NgForm): void {
+    form.control.markAllAsTouched();
+    this.validationMessage = 'Bitte alle Pflichtfelder ausfüllen.';
+  }
+
+  /**
+   * Converts the assigned contact IDs of the task into selection entries.
+   *
+   * @param {TaskWithContacts} task - The edited task.
+   * @returns {Pick<IUser, 'id' | 'name'>[]} The contacts for the dropdown.
+   */
+  private mapAssignedContacts(task: TaskWithContacts): Pick<IUser, 'id' | 'name'>[] {
+    return (task.worker_id ?? []).map(id => {
+      const contact = task.assignedContacts.find(entry => entry.id === id);
+
+      return { id, name: contact?.name ?? `Kontakt #${id}` };
+    });
+  }
+
+  /**
+   * Adds local IDs and keeps existing checkmarks of the subtasks.
+   *
+   * @param {TaskWithContacts} task - The edited task.
+   * @returns {EditableSubtask[]} The subtasks for the form.
+   */
+  private mapSubtasks(task: TaskWithContacts): EditableSubtask[] {
+    return (task.subtask ?? []).map((subtask, index) => ({
+      id: index + 1,
+      title: subtask.title,
+      completed: subtask.completed,
+    }));
+  }
+
+  /**
+   * Checks whether all required fields of the form are filled in.
+   *
+   * @param {NgForm} form - The form of the dialog.
+   * @returns {boolean} true if the form may be saved.
+   */
+  private isFormValid(form: NgForm): boolean {
+    const filled = !!this.title.trim() && !!this.date && !!this.category;
+    return !form.invalid && filled && !!this.priority && !!this.status;
+  }
+
+  /**
+   * Builds the changes to save from the form.
+   * New subtasks are initially not completed.
+   *
+   * @returns {TaskUpdate} The changes for the service.
+   */
+  private buildChanges(): TaskUpdate {
+    return {
+      title: this.title.trim(),
+      description: this.description,
+      date: this.date,
+      category: this.category || null,
+      priority: this.priority,
+      status: this.status || null,
+      worker_id: this.selectedContacts.map(contact => contact.id),
+      subtask: this.toSubtasks(),
+    };
+  }
+
+  /**
+   * Converts the subtasks of the form into the data for Supabase.
+   * The local form ID is not saved.
+   *
+   * @returns {TaskSubtask[]} The subtasks with title and completed status.
+   */
+  private toSubtasks(): TaskSubtask[] {
+    return this.subtasks().map(subtask => ({
+      title: subtask.title,
+      completed: subtask.completed ?? false,
+    }));
+  }
+
+  /**
+   * Plays the closing animation and then runs the given action.
+   *
+   * @param {() => void} action - The action after the animation.
+   * @returns {void}
+   */
+  private closeWithAnimation(action: () => void): void {
+    if (this.isClosing()) {
+      return;
+    }
+
+    this.isClosing.set(true);
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.closeTimer = setTimeout(action, reducedMotion ? 0 : 400);
   }
 }

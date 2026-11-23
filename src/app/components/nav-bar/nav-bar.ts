@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+/**
+ * Side navigation with the links to the pages.
+ */
 @Component({
   imports: [RouterLink, RouterLinkActive],
   selector: 'app-nav-bar',

@@ -1,8 +1,14 @@
 import { Component, model, output, signal } from '@angular/core';
 
-// Erst ab so vielen Zeichen wird gesucht.
+/** The search only starts from this many characters. */
 const MIN_LENGHT = 3;
 
+/**
+ * Search field that only searches from three characters.
+ *
+ * @example
+ * <app-search-input [(noResult)]="noResult" (searched)="onSearch($event)" (cleared)="onSearchCleared()" />
+ */
 @Component({
     imports: [],
     selector: 'app-search-input',
@@ -10,28 +16,40 @@ const MIN_LENGHT = 3;
     templateUrl: './search-input.html',
 })
 export class SearchInput {
-    // true = keine Treffer, der Text im Feld wird rot. Per [(noResult)] vom Parent bindbar.
+    /** true = no results, the text in the field turns red. Bindable from the parent via [(noResult)]. */
     readonly noResult = model(false);
 
-    // Meldet den Suchtext (Klick auf das Icon oder Enter), wenn mindestens 3 Zeichen drin stehen.
+    /** Emits the search text (click on the icon or Enter) if it has at least 3 characters. */
     readonly searched = output<string>();
 
-    // Meldet, dass das Feld leer ist (alle Karten wieder zeigen).
+    /** Emits that the field is empty (show all cards again). */
     readonly cleared = output<void>();
 
     readonly value = signal('');
 
-    // true = Hinweis "zu wenige Zeichen" wird kurz angezeigt.
+    /** true = the "too few characters" hint is shown briefly. */
     readonly tooShort = signal(false);
 
-    private hintTimer?: ReturnType<typeof setTimeout>;              
+    private hintTimer?: ReturnType<typeof setTimeout>;
 
+    /**
+     * Takes over the entered text and hides error states.
+     *
+     * @param {Event} event - The input event.
+     * @returns {void}
+     */
     onInput(event: Event): void {
         this.value.set((event.target as HTMLInputElement).value);
         this.noResult.set(false);
-        this.tooShort.set(false);                                        
+        this.tooShort.set(false);
     }
 
+    /**
+     * Starts the search. An empty field resets the search,
+     * a text that is too short shows a hint.
+     *
+     * @returns {void}
+     */
     search(): void {
         const query = this.value().trim();
         if (query === '') {
@@ -39,20 +57,29 @@ export class SearchInput {
             return;
         }
         if (query.length < MIN_LENGHT) {
-            this.showTooShort();                                         
+            this.showTooShort();
             return;
         }
         this.searched.emit(query);
     }
 
+    /**
+     * Resets the search if the field is empty when it is left.
+     *
+     * @returns {void}
+     */
     onBlur(): void {
         if (this.value().trim() === '') {
             this.cleared.emit();
         }
     }
 
-    // Zeigt den Hinweis kurz an und blendet ihn nach 2,5 Sekunden wieder aus.
-    private showTooShort(): void {                                      
+    /**
+     * Shows the hint briefly and hides it again after 2.5 seconds.
+     *
+     * @returns {void}
+     */
+    private showTooShort(): void {
         this.tooShort.set(true);
         clearTimeout(this.hintTimer);
         this.hintTimer = setTimeout(() => this.tooShort.set(false), 2500);

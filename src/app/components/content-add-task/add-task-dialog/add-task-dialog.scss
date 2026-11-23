@@ -50,7 +50,6 @@ dialog {
     }
 }
 
-// Abstand Titel → Inhalt wie in Contacts (main-view.scss → .heading)
 .heading {
     margin-bottom: 48px;
     display: flex;
@@ -223,7 +222,6 @@ dialog {
         }
     }
 
-    // Titel + Sternchen wie in drop-down-category (.category__label)
     &__title {
         display: flex;
         gap: 0.25rem;

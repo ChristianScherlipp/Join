@@ -7,20 +7,31 @@ import {
     TaskUpdate,
     TaskWithContacts,
 } from '../interfaces/task';
-import { IUser } from '../interfaces/iuser';
 import { Subject } from 'rxjs';
 import { Supabase } from './supabase';
 import { ContactService } from './contact-service';
+import {
+    applyPositions,
+    connectTasksWithContacts,
+    prependTask,
+    replaceTask,
+} from './task-list';
 
 const TASK_COLUMNS =
     'id, created_at, title, date, worker_id, subtask, ' +
     'category, priority, description, status, position';
 
+/**
+ * Remembers the state at the start of a load request.
+ */
 interface LoadContext {
     load: number;
     revision: number;
 }
 
+/**
+ * Manages all tasks: loading, creating, updating, deleting and positions.
+ */
 @Injectable({
     providedIn: 'root',
 })
@@ -44,7 +55,7 @@ export class TaskService {
     readonly contactErrorMessage = this.contactService.errorMessage;
 
     readonly tasksWithContacts = computed(() =>
-        this.connectTasksWithContacts()
+        connectTasksWithContacts(this.tasks(), this.contactService.users())
     );
 
     readonly tasksByStatus = computed(() => ({
@@ -54,7 +65,11 @@ export class TaskService {
         done: this.filterByStatus('done'),
     }));
 
-    // Lädt Tasks und Kontakte parallel.
+    /**
+     * Loads tasks and contacts in parallel.
+     *
+     * @returns {Promise<void>}
+     */
     async loadBoard(): Promise<void> {
         await Promise.all([
             this.getTasks(),
@@ -62,7 +77,11 @@ export class TaskService {
         ]);
     }
 
-    // Steuert den Ladevorgang und die Fehlerbehandlung.
+    /**
+     * Controls the loading process and error handling.
+     *
+     * @returns {Promise<boolean>} true if an up-to-date response was accepted.
+     */
     async getTasks(): Promise<boolean> {
         const context = this.beginLoading();
         try {
@@ -74,7 +93,12 @@ export class TaskService {
         }
     }
 
-    // Erstellt einen Task.
+    /**
+     * Creates a task.
+     *
+     * @param {TaskCreate} task - The data of the new task.
+     * @returns {Promise<boolean>} true = saved, false = failed.
+     */
     async addTask(task: TaskCreate): Promise<boolean> {
         return this.save(
             () => this.insertTask(task),
@@ -82,7 +106,13 @@ export class TaskService {
         );
     }
 
-    // Ändert die übergebenen Felder eines Tasks.
+    /**
+     * Updates the given fields of a task.
+     *
+     * @param {number} id - The ID of the task.
+     * @param {TaskUpdate} changes - The fields to update.
+     * @returns {Promise<boolean>} true = saved, false = failed.
+     */
     async updateTask(id: number, changes: TaskUpdate): Promise<boolean> {
         if (Object.keys(changes).length === 0) {
             return true;
@@ -93,12 +123,24 @@ export class TaskService {
         );
     }
 
-    // Ändert nur den Status.
+    /**
+     * Updates only the status of a task.
+     *
+     * @param {number} id - The ID of the task.
+     * @param {TaskStatus} status - The new status.
+     * @returns {Promise<boolean>} true = saved, false = failed.
+     */
     updateStatus(id: number, status: TaskStatus): Promise<boolean> {
         return this.updateTask(id, { status });
     }
 
-    // Speichert Spalte und Position mehrerer Tasks (Drag & Drop).
+    /**
+     * Saves column and position of several tasks (drag & drop).
+     * On error the tasks are reloaded.
+     *
+     * @param {TaskPositionChange[]} changes - The new columns and positions.
+     * @returns {Promise<boolean>} true = saved, false = failed.
+     */
     async updatePositions(changes: TaskPositionChange[]): Promise<boolean> {
         if (changes.length === 0) return true;
         const saved = await this.save(
@@ -109,20 +151,25 @@ export class TaskService {
         return saved;
     }
 
-    // Ersetzt die zugewiesenen Kontakt-IDs ohne Duplikate.
+    /**
+     * Replaces the assigned contact IDs without duplicates.
+     *
+     * @param {number} id - The ID of the task.
+     * @param {number[]} contactIds - The IDs of the assigned contacts.
+     * @returns {Promise<boolean>} true = saved, false = failed.
+     */
     updateWorkers(id: number, contactIds: number[]): Promise<boolean> {
         return this.updateTask(id, {
             worker_id: [...new Set(contactIds)],
         });
     }
 
-    // Löscht einen Task.
-    // async deleteTask(id: number): Promise<boolean> {
-    //     return this.save(
-    //         () => this.removeTask(id),
-    //         'Der Task konnte nicht gelöscht werden.',
-    //     );
-    // }
+    /**
+     * Deletes a task and then reports the deletion via taskDeleted.
+     *
+     * @param {number} id - The ID of the task.
+     * @returns {Promise<boolean>} true = deleted, false = failed.
+     */
     async deleteTask(id: number): Promise<boolean> {
         const success = await this.save(
             () => this.removeTask(id),
@@ -136,33 +183,23 @@ export class TaskService {
         return success;
     }
 
-    // Verknüpft die Task-Liste mit den geladenen Kontakten.
-    private connectTasksWithContacts(): TaskWithContacts[] {
-        const contacts = new Map(
-            this.contactService.users().map(contact => [contact.id, contact]),
-        );
-        return this.tasks().map(task => ({
-            ...task,
-            assignedContacts: this.findContacts(task, contacts),
-        }));
-    }
-
-    // Ermittelt die Kontakte eines einzelnen Tasks.
-    private findContacts(task: Task, contacts: Map<number, IUser>): IUser[] {
-        return (task.worker_id ?? []).flatMap(id => {
-            const contact = contacts.get(id);
-            return contact ? [contact] : [];
-        });
-    }
-
-    // Liefert Tasks eines Status, sortiert nach Position (leere ans Ende).
+    /**
+     * Returns the tasks of a status sorted by position (empty ones last).
+     *
+     * @param {TaskStatus} status - The requested status.
+     * @returns {TaskWithContacts[]} The sorted tasks.
+     */
     private filterByStatus(status: TaskStatus): TaskWithContacts[] {
         return this.tasksWithContacts()
             .filter(task => task.status === status)
             .sort((a, b) => (a.position ?? Infinity) - (b.position ?? Infinity));
     }
 
-    // Merkt sich den Zustand beim Start einer Ladeanfrage.
+    /**
+     * Remembers the state at the start of a load request.
+     *
+     * @returns {LoadContext} Number of the request and current revision.
+     */
     private beginLoading(): LoadContext {
         this.loadingState.set(true);
         this.errorMessage.set('');
@@ -172,7 +209,13 @@ export class TaskService {
         };
     }
 
-    // Fragt die Tasks ab und übernimmt nur eine aktuelle Antwort.
+    /**
+     * Queries the tasks and accepts only an up-to-date response.
+     *
+     * @param {LoadContext} context - The state at the start of the request.
+     * @returns {Promise<boolean>} true if the response was accepted.
+     * @throws The Supabase error if the query fails.
+     */
     private async loadTasks(context: LoadContext): Promise<boolean> {
         const { data, error } = await this.supabase
             .from('task')
@@ -185,13 +228,24 @@ export class TaskService {
         return true;
     }
 
-    // Prüft, ob inzwischen eine neuere Anfrage oder Änderung vorliegt.
+    /**
+     * Checks whether the request is still current or a newer one exists.
+     *
+     * @param {LoadContext} context - The state at the start of the request.
+     * @returns {boolean} true if the request is still current.
+     */
     private isCurrentLoad(context: LoadContext): boolean {
         return context.load === this.latestLoad &&
             context.revision === this.revision;
     }
 
-    // Zeigt Fehler überholter Ladeanfragen nicht mehr an.
+    /**
+     * No longer shows errors of outdated load requests.
+     *
+     * @param {unknown} error - The error that occurred.
+     * @param {LoadContext} context - The state at the start of the request.
+     * @returns {false} Always false.
+     */
     private handleLoadError(error: unknown, context: LoadContext): false {
         if (this.isCurrentLoad(context)) {
             this.handleError(error, 'Die Tasks konnten nicht geladen werden.');
@@ -199,14 +253,25 @@ export class TaskService {
         return false;
     }
 
-    // Nur die neueste Anfrage darf den Ladezustand zurücksetzen.
+    /**
+     * Resets the loading state, but only for the latest request.
+     *
+     * @param {LoadContext} context - The state at the start of the request.
+     * @returns {void}
+     */
     private finishLoading(context: LoadContext): void {
         if (context.load === this.latestLoad) {
             this.loadingState.set(false);
         }
     }
 
-    // Speichert den neuen Task und ergänzt die lokale Liste.
+    /**
+     * Saves the new task and adds it to the local list.
+     *
+     * @param {TaskCreate} task - The data of the new task.
+     * @returns {Promise<void>}
+     * @throws The Supabase error if saving fails.
+     */
     private async insertTask(task: TaskCreate): Promise<void> {
         const { data, error } = await this.supabase
             .from('task')
@@ -214,12 +279,18 @@ export class TaskService {
             .select(TASK_COLUMNS)
             .single<Task>();
         if (error) throw error;
-        this.prependTask(data);
+        this.taskState.update(tasks => prependTask(tasks, data));
     }
 
-    // Ändert die Positionen zuerst lokal und speichert sie dann in Supabase.
+    /**
+     * Changes the positions locally first and then saves them in Supabase.
+     *
+     * @param {TaskPositionChange[]} changes - The new columns and positions.
+     * @returns {Promise<void>}
+     * @throws The first Supabase error if a save fails.
+     */
     private async changePositions(changes: TaskPositionChange[]): Promise<void> {
-        this.applyPositions(changes);
+        this.taskState.update(tasks => applyPositions(tasks, changes));
         const results = await Promise.all(
             changes.map(({ id, status, position }) =>
                 this.supabase.from('task').update({ status, position }).eq('id', id),
@@ -229,18 +300,14 @@ export class TaskService {
         if (failed?.error) throw failed.error;
     }
 
-    // Übernimmt neue Spalte und Position in die lokale Liste.
-    private applyPositions(changes: TaskPositionChange[]): void {
-        const changeById = new Map(changes.map(change => [change.id, change]));
-        this.taskState.update(tasks =>
-            tasks.map(task => {
-                const change = changeById.get(task.id);
-                return change ? { ...task, status: change.status, position: change.position } : task;
-            }),
-        );
-    }
-
-    // Aktualisiert den Task in Supabase und anschließend lokal.
+    /**
+     * Updates the task in Supabase and then locally.
+     *
+     * @param {number} id - The ID of the task.
+     * @param {TaskUpdate} changes - The fields to update.
+     * @returns {Promise<void>}
+     * @throws The Supabase error if saving fails.
+     */
     private async changeTask(id: number, changes: TaskUpdate): Promise<void> {
         const { data, error } = await this.supabase
             .from('task')
@@ -249,10 +316,16 @@ export class TaskService {
             .select(TASK_COLUMNS)
             .single<Task>();
         if (error) throw error;
-        this.replaceTask(data);
+        this.taskState.update(tasks => replaceTask(tasks, data));
     }
 
-    // Löscht den Datensatz und entfernt ihn aus der lokalen Liste.
+    /**
+     * Deletes the record and removes it from the local list.
+     *
+     * @param {number} id - The ID of the task.
+     * @returns {Promise<void>}
+     * @throws The Supabase error if deleting fails.
+     */
     private async removeTask(id: number): Promise<void> {
         const { error } = await this.supabase
             .from('task')
@@ -264,24 +337,13 @@ export class TaskService {
         this.taskState.update(tasks => tasks.filter(task => task.id !== id));
     }
 
-    // Fügt einen Task vorne ein und verhindert doppelte Einträge.
-    private prependTask(task: Task): void {
-        this.taskState.update(tasks => [
-            task,
-            ...tasks.filter(existing => existing.id !== task.id),
-        ]);
-    }
-
-    // Ersetzt einen Task oder ergänzt einen bisher nicht geladenen Task.
-    private replaceTask(task: Task): void {
-        this.taskState.update(tasks =>
-            tasks.some(existing => existing.id === task.id)
-                ? tasks.map(existing => existing.id === task.id ? task : existing)
-                : [task, ...tasks],
-        );
-    }
-
-    // Verhindert parallele Schreibvorgänge und behandelt Fehler.
+    /**
+     * Prevents parallel write operations and handles errors.
+     *
+     * @param {() => Promise<void>} operation - The write operation to run.
+     * @param {string} message - The message on error.
+     * @returns {Promise<boolean>} true = successful, false = failed or blocked.
+     */
     private async save(operation: () => Promise<void>, message: string): Promise<boolean> {
         if (this.saving()) return false;
         this.beginSaving();
@@ -295,22 +357,35 @@ export class TaskService {
         }
     }
 
-    // Startet einen Schreibvorgang.
+    /**
+     * Starts a write operation.
+     *
+     * @returns {void}
+     */
     private beginSaving(): void {
         this.savingState.set(true);
         this.errorMessage.set('');
         ++this.revision;
     }
 
-    // Beendet einen Schreibvorgang auch nach einem Fehler.
+    /**
+     * Ends a write operation, also after an error.
+     *
+     * @returns {void}
+     */
     private finishSaving(): void {
         ++this.revision;
         this.savingState.set(false);
     }
 
-    // Protokolliert den Fehler und setzt die Meldung für die Oberfläche.
+    /**
+     * Sets the error message for the UI.
+     *
+     * @param {unknown} error - The error that occurred.
+     * @param {string} message - The message for the user.
+     * @returns {false} Always false.
+     */
     private handleError(error: unknown, message: string): false {
-        console.error(message, error);
         this.errorMessage.set(message);
         return false;
     }

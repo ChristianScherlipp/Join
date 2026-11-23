@@ -1,6 +1,3 @@
-<!--bsp. HTML <app-subtask [(subtasks)]="subtasks" />
-        TS import { Subtask, ISubtask } from '../../elements/subtask/subtask';
-        TS imports: [Subtask]; subtasks = signal<ISubtask[]>([]);-->
 <section class="subtask">
     <p class="subtask__label">Subtasks</p>
 
@@ -17,7 +14,6 @@
             (keydown.enter)="$event.preventDefault(); addSubtask()"
         >
         @if (isInputActive()) {
-            <!-- mousedown verhindern, damit das Feld beim Klick den Fokus (und die Buttons) behält. -->
             <div class="subtask__field-actions">
                 <button type="button" class="subtask__icon-btn" aria-label="Clear input" (mousedown)="$event.preventDefault()" (click)="clearInput()">
                     <img class="subtask__icon subtask__icon--small" src="./assets/icons/cancel.svg" alt="">

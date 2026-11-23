@@ -96,7 +96,6 @@ ul {
   text-align: left;
   box-sizing: border-box;
 
-
   &:hover {
     background: #f1f2f3;
   }
@@ -162,8 +161,7 @@ app-initial-icon {
     overflow-y: auto;
   }
 
-  /* Der große Desktop-Button wird mobil ausgeblendet. */
-  .toolbar {
+    .toolbar {
     display: none;
   }
 

@@ -9,9 +9,8 @@
     <button class="add-area__close" type="button" aria-label="Close" [disabled]="contactService.saving()" (click)="close()">
       <img src="./assets/icons/cancel.svg" alt="Icon Close" />
     </button>
-    <!-- Zeigt Initialen oder bei leerem Namen das Platzhalter-Icon. -->
     <app-initial-icon class="add-area__avatar" [name]="previewName()" [withShadow]="true" />
-    <form class="add-area__form" #contactForm="ngForm" (ngSubmit)="save()">
+    <form class="add-area__form" #contactForm="ngForm" (ngSubmit)="save()" novalidate>
       <div class="add-area__group">
         <label class="add-area__field" [class.add-area__field--error]="fieldError.isVisible('name')">
           <input (blur)="fieldError.check('name', newContact.name); updatePreview(newContact.name)" class="add-area__input" type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="newContact.name" required />

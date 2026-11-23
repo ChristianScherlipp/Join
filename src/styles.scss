@@ -11,6 +11,15 @@
   font-display: swap;
 }
 
+button {
+  cursor: pointer;
+}
+
+button,
+input {
+  border: unset;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -23,7 +32,6 @@ body {
     }
 }
 
-/* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
     width: 0.475rem;
     height: 0.475rem;

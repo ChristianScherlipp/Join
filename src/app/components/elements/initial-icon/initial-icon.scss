@@ -33,7 +33,7 @@
   &.is-header {
     border: 0.1875rem solid $background-secondary;
     background-color: $background-primary;
-    transition: background-color 0.2s;
+    transition: background-color 100ms;
 
     &:hover {
       background-color: #e2e6ec;

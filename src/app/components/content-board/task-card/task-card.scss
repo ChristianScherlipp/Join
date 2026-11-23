@@ -18,7 +18,7 @@
   box-shadow: 0 0 0.625rem 0.1875rem rgba(0, 0, 0, 0.08);
   border: 2px solid transparent;
   cursor: grab;
-  transition: border-color 150ms ease;
+  transition: border-color 100ms ease;
   flex: 1;
   min-width: 0;
 }
@@ -75,7 +75,6 @@
     gap: 0.5rem;
   }
 }
-
 
 .task-card__track {
   flex: 0 1 6.875rem;
@@ -134,7 +133,6 @@
   color: $text-secondary;
   font-size: 0.875rem;
 }
-
 
 .task-card__priority {
   width: 1.25rem;
