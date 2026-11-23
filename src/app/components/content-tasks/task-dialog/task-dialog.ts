@@ -107,17 +107,6 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Liefert den Namen eines zugewiesenen Kontakts.
-   */
-  contactName(id: number): string {
-    const contact = this.task().assignedContacts.find(
-      contact => contact.id === id
-    );
-
-    return contact?.name ?? `Kontakt #${id}`;
-  }
-
-  /**
    * Schaltet den Erledigt-Status eines Subtasks um.
    */
   async toggleSubtask(index: number): Promise<void> {
