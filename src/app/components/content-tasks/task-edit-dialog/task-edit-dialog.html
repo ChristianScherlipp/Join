@@ -1,4 +1,4 @@
-<dialog #dialog aria-labelledby="task-edit-dialog-title" [attr.aria-busy]="taskService.saving()"
+<dialog #dialog [class.is-closing]="isClosing()" aria-labelledby="task-edit-dialog-title" [attr.aria-busy]="taskService.saving()"
     (cancel)="$event.preventDefault(); close()" (click)="closeOnOutsideClick($event)">
     <header class="dialog-header">
         <h1 id="task-edit-dialog-title">Edit Task</h1>

@@ -46,7 +46,7 @@ dialog {
 p,
 dd {
   margin: 0;
-  font-size: fluid(16,20);
+  font-size: fluid(16, 20);
 }
 
 .task-card__label {
@@ -71,7 +71,7 @@ dd {
 
 dt {
   color: #42526e;
-  font-size: fluid(16,20);
+  font-size: fluid(16, 20);
   font-weight: 700;
 }
 
@@ -131,7 +131,6 @@ header {
 .dialog-content,
 .task-form {
   scrollbar-width: auto;
-  scrollbar-color: auto;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -164,7 +163,7 @@ section {
   h2 {
     margin: 0 0 12px;
     color: #42526e;
-    font-size: fluid(16,20);
+    font-size: fluid(16, 20);
     font-weight: 700;
   }
 }
@@ -199,6 +198,9 @@ ul {
   margin: 0;
   padding: 0;
   list-style: none;
+  box-shadow: 0 0 6px rgb(0 0 0 / 30%);
+
+
 
   li {
     display: flex;
@@ -206,7 +208,7 @@ ul {
     gap: 10px;
     margin-bottom: 8px;
     padding: 7px;
-    font-size: fluid(16,20);
+    font-size: fluid(16, 20);
     overflow-wrap: anywhere;
 
     &:last-child {
@@ -270,6 +272,8 @@ button {
 .assigned-list {
   max-height: 178px;
   overflow-y: auto;
+  box-shadow: 0 0 6px rgb(0 0 0 / 30%);
+
 
   >li {
     min-height: 56px;
@@ -315,9 +319,9 @@ button {
     margin: 0;
     padding: 4px 0;
     box-sizing: border-box;
-    font-size: fluid(16,20);
+    font-size: fluid(16, 20);
 
-    &.empty{
+    &.empty {
       padding: 7px;
     }
   }
@@ -374,6 +378,10 @@ button {
   }
 }
 
+.subtask-completed {
+  text-decoration: line-through;
+}
+
 /* Die Maske bestimmt die Form, die Hintergrundfarbe die Iconfarbe. */
 .subtask-icon {
   flex-shrink: 0;
@@ -394,7 +402,7 @@ button {
   }
 }
 
-.empty{
+.empty {
   font-style: italic;
 }
 
@@ -428,6 +436,21 @@ button {
 
 dialog[open] {
   animation: dialog-slide-in 400ms ease-out;
+}
+
+@keyframes dialog-slide-out {
+  from {
+    transform: translate(-50%, -50%);
+  }
+
+  to {
+    transform: translate(50vw, -50%);
+  }
+}
+
+dialog[open].is-closing {
+  animation: dialog-slide-out 400ms ease-in forwards;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

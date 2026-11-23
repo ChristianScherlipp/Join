@@ -28,8 +28,7 @@ import { ButtonPriority } from '../../elements/button-priority/button-priority';
 import { DropDownAssignedto } from '../../elements/drop-down-assignedto/drop-down-assignedto';
 import { Subtask, ISubtask } from '../../elements/subtask/subtask';
 
-// Ergänzt den Formular-Subtask um den vorhandenen Erledigt-Status.
-// Neue Einträge aus der Subtask-Komponente haben diesen Wert noch nicht.
+// Behält den Erledigt-Status vorhandener Subtasks im Formular.
 interface EditableSubtask extends ISubtask {
   completed?: boolean;
 }
@@ -47,25 +46,26 @@ interface EditableSubtask extends ISubtask {
   styleUrl: './task-edit-dialog.scss',
 })
 export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
-  // Der Task, der bearbeitet werden soll.
   readonly task = input.required<TaskWithContacts>();
 
-  // Meldungen an die übergeordnete Komponente.
   readonly closed = output<void>();
   readonly saved = output<void>();
 
   readonly taskService = inject(TaskService);
   readonly contactService = inject(ContactService);
 
-  // Zugriff auf das Dialogfenster im HTML.
   readonly dialog =
     viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
 
-  // Merkt sich das Element, das vor dem Öffnen fokussiert war.
   private readonly opener =
     document.activeElement as HTMLElement | null;
 
-  // Werte der Eingabefelder.
+  private closeTimer?: ReturnType<typeof setTimeout>;
+
+  // Steuert die CSS-Klasse für die Schließanimation.
+  readonly isClosing = signal(false);
+
+  // Eingabewerte des Formulars.
   title = '';
   description = '';
   date = '';
@@ -74,10 +74,8 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   priority: TaskPriority | null = null;
   status: TaskStatus | '' = '';
 
-  // Auswahl für das Assigned-to-Dropdown.
   selectedContacts: Pick<IUser, 'id' | 'name'>[] = [];
 
-  // Formular-Subtasks mit lokaler ID und optionalem Erledigt-Status.
   readonly subtasks = signal<EditableSubtask[]>([]);
 
   validationMessage = '';
@@ -85,8 +83,6 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Übernimmt die vorhandenen Task-Daten in das Formular.
-   * Die Subtasks werden kopiert, damit Änderungen zunächst
-   * nur das Formular betreffen.
    */
   ngOnInit(): void {
     const task = this.task();
@@ -111,8 +107,7 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
       };
     });
 
-    // Die ID wird nur innerhalb des Formulars benötigt.
-    // Der Erledigt-Status aus der Datenbank bleibt erhalten.
+    // Ergänzt lokale IDs und erhält vorhandene Häkchen.
     this.subtasks.set(
       (task.subtask ?? []).map((subtask, index) => ({
         id: index + 1,
@@ -134,24 +129,46 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Gibt den Fokus beim Entfernen der Komponente zurück.
+   * Räumt den Timer auf und gibt den Fokus zurück.
    */
   ngOnDestroy(): void {
+    clearTimeout(this.closeTimer);
     this.opener?.focus();
   }
 
   /**
-   * Meldet den Schließwunsch.
-   * Während des Speicherns bleibt der Dialog geöffnet.
+   * Spielt die Schließanimation ab und führt danach
+   * die übergebene Aktion aus.
    */
-  close(): void {
-    if (!this.taskService.saving()) {
-      this.closed.emit();
+  private closeWithAnimation(action: () => void): void {
+    if (this.isClosing()) {
+      return;
     }
+
+    this.isClosing.set(true);
+
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    this.closeTimer = setTimeout(() => {
+      action();
+    }, reducedMotion ? 0 : 400);
   }
 
   /**
-   * Schließt den Dialog bei einem Klick außerhalb des Fensters.
+   * Meldet das Schließen nach Ablauf der Animation.
+   */
+  close(): void {
+    if (this.taskService.saving()) {
+      return;
+    }
+
+    this.closeWithAnimation(() => this.closed.emit());
+  }
+
+  /**
+   * Erkennt Klicks außerhalb des Dialogfensters.
    */
   closeOnOutsideClick(event: MouseEvent): void {
     const dialog = event.currentTarget as HTMLDialogElement;
@@ -169,10 +186,11 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Prüft die Eingaben und speichert den bearbeiteten Task.
+   * Prüft und speichert das Formular.
+   * Nach erfolgreichem Speichern läuft die Schließanimation.
    */
   async save(form: NgForm): Promise<void> {
-    if (this.taskService.saving()) {
+    if (this.taskService.saving() || this.isClosing()) {
       return;
     }
 
@@ -205,13 +223,13 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
         priority: this.priority,
         status: this.status,
 
-        // Speichert die aktuelle Auswahl aus dem Dropdown.
+        // Übernimmt die aktuelle Auswahl aus dem Dropdown.
         worker_id: this.selectedContacts.map(
           contact => contact.id
         ),
 
-        // Speichert nur das Datenbankformat, ohne lokale Formular-ID.
-        // Neue Subtasks sind standardmäßig nicht erledigt.
+        // Speichert ohne lokale Formular-ID.
+        // Neue Subtasks sind zunächst nicht erledigt.
         subtask: this.subtasks().map(subtask => ({
           title: subtask.title,
           completed: subtask.completed ?? false,
@@ -220,7 +238,7 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (success) {
-      this.saved.emit();
+      this.closeWithAnimation(() => this.saved.emit());
     }
   }
 }

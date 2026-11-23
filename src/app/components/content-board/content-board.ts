@@ -10,7 +10,7 @@ import { TaskEditDialog } from '../content-tasks/task-edit-dialog/task-edit-dial
 import { AddTaskDialog } from '../content-add-task/add-task-dialog/add-task-dialog';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import {
   CdkDrag,
@@ -81,7 +81,13 @@ export class ContentBoard {
   readonly hasMatch = computed(() => Object.values(this.visibleTasks()).some(list => list.length > 0));
 
   constructor() {
-    this.taskService.loadBoard();
+    this.taskService.taskDeleted
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.toast()?.show('Task deleted successfully');
+      });
+
+    void this.taskService.loadBoard();
   }
 
   onSearch(query: string): void {
