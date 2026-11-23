@@ -47,6 +47,7 @@ export class AddTaskDialog {
   title = '';
   description = '';
   dueDate = '';
+  readonly today = new Date().toLocaleDateString('en-CA');
   priority: TaskPriority | null = 'medium';
   assignedContacts: IUser[] = [];
   category: TaskCategory | null = null;

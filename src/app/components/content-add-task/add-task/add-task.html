@@ -33,7 +33,7 @@
             Due date
             <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
           </p>
-          <input name="dueDate" [(ngModel)]="dueDate" (blur)="fieldError.check('dueDate', dueDate)"  required onclick="this.showPicker()" class="task-form__input task-form__input--text" [class.task-form__input--error]="fieldError.isVisible('dueDate')" type="date" />
+          <input name="dueDate" [(ngModel)]="dueDate" [min]="today" (blur)="fieldError.check('dueDate', dueDate)"  required onclick="this.showPicker()" class="task-form__input task-form__input--text" [class.task-form__input--error]="fieldError.isVisible('dueDate')" type="date" />
         </label>
         @if (fieldError.isVisible('dueDate')) {
           <span class="task-form__field-error" role="alert">{{ fieldError.message('dueDate') }}</span>
