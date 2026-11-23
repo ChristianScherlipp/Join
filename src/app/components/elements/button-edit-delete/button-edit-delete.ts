@@ -1,9 +1,9 @@
 import { Component, computed, input, output } from '@angular/core';
 
 const ICONS = {
-  edit: 'assets/icons/edit.svg',
-  delete: 'assets/icons/delete.svg',
-  save: 'assets/icons/check.svg'
+  edit: './assets/icons/edit.svg',
+  delete: './assets/icons/delete.svg',
+  save: './assets/icons/check.svg'
 };
 
 const LABELS = { edit: 'Edit', delete: 'Delete', save: 'Save' }
