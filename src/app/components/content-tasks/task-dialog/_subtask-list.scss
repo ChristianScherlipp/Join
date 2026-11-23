@@ -80,10 +80,10 @@
     height: 24px;
     background-color: $background-secondary;
 
-    mask: url('/assets/icons/uncheckt.svg') center / contain no-repeat;
+    mask: url('./assets/icons/uncheckt.svg') center / contain no-repeat;
 
     &.completed {
-      mask-image: url('/assets/icons/checkt.svg');
+      mask-image: url('./assets/icons/checkt.svg');
     }
   }
 }
