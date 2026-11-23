@@ -60,9 +60,9 @@
       <h2>Assigned to:</h2>
       <div class="assigned-list">
         <ul>
-          @for (id of task().worker_id || []; track id) {
-          <li><app-initial-icon [name]="contactName(id)" [withShadow]="false"
-              style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contactName(id) }}</li>
+          @for (contact of task().assignedContacts; track contact.id) {
+          <li><app-initial-icon [name]="contact.name" [withShadow]="false"
+              style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contact.name }}</li>
           } @empty {
           <li class="empty">no user assigned</li>
           }
