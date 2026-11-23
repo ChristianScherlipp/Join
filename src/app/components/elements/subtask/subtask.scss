@@ -126,6 +126,10 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         font-size: 1rem;
         border-radius: 0.625rem;
 
+        &:not(&--editing) {
+            cursor: pointer;
+        }
+
         &:not(&--editing):hover {
             background: $hover-list;
         }
