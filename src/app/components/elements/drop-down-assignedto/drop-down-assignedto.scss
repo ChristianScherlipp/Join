@@ -10,6 +10,7 @@
     &__label {
         margin: 0;
         color: $text-darkblue;
+
         font-size: fluid(16, 20);
         line-height: 1.2;
     }
@@ -120,6 +121,12 @@
 
     &__name {
         flex: 1;
+        max-width: 100%; 
+        padding: 0.25rem 1rem;
+        border-radius: 0.5rem;
+        overflow: hidden; 
+        white-space: nowrap; 
+        text-overflow: ellipsis;
     }
 
     &__check {
@@ -142,7 +149,7 @@
         height: 2.625rem;
     }
 
-    &__chip + &__chip {
+    &__chip+&__chip {
         margin-left: -0.675rem;
     }
 
