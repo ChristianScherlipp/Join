@@ -27,6 +27,7 @@
 
 .heading {
     margin-bottom: 2.5rem;
+
     h1 {
         color: $text-secondary;
         font-size: fluid(47, 61);
@@ -37,7 +38,7 @@
 
 .task-form {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     gap: 4rem;
 
     // 2 columnas de 440px + divider de 1px + 2 gaps de las columnas
@@ -63,7 +64,7 @@
         display: flex;
         justify-content: space-between;
 
-        @include respond-below(1100px){
+        @include respond-below(1100px) {
             position: sticky;
             bottom: 0;
             padding-bottom: fluid(24, 64);
@@ -83,7 +84,7 @@
             background: transparent;
         }
 
-        p{
+        p {
             display: flex;
             align-self: flex-end;
             gap: 0.25rem;
@@ -91,16 +92,16 @@
             line-height: 1.2;
             font-size: 1rem;
 
-            @include respond-below(1100px){
-            display: none;
-        }
+            @include respond-below(1100px) {
+                display: none;
+            }
         }
     }
 
     &__required-note {
         display: none;
 
-        @include respond-below(1100px){
+        @include respond-below(1100px) {
             display: flex;
             gap: 0.25rem;
             margin: 0;
@@ -114,7 +115,7 @@
         justify-content: flex-end;
         gap: 2rem;
 
-        @include respond-below(1100px){
+        @include respond-below(1100px) {
             margin-top: 50px;
             gap: fluid(16, 32, 320, 1100);
         }
@@ -122,7 +123,7 @@
         ::ng-deep .btn-primary {
             font-size: 1.31rem;
 
-            @include respond-below(1100px){
+            @include respond-below(1100px) {
                 height: fluid(40, 48, 320, 1100);
                 padding: 0 fluid(12, 16, 320, 1100);
                 font-size: fluid(16, 18, 320, 1100);
@@ -137,7 +138,7 @@
         ::ng-deep .btn-cancel {
             width: 7.875rem;
 
-            @include respond-below(1100px){
+            @include respond-below(1100px) {
                 width: auto;
             }
         }
@@ -145,7 +146,7 @@
         ::ng-deep .btn-createTask {
             width: 13rem;
 
-            @include respond-below(1100px){
+            @include respond-below(1100px) {
                 width: auto;
             }
         }
@@ -181,7 +182,7 @@
         width: 1px;
         background-color: #686868;
 
-        @include respond-below(1100px){
+        @include respond-below(1100px) {
             display: none;
         }
     }
@@ -207,7 +208,7 @@
         font-size: 1.25rem;
         color: $text-darkblue;
 
-        @include respond-below(1100px){
+        @include respond-below(1100px) {
             font-size: 1rem;
         }
     }
@@ -226,8 +227,8 @@
         width: auto;
         height: 0.7rem;
         filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
-        
-        &-note{
+
+        &-note {
             margin-top: 1rem;
         }
     }
@@ -242,7 +243,7 @@
         box-sizing: border-box;
         outline: none;
 
-        &:hover{
+        &:hover {
             cursor: pointer;
         }
 
@@ -277,4 +278,14 @@
         }
     }
 
+}
+
+@media (max-width: 1100px) and (orientation: landscape) {
+    .task-form__actions {
+        padding-bottom: clamp(24px, 0.571429px + 3.5714285714vw, 64px);
+    }
+
+    .task-form__buttons {
+        margin-top: 20px;
+    }
 }

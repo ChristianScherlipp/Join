@@ -33,8 +33,9 @@
         [cdkDropListOrientation]="isNarrow() ? 'horizontal' : 'vertical'" [cdkDropListAutoScrollStep]="8"
         (cdkDropListDropped)="onDrop($event, column.id)">
         @for (task of visibleTasks()[column.id]; track task.id) {
-        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag [cdkDragStartDelay]="{ touch: 150, mouse: 0 }"
-          (cdkDragMoved)="onDragMoved($event)" (cdkDragEnded)="onDragEnded()">
+        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag (contextmenu)="$event.preventDefault()"
+          [cdkDragStartDelay]="{ touch: 250, mouse: 0 }" (cdkDragMoved)="onDragMoved($event)"
+          (cdkDragEnded)="onDragEnded()">
           <ng-template cdkDragPreview [matchSize]="true">
             <div class="board__preview">
               <app-task-card [task]="task" />
@@ -48,23 +49,15 @@
     </section>
     }
   </div>
-  <app-toast-success #successToast/>
+  <app-toast-success #successToast />
 </section>
 <app-add-task-dialog />
 
 @if (selectedTask(); as task) {
-  @if (editing()) {
-    <app-task-edit-dialog
-      [task]="task"
-      (closed)="editing.set(false)"
-      (saved)="editing.set(false); closeTask(); successToast.show('Task updated successfully')"
-    />
-  } @else {
-    <app-task-dialog
-      [task]="task"
-      (closed)="closeTask()"
-      (edit)="editing.set(true)"
-      (deleted)="closeTask()"
-    />
-  }
+@if (editing()) {
+<app-task-edit-dialog [task]="task" (closed)="closeTask()"
+  (saved)="editing.set(false); closeTask(); successToast.show('Task updated successfully')" />
+} @else {
+<app-task-dialog [task]="task" (closed)="closeTask()" (edit)="editing.set(true)" (deleted)="closeTask()" />
+}
 }

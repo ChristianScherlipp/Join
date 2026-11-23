@@ -199,6 +199,7 @@ ul {
   padding: 0;
   list-style: none;
   box-shadow: 0 0 6px rgb(0 0 0 / 30%);
+  border-radius: 0.625rem;
 
 
 
@@ -273,6 +274,8 @@ button {
   max-height: 178px;
   overflow-y: auto;
   box-shadow: 0 0 6px rgb(0 0 0 / 30%);
+  border-radius: 0.625rem;
+  
 
 
   >li {

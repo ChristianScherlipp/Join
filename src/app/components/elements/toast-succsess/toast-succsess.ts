@@ -11,7 +11,7 @@ export class ToastSuccess {
   readonly message = signal('');
   private timer?: number;
 
-  show(text: string, duration = 3000): void {
+  show(text: string, duration = 2000): void {
     window.clearTimeout(this.timer);
     this.message.set(text);
     this.timer = window.setTimeout(() => this.message.set(''), duration);
