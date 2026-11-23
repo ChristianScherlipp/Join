@@ -2,14 +2,13 @@
     <p class="assign__label">Assigned to</p>
 
     <section class="assign__box" [class.is-open]="isOpen()">
-        <div class="assign__field">
+        <div class="assign__field" (click)="toggleList()">
             <input 
                 class="assign__input"
                 type="text"
                 placeholder="Select contacts to assign"
                 aria-label="Assigned to"
                 [value]="searchText()"
-                (click)="toggleList()"
                 (input)="onSearch($event)"
             >
             <button
@@ -17,7 +16,6 @@
                 class="assign__toggle"
                 aria-label="Contactlist open or closed"
                 [attr.aria-expanded]="isOpen()"
-                (click)="toggleList()"
             >
                 <span class="assign__arrow" aria-hidden="true"></span>
             </button>

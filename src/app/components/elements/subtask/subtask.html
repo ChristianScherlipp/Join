@@ -47,9 +47,9 @@
                         </div>
                     </li>
                 } @else {
-                    <li class="subtask__item">
+                    <li class="subtask__item" (click)="startEdit(item)">
                         <span class="subtask__text">{{ item.title }}</span>
-                        <div class="subtask__actions">
+                        <div class="subtask__actions" (click)="$event.stopPropagation()">
                             <app-button-edit-delete typeStr="edit" [needText]="false" (actionClicked)="startEdit(item)" />
                             <span class="subtask__divider" aria-hidden="true"></span>
                             <app-button-edit-delete typeStr="delete" [needText]="false" (actionClicked)="deleteSubtask(item.id)" />
