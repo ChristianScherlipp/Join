@@ -18,16 +18,19 @@
 
 @keyframes toast-slide {
   0% {
-    transform: translateX(50vw); 
+    transform: translateX(50vw);
   }
+
   15% {
-    transform: translateX(-50%);   
+    transform: translateX(-50%);
   }
+
   85% {
     transform: translateX(-50%);
   }
+
   100% {
-    transform: translateX(50vw);     
+    transform: translateX(50vw);
   }
 }
 
@@ -43,7 +46,42 @@
   0% {
     transform: translate(-50%, 50vh);
   }
+
   100% {
     transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes toast-mobile-slide {
+  0% {
+    transform: translate(-50%, 50vh);
+  }
+
+  20% {
+    transform: translate(-50%, -50%);
+  }
+
+  80% {
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    transform: translate(-50%, 50vh);
+  }
+}
+
+@media (max-width: 1100px) {
+  .toast-success {
+    top: 50%;
+    bottom: auto;
+    left: 50%;
+
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
+
+    animation: toast-mobile-slide 2s ease-in-out forwards;
   }
 }
