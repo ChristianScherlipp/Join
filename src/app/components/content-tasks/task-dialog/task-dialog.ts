@@ -17,6 +17,9 @@ import { TaskService } from '../../../services/task-service';
 import { ButtonEditDelete } from '../../elements/button-edit-delete/button-edit-delete';
 import { InitialIcon } from '../../elements/initial-icon/initial-icon';
 
+/**
+ * Detail view of a task with edit, delete and checkable subtasks.
+ */
 @Component({
   selector: 'app-task-dialog',
   imports: [DatePipe, ButtonEditDelete, InitialIcon],
@@ -31,7 +34,7 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
 
   readonly taskService: TaskService = inject(TaskService);
 
-  // Steuert die CSS-Klasse für die Schließanimation.
+  /** Controls the CSS class for the closing animation. */
   readonly isClosing = signal(false);
 
   readonly dialog =
@@ -43,14 +46,18 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   private closeTimer?: ReturnType<typeof setTimeout>;
 
   /**
-   * Öffnet den Dialog, sobald das HTML bereitsteht.
+   * Opens the dialog as soon as the HTML is ready.
+   *
+   * @returns {void}
    */
   ngAfterViewInit(): void {
     this.dialog().nativeElement.showModal();
   }
 
   /**
-   * Räumt den Timer auf und gibt den Fokus zurück.
+   * Cleans up the timer and returns the focus.
+   *
+   * @returns {void}
    */
   ngOnDestroy(): void {
     clearTimeout(this.closeTimer);
@@ -58,27 +65,9 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Startet die Schließanimation.
-   * Erst danach wird die übergebene Aktion ausgeführt.
-   */
-  private closeWithAnimation(action: () => void): void {
-    if (this.isClosing()) {
-      return;
-    }
-
-    this.isClosing.set(true);
-
-    const reducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-
-    this.closeTimer = setTimeout(() => {
-      action();
-    }, reducedMotion ? 0 : 400);
-  }
-
-  /**
-   * Schließt den Dialog über X, Escape oder den Hintergrund.
+   * Closes the dialog via X, Escape or the backdrop.
+   *
+   * @returns {void}
    */
   close(): void {
     if (this.taskService.saving()) {
@@ -89,7 +78,10 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Erkennt Klicks außerhalb des Dialogfensters.
+   * Detects clicks outside the dialog window.
+   *
+   * @param {MouseEvent} event - The click event.
+   * @returns {void}
    */
   closeOnOutsideClick(event: MouseEvent): void {
     const dialog = event.currentTarget as HTMLDialogElement;
@@ -107,7 +99,10 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Schaltet den Erledigt-Status eines Subtasks um.
+   * Toggles the completed status of a subtask.
+   *
+   * @param {number} index - The position of the subtask in the list.
+   * @returns {Promise<void>}
    */
   async toggleSubtask(index: number): Promise<void> {
     if (this.taskService.saving() || this.isClosing()) {
@@ -115,25 +110,18 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
     }
 
     const task = this.task();
+    const subtasks = (task.subtask ?? []).map((subtask, currentIndex) => ({
+      ...subtask,
+      completed: currentIndex === index ? !subtask.completed : subtask.completed,
+    }));
 
-    const subtasks = (task.subtask ?? []).map(
-      (subtask, currentIndex) => ({
-        ...subtask,
-        completed:
-          currentIndex === index
-            ? !subtask.completed
-            : subtask.completed,
-      })
-    );
-
-    await this.taskService.updateTask(task.id, {
-      subtask: subtasks,
-    });
+    await this.taskService.updateTask(task.id, { subtask: subtasks });
   }
 
   /**
-   * Schließt die Detailansicht mit Animation
-   * und meldet danach den Wechsel zum Edit-Dialog.
+   * Closes the detail view with an animation and then reports the switch to the edit dialog.
+   *
+   * @returns {void}
    */
   openEdit(): void {
     if (this.taskService.saving()) {
@@ -144,20 +132,35 @@ export class TaskDialog implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Löscht den Task und meldet danach das Löschen
-   * mit einer Schließanimation.
+   * Deletes the task and then reports the deletion with a closing animation.
+   *
+   * @returns {Promise<void>}
    */
   async deleteTask(): Promise<void> {
     if (this.taskService.saving() || this.isClosing()) {
       return;
     }
 
-    const success = await this.taskService.deleteTask(
-      this.task().id
-    );
+    const success = await this.taskService.deleteTask(this.task().id);
 
     if (success) {
       this.closeWithAnimation(() => this.deleted.emit());
     }
+  }
+
+  /**
+   * Starts the closing animation and then runs the given action.
+   *
+   * @param {() => void} action - The action after the animation.
+   * @returns {void}
+   */
+  private closeWithAnimation(action: () => void): void {
+    if (this.isClosing()) {
+      return;
+    }
+
+    this.isClosing.set(true);
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.closeTimer = setTimeout(action, reducedMotion ? 0 : 400);
   }
 }

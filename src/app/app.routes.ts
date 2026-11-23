@@ -3,13 +3,17 @@ import { ContentContacts } from './components/content-contacts/content-contacts'
 import { ContentLegal } from './components/content-legal/content-legal';
 import { ContentPrivacy } from './components/content-privacy/content-privacy';
 import { ContentHelp } from './components/content-help/content-help';
-import { AddTask } from './components/content-add-task/add-task/add-task'; 
-import { AddTaskDialog } from './components/content-add-task/add-task-dialog/add-task-dialog'; 
+import { AddTask } from './components/content-add-task/add-task/add-task';
+import { AddTaskDialog } from './components/content-add-task/add-task-dialog/add-task-dialog';
 import { ContentBoard } from './components/content-board/content-board';
 
+/**
+ * All pages of the application. The start page redirects to the contacts.
+ */
 export const routes: Routes = [
-  { path: 'board', 
-    component: ContentBoard 
+  {
+    path: 'board',
+    component: ContentBoard,
   },
   {
     path: 'contacts',
@@ -40,5 +44,4 @@ export const routes: Routes = [
     redirectTo: 'contacts',
     pathMatch: 'full',
   },
-  
 ];

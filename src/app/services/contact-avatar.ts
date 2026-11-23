@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Provides initials and fixed colors for contact avatars.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -15,8 +18,11 @@ export class ContactAvatar {
   ];
 
   /**
-   * Bildet die Initialen aus den ersten beiden Namensteilen.
-   * Beispiel: Max Mustermann wird zu MM.
+   * Builds the initials from the first two parts of a name.
+   * Example: "Max Mustermann" becomes "MM".
+   *
+   * @param {string} name - The full name.
+   * @returns {string} The initials in uppercase.
    */
   getInitials(name: string): string {
     const parts = name.trim().split(/\s+/);
@@ -30,25 +36,26 @@ export class ContactAvatar {
   }
 
   /**
-   * Berechnet eine feste Farbe aus dem Namen.
-   * So haben Liste und Kontaktkarte dieselbe Farbe.
+   * Calculates a fixed color from the name.
+   * This way the list and the contact card get the same color.
+   *
+   * @param {string} name - The full name.
+   * @returns {string} A hex color value from the color palette.
    */
   getColor(name: string): string {
     let hash = 0;
 
-    // Wandelt den Namen in eine positive Zahl um.
-    // Diese Berechnung erhält die bisherigen Kontaktfarben.
     for (const character of name) {
       hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
     }
 
-    const index = hash % this.colors.length;
-
-    return this.colors[index];
+    return this.colors[hash % this.colors.length];
   }
 
   /**
-   * Wählt eine zufällige Vorschaufarbe für den Dialog.
+   * Picks a random preview color for the dialog.
+   *
+   * @returns {string} A random hex color value from the color palette.
    */
   getRandomColor(): string {
     const index = Math.floor(Math.random() * this.colors.length);

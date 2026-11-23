@@ -16,6 +16,12 @@ const colors = [
   '#ffbb2b',
 ];
 
+/**
+ * Round avatar with the initials of a name.
+ *
+ * @example
+ * <app-initial-icon [name]="contact.name" [withShadow]="true" />
+ */
 @Component({
   imports: [],
   selector: 'app-initial-icon',
@@ -28,6 +34,7 @@ export class InitialIcon {
   readonly withShadow = input<boolean>(false);
   readonly isPlaceholder = input<boolean>(false);
 
+  /** The individual words of the name in uppercase. */
   words = computed(() => {
     return this.name()
       .toUpperCase()
@@ -35,6 +42,7 @@ export class InitialIcon {
       .filter(word => word.length > 0);
   });
 
+  /** First letter of the first and the last word. */
   initials = computed(() => {
     const words = this.words();
     if (words.length > 1) {
@@ -48,12 +56,14 @@ export class InitialIcon {
     }
   });
 
+  /** The color matching the name. */
   color = computed(() => {
     const name = this.words().join(' ');
     const index = this.getColorIndex(name);
     return colors[index];
   });
 
+  /** The background color depending on header, placeholder and initials. */
   backgroundColor = computed(() => {
     if (this.isHeader()) {
       return '';
@@ -64,7 +74,13 @@ export class InitialIcon {
     }
   });
 
-  getColorIndex(name: string) {
+  /**
+   * Calculates the index of a color from a name.
+   *
+   * @param {string} name - The name in uppercase.
+   * @returns {number} The index in the color list.
+   */
+  getColorIndex(name: string): number {
     let hash = 0;
     for (const char of name) {
       hash = hash * 31 + char.charCodeAt(0);

@@ -1,7 +1,14 @@
 import { Component, model } from '@angular/core';
 
+/** The selectable priorities. */
 export type Priority = 'urgent' | 'medium' | 'low';
 
+/**
+ * Selection of the priority of a task.
+ *
+ * @example
+ * <app-button-priority [(selected)]="priority" />
+ */
 @Component({
   imports: [],
   selector: 'app-button-priority',
@@ -9,7 +16,7 @@ export type Priority = 'urgent' | 'medium' | 'low';
   templateUrl: './button-priority.html',
 })
 export class ButtonPriority {
-  // Aktuell gewählte Priorität, per [(selected)] vom Parent bindbar.
+  /** Currently selected priority, bindable from the parent via [(selected)]. */
   readonly selected = model<Priority | null>(null);
 
   readonly priorities: { key: Priority; label: string; icon: string }[] = [
@@ -18,6 +25,12 @@ export class ButtonPriority {
     { key: 'low', label: 'Low', icon: './assets/icons/prio-low.svg' },
   ];
 
+  /**
+   * Selects a priority.
+   *
+   * @param {Priority} priority - The selected priority.
+   * @returns {void}
+   */
   select(priority: Priority): void {
     this.selected.set(priority);
   }

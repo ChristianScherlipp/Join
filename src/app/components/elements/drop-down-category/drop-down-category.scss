@@ -32,8 +32,6 @@
         line-height: 1.2;
     }
 
-    // Sternchen: halb so hoch wie die Schrift, 25% der Schrifthoehe nach oben versetzt.
-    // Die Icon-Datei ist egal, der Filter macht sie zu $priority-high (#FF3D00).
     &__required {
         align-self: flex-start;
         position: relative;
@@ -43,19 +41,17 @@
         filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
     }
 
-    // Bezugspunkt fuer die aufklappende Liste.
     &__box {
         position: relative;
     }
 
-    // Geschlossenes Feld.
     &__field {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 0.5rem;
         width: 100%;
-        height: 3rem; // 48px
+        height: 3rem;
         padding: 0 1rem;
         border: none;
         border-radius: 0.625rem;
@@ -72,12 +68,10 @@
         border: 1px solid $hover-primary;
     }
 
-    // Platzhalter: gleiche Farbe wie der Standard-Placeholder der Inputs (Subtask).
     &__placeholder {
         color: #757575;
     }
 
-    // Pfeil als Dreieck, zeigt offen nach oben.
     &__arrow {
         flex-shrink: 0;
         width: 0;
@@ -110,7 +104,7 @@
         display: flex;
         align-items: center;
         width: 100%;
-        height: 3.5rem; // 56px
+        height: 3.5rem;
         padding: 0 1rem;
         border: none;
         border-radius: 0.625rem;

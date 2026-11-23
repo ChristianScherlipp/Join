@@ -6,8 +6,7 @@
     align-items: center;
     justify-content: center;
 
-    // Deaktiviert: blasser und kein Klick-Mauszeiger.
-    &:disabled {                          // ← NEU
+    &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
     }
@@ -19,7 +18,7 @@
     font-size: fluid(16, 18);
     height: 3.5rem;
 
-    &:hover:not(:disabled) {              // ← NEU: :not(:disabled)
+    &:hover:not(:disabled) {
         background: $hover-primary;
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         cursor: pointer;
@@ -110,7 +109,7 @@
     }
 }
 
-.btn-addTask:hover:not(.is-active):not(:disabled),     // ← NEU: :not(:disabled)
+.btn-addTask:hover:not(.is-active):not(:disabled),
 .btn-addContact:hover:not(.is-active):not(:disabled) {
     background-color: $hover-secondary;
 }

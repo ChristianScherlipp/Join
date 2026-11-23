@@ -2,6 +2,9 @@ import { Component, ElementRef, HostListener, inject, signal } from '@angular/co
 import { RouterLink } from '@angular/router';
 import { InitialIcon } from '../elements/initial-icon/initial-icon';
 
+/**
+ * Header with user menu.
+ */
 @Component({
   selector: 'app-header',
   imports: [InitialIcon, RouterLink],
@@ -13,21 +16,41 @@ export class Header {
 
   isMenuOpen = signal(false);
 
-  toggleMenu() {
+  /**
+   * Opens the menu or closes it again.
+   *
+   * @returns {void}
+   */
+  toggleMenu(): void {
     this.isMenuOpen.update(open => !open);
   }
 
-  closeMenu() {
+  /**
+   * Closes the menu.
+   *
+   * @returns {void}
+   */
+  closeMenu(): void {
     this.isMenuOpen.set(false);
   }
 
-  logout() {
+  /**
+   * Closes the menu on logout. The logout logic follows later.
+   *
+   * @returns {void}
+   */
+  logout(): void {
     this.closeMenu();
-    // für Logout-Logik hier rein 
   }
 
+  /**
+   * Closes the menu when clicking outside the header.
+   *
+   * @param {MouseEvent} event - The click event.
+   * @returns {void}
+   */
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
+  onDocumentClick(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.closeMenu();
     }

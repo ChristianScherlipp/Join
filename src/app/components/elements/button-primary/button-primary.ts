@@ -1,5 +1,8 @@
 import { Component, input } from '@angular/core';
 
+/**
+ * The available appearances of the primary button.
+ */
 enum BtnType {
     Light = 'light',
     CreateTask = 'createTask',
@@ -10,6 +13,12 @@ enum BtnType {
     Dark = 'dark',
 }
 
+/**
+ * Primary button with selectable appearance and icon.
+ *
+ * @example
+ * <app-button-primary typeStr="createTask" widthStr="7rem" buttonType="submit">Save</app-button-primary>
+ */
 @Component({
     imports: [],
     selector: 'app-button-primary',
@@ -24,6 +33,7 @@ export class ButtonPrimary {
     readonly isActive = input<boolean>(false);
     readonly buttonType = input<'button' | 'submit'>('button');
 
+    /** The icon per appearance. */
     btnSrc = new Map<string, string>([
         ['dark', ''],
         ['light', ''],

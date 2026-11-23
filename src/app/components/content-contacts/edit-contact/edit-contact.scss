@@ -1,8 +1,6 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
-// Breakpoints: 1240px = Tablet (und Mobile), 810px = nur Mobile.
-// Mobile steht immer nach Tablet und ueberschreibt es.
 .edit-area {
     width: 75.75rem;
     height: 37rem;
@@ -23,7 +21,7 @@
         height: fit-content;
         max-height: 95vh;
         overflow-y: auto;
-        scrollbar-width: none; // Scrollbar ausblenden, Scrollen bleibt moeglich
+        scrollbar-width: none;
         border-radius: fluid(20, 30, 320, 810);
     }
 
@@ -128,27 +126,29 @@
     }
 
     &__avatar {
-        width: 7.5rem; // immer 120px
+        width: 7.5rem;
         height: 7.5rem;
         flex-shrink: 0;
 
         @include respond-below(810px) {
-            margin-top: -6.75rem; // halbe Avatar-Hoehe (60px)
+            margin-top: -6.75rem;
         }
     }
 
     &__close {
         position: absolute;
-        top: 3.9rem;
-        right: 3.9rem;
-        padding: 0;
+        top: 3.4rem;
+        right: 3.4rem;
+        display: flex;
+        padding: 0.5rem;
         border: none;
-        background: none;
         border-radius: 50%;
+        background: none;
         cursor: pointer;
+        transition: background-color 150ms ease;
 
         &:hover {
-            box-shadow: 0 0 0 0.5rem rgb(0 0 0 / 8%);
+            background-color: rgb(0 0 0 / 8%);
         }
 
         @include respond-below(1240px) {
@@ -238,7 +238,6 @@
         }
     }
 
-    // Delete und Save bleiben auf Mobile beide sichtbar, nur zentriert.
     &__actions {
         display: flex;
         gap: 1.5rem;
@@ -255,7 +254,6 @@
         }
     }
 
-    // Button liegt in einer anderen Komponente, daher ::ng-deep.
     &__actions ::ng-deep .btn-primary {
         width: 7rem;
 
@@ -269,7 +267,6 @@
                 height: fluid(16, 20, 320, 760);
             }
 
-            // Delete hat kein Icon (src=""), sonst erscheint ein kaputtes Bild-Symbol.
             img[src=""] {
                 display: none;
             }
@@ -299,7 +296,6 @@
         }
     }
 
-    // ===== Unter 1100px: rechter Bereich als Spalte (Icon oben, Inputs darunter) =====
     @include respond-below(1100px) {
         height: fit-content;
         max-height: 95vh;

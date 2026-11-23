@@ -2,7 +2,7 @@
   <header class="board__head">
     <h1>Board</h1>
 
-    <button class="board__add-mobile" type="button" aria-label="Add task" (click)="openAddTask()"> <!-- NEU -->
+    <button class="board__add-mobile" type="button" aria-label="Add task" (click)="openAddTask()">
       <span class="board__add-mobile-icon"></span>
     </button>
 
@@ -10,7 +10,6 @@
       <app-search-input [(noResult)]="noResult" (searched)="onSearch($event)" (cleared)="onSearchCleared()" />
 
       <app-button-primary class="board__add-desktop" typeStr="addTask" widthStr="10rem" (click)="openAddTask()">
-        <!-- NEU: Klasse -->
         Add task
       </app-button-primary>
     </div>

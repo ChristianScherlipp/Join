@@ -6,7 +6,7 @@
         </button>
     </header>
     <section>
-        <form #taskForm="ngForm" class="task-form" (ngSubmit)="createTask()">
+        <form #taskForm="ngForm" class="task-form" (ngSubmit)="createTask()" novalidate>
             <div class="task-form__columns">
                 <div class="task-form__column task-form__column--left">
                     <div class="task-form__group">

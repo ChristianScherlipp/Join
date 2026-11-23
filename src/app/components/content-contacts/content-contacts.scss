@@ -63,18 +63,15 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* Zunächst ist nur die Kontaktliste sichtbar. */
-  .main-panel {
+    .main-panel {
     display: none;
   }
 
-  /* Nach der Auswahl verschwindet die Liste. */
-  .contacts-layout.show-details app-namelist {
+    .contacts-layout.show-details app-namelist {
     display: none;
   }
 
-  /* Stattdessen erscheint die Kontaktansicht. */
-  .contacts-layout.show-details .main-panel {
+    .contacts-layout.show-details .main-panel {
     display: block;
     position: relative;
     min-width: 0;

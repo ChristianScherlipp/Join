@@ -1,4 +1,3 @@
-<!-- Verbindet Kontaktliste, Kontaktkarte und Dialog. -->
 <section class="contacts-layout" aria-label="Kontakte" [class.show-details]="selectedContact() !== null">
   <app-namelist [contacts]="contactService.sortedUsers()" [loading]="contactService.loading()"
     [selectedId]="selectedContact()?.id ?? null" (contactSelected)="selectedContact.set($event)"
@@ -9,8 +8,6 @@
       (click)="selectedContact.set(null)"></app-button-back>
     <app-main-view [contact]="selectedContact()" (deleteRequested)="deleteSelected()"
       (editRequested)="editDialog.open(selectedContact())" />
-
-
 
     @if (contactService.errorMessage() && !addDialog.isOpen()) {
     <p class="error-message" role="alert">

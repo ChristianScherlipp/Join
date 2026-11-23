@@ -40,7 +40,6 @@ dialog {
   }
 }
 
-/* Bleibt oberhalb des scrollbaren Formulars sichtbar. */
 .dialog-header {
   display: flex;
   flex-shrink: 0;
@@ -90,7 +89,6 @@ dialog {
   }
 }
 
-/* Nur das Formular scrollt. */
 .task-form {
   display: flex;
   flex: 1 1 auto;
@@ -144,7 +142,6 @@ dialog {
   color: #ff8190;
 }
 
-/* Eingabefelder, die direkt zu diesem Template gehören. */
 .field input,
 .field textarea {
   width: 100%;
@@ -204,7 +201,6 @@ dialog {
   overflow-wrap: anywhere;
 }
 
-/* Bleibt unterhalb des Formulars sichtbar. */
 .dialog-footer {
   display: flex;
   flex-shrink: 0;

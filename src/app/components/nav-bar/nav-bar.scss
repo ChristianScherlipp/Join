@@ -98,8 +98,6 @@
   }
 }
 
-//Responsive design
-
 .nav-bar {
   @include respond-below(1100px) {
     position: fixed;

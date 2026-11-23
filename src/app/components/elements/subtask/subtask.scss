@@ -1,14 +1,13 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
-// Icons sind weiss. Der Filter faerbt sie in $background-secondary (#2A3647).
 $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%) hue-rotate(175deg) brightness(89%) contrast(91%);
 
 .subtask {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem; // 8px zwischen Feld und Liste
-    width: 27.5rem; // 440px
+    gap: 0.5rem;
+    width: 27.5rem;
     max-width: 100%;
 
     @include respond-below(1100px){
@@ -22,13 +21,12 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         line-height: 1.2;
     }
 
-    // Eingabefeld, gleiche Maße wie die Dropdowns.
     &__field {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         width: 100%;
-        height: 3rem; // 48px
+        height: 3rem;
         padding: 0 1rem;
         border-radius: 0.625rem;
         background: $background-primary;
@@ -50,7 +48,6 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         font-size: fluid(16, 20);
     }
 
-    // Cancel und Check im Feld.
     &__field-actions,
     &__actions {
         display: flex;
@@ -76,14 +73,12 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         height: 1.5rem;
         filter: $icon-filter;
 
-        // cancel.svg ist nur 14px gross.
         &--small {
             width: 0.875rem;
             height: 0.875rem;
         }
     }
 
-    // Trennlinie zwischen den zwei Buttons.
     &__divider {
         width: 1px;
         height: 1.5rem;
@@ -120,16 +115,15 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         }
     }
 
-
     &__item {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 0.5rem;
-        min-height: 2rem; // 48px
+        min-height: 2rem;
         padding: 0 0.5rem 0 1rem;
         color: $text-secondary;
-        font-size: 1rem; // 16px
+        font-size: 1rem;
         border-radius: 0.625rem;
 
         &:not(&--editing):hover {
@@ -153,7 +147,6 @@ $icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%)
         }
     }
 
-    // Punkt vor dem Text wie bei einer Liste.
     &__text {
         flex: 1;
         min-width: 0;
