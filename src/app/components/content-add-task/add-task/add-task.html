@@ -13,7 +13,7 @@
               Title
               <img class="task-form__required" src="./assets/icons/asterisk.svg" alt="" aria-hidden="true">
             </p>
-            <input name="title" [(ngModel)]="title" (blur)="fieldError.check('title', title)" class="task-form__input task-form__input--text" [class.task-form__input--error]="fieldError.isVisible('title')" type="text" placeholder="Enter a title" />
+            <input name="title" autocomplete="off" [(ngModel)]="title" (blur)="fieldError.check('title', title)" class="task-form__input task-form__input--text" [class.task-form__input--error]="fieldError.isVisible('title')" type="text" placeholder="Enter a title" />
           </label>
           @if (fieldError.isVisible('title')) {
           <span class="task-form__field-error" role="alert">{{ fieldError.message('title') }}</span>
@@ -23,7 +23,7 @@
 
         <label class="task-form__label">
           Description
-          <textarea name="description" [(ngModel)]="description" class="task-form__input task-form__input--text" rows="4"
+          <textarea name="description" autocomplete="off" [(ngModel)]="description" class="task-form__input task-form__input--text" rows="4"
             placeholder="Enter a description"></textarea>
         </label>
 
