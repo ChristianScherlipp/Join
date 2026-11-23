@@ -146,8 +146,8 @@
 }
 
 .task-card__priority--low {
-  -webkit-mask-image: url('./assets/icons/prio-low.svg');
-  mask-image: url('./assets/icons/prio-low.svg');
+  -webkit-mask-image: url('../../../../../public/assets/icons/prio-low.svg');
+  mask-image: url('../../../../../public/assets/icons/prio-low.svg');
   background-color: $priority-low;
 }
 
@@ -160,13 +160,13 @@
 }
 
 .task-card__priority--medium {
-  -webkit-mask-image: url('./assets/icons/prio-medium.svg');
-  mask-image: url('./assets/icons/prio-medium.svg');
+  -webkit-mask-image: url('../../../../../public/assets/icons/prio-medium.svg');
+  mask-image: url('../../../../../public/assets/icons/prio-medium.svg');
   background-color: $priority-medium;
 }
 
 .task-card__priority--urgent {
-  -webkit-mask-image: url('./assets/icons/prio-urgent.svg');
-  mask-image: url('./assets/icons/prio-urgent.svg');
+  -webkit-mask-image: url('../../../../../public/assets/icons/prio-urgent.svg');
+  mask-image: url('../../../../../public/assets/icons/prio-urgent.svg');
   background-color: $priority-high;
 }
