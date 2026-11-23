@@ -39,6 +39,7 @@ export class AddTask {
   title = '';
   description = '';
   dueDate = '';
+  readonly today = new Date().toLocaleDateString('en-CA');
 
   readonly priority = signal<Priority | null>('medium');
   readonly assignedContacts = signal<Pick<IUser, 'id' | 'name'>[]>([]);
