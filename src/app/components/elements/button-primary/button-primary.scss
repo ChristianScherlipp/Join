@@ -17,6 +17,7 @@
     color: $text-primary;
     font-size: fluid(16, 18);
     height: 3.5rem;
+    border-radius: 0.5rem;
 
     &:hover:not(:disabled) {
         background: $hover-primary;
