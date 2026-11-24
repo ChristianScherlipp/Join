@@ -1,0 +1,116 @@
+<dialog #dialog [class.is-closing]="isClosing()" aria-labelledby="task-dialog-title"
+  [attr.aria-busy]="taskService.saving()" (cancel)="$event.preventDefault(); close()"
+  (click)="closeOnOutsideClick($event)">
+  <header>
+    @switch (task().category) {
+    @case ('User Story') {
+    <span class="task-card__label task-card__label--user">User Story</span>
+    }
+    @case ('Technical Task') {
+    <span class="task-card__label task-card__label--technical">Technical Task</span>
+    }
+    }
+
+    <button type="button" aria-label="Dialog schließen" [disabled]="taskService.saving()" (click)="close()">
+      ×
+    </button>
+  </header>
+
+  <div class="dialog-content">
+    <section>
+      <h1 id="task-title">{{ task().title }}</h1>
+      <p>{{ task().description }}</p>
+    </section>
+
+    <dl class="due-date">
+      <dt>Due date:</dt>
+      <dd>
+        {{ task().date ? (task().date | date:'dd.MM.yyyy') : '–' }}
+      </dd>
+    </dl>
+
+    <dl class="priority">
+      <dt>Priority:</dt>
+      <dd>
+        @switch (task().priority) {
+        @case ('urgent') {
+        <span>Urgent</span>
+        <img class="priority-icon urgent" src="./assets/icons/prio-urgent.svg" alt="" />
+        }
+
+        @case ('medium') {
+        <span>Medium</span>
+        <img class="priority-icon medium" src="./assets/icons/prio-medium.svg" alt="" />
+        }
+
+        @case ('low') {
+        <span>Low</span>
+        <img class="priority-icon low" src="./assets/icons/prio-low.svg" alt="" />
+        }
+
+        @default {
+        <span>–</span>
+        }
+        }
+      </dd>
+    </dl>
+
+    <section>
+      <h2>Assigned to:</h2>
+      <div class="assigned-list">
+        <ul>
+          @for (contact of task().assignedContacts; track contact.id) {
+          <li><app-initial-icon [name]="contact.name" [withShadow]="false"
+              style="width: 2.625rem; height: 2.625rem"></app-initial-icon> {{ contact.name }}</li>
+          } @empty {
+          <li class="empty">no user assigned</li>
+          }
+        </ul>
+
+        @if (taskService.contactErrorMessage()) {
+        <p role="alert">{{ taskService.contactErrorMessage() }}</p>
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2>Subtasks</h2>
+
+      <ul class="subtask-list">
+        @for (
+        subtask of task().subtask ?? [];
+        track $index;
+        let index = $index
+        ) {
+        <li>
+          <button class="subtask-button" type="button" [disabled]="taskService.saving()"
+            [attr.aria-pressed]="subtask.completed" (click)="toggleSubtask(index)">
+            <span class="subtask-icon" [class.completed]="subtask.completed" aria-hidden="true"></span>
+
+            <span [class.subtask-completed]="subtask.completed">
+              {{ subtask.title }}
+            </span>
+          </button>
+        </li>
+        }@empty {
+        <li class="empty">no subtasks</li>}
+      </ul>
+    </section>
+
+    @if (taskService.errorMessage()) {
+    <p role="alert">{{ taskService.errorMessage() }}</p>
+    }
+  </div>
+
+  <footer>
+    <fieldset class="dialog-actions" [disabled]="taskService.saving()">
+      <app-button-edit-delete typeStr="delete" [isDisabled]="taskService.saving()"
+        (actionClicked)="deleteTask()"></app-button-edit-delete>
+
+      <span aria-hidden="true" class="hyphen">|</span>
+
+      <app-button-edit-delete typeStr="edit" (click)="edit.emit()"
+        (actionClicked)="openEdit()"></app-button-edit-delete>
+    </fieldset>
+  </footer>
+</dialog>

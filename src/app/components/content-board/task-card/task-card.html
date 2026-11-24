@@ -1,0 +1,48 @@
+<article class="task-card" role="button" tabindex="0" [attr.aria-label]="task().title"
+    (click)="opened.emit()" (keydown.enter)="opened.emit()" (keydown.space)="$event.preventDefault(); opened.emit()">
+    @switch (task().category) {
+    @case ('User Story') {
+    <span class="task-card__label task-card__label--user">User Story</span>
+    }
+    @case ('Technical Task') {
+    <span class="task-card__label task-card__label--technical">Technical Task</span>
+    }
+    }
+
+    <div class="task-card__text">
+        <h3 class="task-card__title">{{ task().title }}</h3>
+        @if (task().description) {
+        <p class="task-card__description">{{ task().description }}</p>
+        }
+    </div>
+    @if (subtasksTotal() > 0) {
+    <div class="task-card__progress">
+        <div class="task-card__track">
+            <div class="task-card__fill" [style.width.%]="progress()"></div>
+        </div>
+        <span class="task-card__subtasks ">{{ subtasksDone() }}/{{ subtasksTotal() }} Subtasks</span>
+    </div>
+    }
+    <div class="task-card__footer">
+        <div class="task-card__assignees">
+            @for (contact of visibleContacts(); track contact.id) {
+            <app-initial-icon [name]="contact.name" class="task-card__avatar" />
+            }
+            @if (hasMoreContacts()) {
+            <span class="task-card__more">+{{ hiddenContacts() }}</span>
+            }
+        </div>
+
+        @switch (task().priority) {
+        @case ('low') {
+        <span class="task-card__priority task-card__priority--low" role="img" aria-label="Priority low"></span>
+        }
+        @case ('medium') {
+        <span class="task-card__priority task-card__priority--medium" role="img" aria-label="Priority medium"></span>
+        }
+        @case ('urgent') {
+        <span class="task-card__priority task-card__priority--urgent" role="img" aria-label="Priority urgent"></span>
+        }
+        }
+    </div>
+</article>

@@ -1,0 +1,90 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+@mixin styles {
+  .subtask-list {
+    max-height: 168px;
+    overflow-y: auto;
+    margin-bottom: 0.625rem;
+
+      >li {
+      min-height: 56px;
+      margin: 0;
+      padding: 4px 0;
+      box-sizing: border-box;
+      font-size: fluid(16, 20);
+
+      &.empty {
+        padding: 7px;
+      }
+    }
+
+    .subtask-button {
+      min-height: 48px;
+      box-sizing: border-box;
+    }
+
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #c4c4c4;
+      border-radius: 16px;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  .subtask-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: left;
+
+    span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    &:hover:not(:disabled) {
+      background: #f1f2f3;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  .subtask-completed {
+    text-decoration: line-through;
+  }
+
+  .subtask-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background-color: $background-secondary;
+
+    mask: url('../../../../../public/assets/icons/uncheckt.svg') center / contain no-repeat;
+
+    &.completed {
+      mask-image: url('../../../../../public/assets/icons/checkt.svg');
+    }
+  }
+}

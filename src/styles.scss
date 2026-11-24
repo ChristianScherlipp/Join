@@ -1,7 +1,6 @@
 *{
   margin: 0;
   box-sizing: border-box;
-  scroll-behavior: smooth;
 } 
 
 @font-face {
@@ -12,7 +11,41 @@
   font-display: swap;
 }
 
+button {
+  cursor: pointer;
+}
+
+button,
+input {
+  border: unset;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #c4c4c4 transparent;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 0.475rem;
+    height: 0.475rem;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #c4c4c4;
+    border-radius: 1rem;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
 }

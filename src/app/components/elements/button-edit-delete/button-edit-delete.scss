@@ -1,0 +1,46 @@
+:host {
+  display: inline-block;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 32px;
+  padding: 0 4px;
+  border: none;
+  background: transparent;
+  color: #2a3647;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+
+  img {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
+
+  img.is-check {
+    filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%) hue-rotate(175deg) brightness(89%) contrast(91%);
+  }
+
+  &:hover:not(:disabled) {
+    color: #007fae;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #29abe2;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

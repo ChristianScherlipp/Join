@@ -1,0 +1,127 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.category {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 100%;
+    position: relative;
+
+    &__field-error {
+        position: absolute;
+        top: 100%;
+        left: 1.3rem;
+        margin-top: 0.25rem;
+        color: #E60026;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    &__field.category__field--error,
+    &__box.is-open &__field.category__field--error {
+        border: 1px solid #E60026;
+    }
+
+    &__label {
+        display: flex;
+        gap: 0.25rem;
+        margin: 0;
+        color: $text-darkblue;
+        font-size: fluid(16, 20);
+        line-height: 1.2;
+    }
+
+    &__required {
+        align-self: flex-start;
+        position: relative;
+        top: -0.01rem;
+        width: auto;
+        height: 0.7rem;
+        filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
+    }
+
+    &__box {
+        position: relative;
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: 100%;
+        height: 3rem;
+        padding: 0 1rem;
+        border: none;
+        border-radius: 0.625rem;
+        background: $background-primary;
+        box-shadow: 0 0 4px rgb(0 0 0 / 25%);
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: fluid(16, 20);
+        text-align: left;
+        cursor: pointer;
+    }
+
+    &__box.is-open &__field {
+        border: 1px solid $hover-primary;
+    }
+
+    &__placeholder {
+        color: #757575;
+    }
+
+    &__arrow {
+        flex-shrink: 0;
+        width: 0;
+        height: 0;
+        border-left: 0.3125rem solid transparent;
+        border-right: 0.3125rem solid transparent;
+        border-top: 0.3125rem solid $text-secondary;
+    }
+
+    &__box.is-open &__arrow {
+        border-top: none;
+        border-bottom: 0.3125rem solid $text-secondary;
+    }
+
+    &__list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 10;
+        width: 100%;
+        margin: 0;
+        padding: 0.25rem;
+        list-style: none;
+        border-radius: 0.625rem;
+        background: $background-primary;
+        box-shadow: 0 0 4px 0 rgb(0 0 0 / 25%);
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 3.5rem;
+        padding: 0 1rem;
+        border: none;
+        border-radius: 0.625rem;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1.25rem;
+        text-align: left;
+        cursor: pointer;
+
+        &:hover {
+            background: $hover-list;
+        }
+
+        &.is-selected {
+            background: $btn-after;
+            color: $background-primary;
+        }
+    }
+}

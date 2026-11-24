@@ -1,0 +1,175 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+$icon-filter: brightness(0) saturate(100%) invert(19%) sepia(8%) saturate(2082%) hue-rotate(175deg) brightness(89%) contrast(91%);
+
+.subtask {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 27.5rem;
+    max-width: 100%;
+
+    @include respond-below(1100px){
+        width: 100%;
+    }
+
+    &__label {
+        margin: 0;
+        color: $text-darkblue;
+        font-size: fluid(16, 20);
+        line-height: 1.2;
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        height: 3rem;
+        padding: 0 1rem;
+        border-radius: 0.625rem;
+        background: $background-primary;
+        box-shadow: 0 0 4px rgb(0 0 0 / 25%);
+
+        &:focus-within {
+            border: 1px solid $hover-primary;
+        }
+    }
+
+    &__input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: fluid(16, 20);
+    }
+
+    &__field-actions,
+    &__actions {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        gap: 0.25rem;
+    }
+
+    &__icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    &__icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        filter: $icon-filter;
+
+        &--small {
+            width: 0.875rem;
+            height: 0.875rem;
+        }
+    }
+
+    &__divider {
+        width: 1px;
+        height: 1.5rem;
+        background: $border-color;
+    }
+
+    &__list {
+        max-height: 4rem;
+        margin: 0;
+        padding: 0;
+        overflow-y: auto;
+        list-style: none;
+
+        @supports not selector(::-webkit-scrollbar) {
+            scrollbar-width: thin;
+            scrollbar-color: #c4c4c4 transparent;
+        }
+
+        &::-webkit-scrollbar {
+            width: 0.375rem;
+        }
+    
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background-color: #c4c4c4;
+            border-radius: 1rem;
+        }
+    
+        &::-webkit-scrollbar-button {
+            display: none;
+        }
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        min-height: 2rem;
+        padding: 0 0.5rem 0 1rem;
+        color: $text-secondary;
+        font-size: 1rem;
+        border-radius: 0.625rem;
+
+        &:not(&--editing) {
+            cursor: pointer;
+        }
+
+        &:not(&--editing):hover {
+            background: $hover-list;
+        }
+
+        &--editing {
+            border-bottom: 1px solid $hover-primary;
+            background: $background-primary;
+        }
+    }
+
+    @media (hover: hover) and (min-width: 1101px) {
+        &__item:not(&__item--editing) &__actions {
+            opacity: 0;
+        }
+
+        &__item:hover &__actions,
+        &__item:focus-within &__actons {
+            opacity: 1;
+        }
+    }
+
+    &__text {
+        flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+
+        &::before {
+            content: '\2022';
+            margin-right: 0.5rem;
+        }
+    }
+
+    &__edit-input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,62 @@
+<section class="board" cdkScrollable>
+  <header class="board__head">
+    <h1>Board</h1>
+
+    <button class="board__add-mobile" type="button" aria-label="Add task" (click)="openAddTask()">
+      <span class="board__add-mobile-icon"></span>
+    </button>
+
+    <div class="board__actions">
+      <app-search-input [(noResult)]="noResult" (searched)="onSearch($event)" (cleared)="onSearchCleared()" />
+
+      <app-button-primary class="board__add-desktop" typeStr="addTask" widthStr="10rem" (click)="openAddTask()">
+        Add task
+      </app-button-primary>
+    </div>
+  </header>
+
+  <div class="board__columns" cdkDropListGroup>
+    @for (column of columns; track column.id) {
+    <section class="board__column">
+      <header class="board__column-head">
+        <h2 class="board__column-title">{{ column.title }}</h2>
+
+        @if (column.canAdd) {
+        <button class="board__plus" type="button" aria-label="Add task" (click)="openAddTask(column.id)">
+          <span class="board__plus-icon"></span>
+        </button>
+        }
+      </header>
+
+      <div class="board__cards" cdkDropList [cdkDropListData]="visibleTasks()[column.id]"
+        [cdkDropListOrientation]="isNarrow() ? 'horizontal' : 'vertical'" [cdkDropListAutoScrollStep]="8"
+        (cdkDropListDropped)="onDrop($event, column.id)">
+        @for (task of visibleTasks()[column.id]; track task.id) {
+        <app-task-card [task]="task" (opened)="openTask(task.id)" cdkDrag (contextmenu)="$event.preventDefault()"
+          [cdkDragStartDelay]="{ touch: 250, mouse: 0 }" (cdkDragMoved)="onDragMoved($event)"
+          (cdkDragEnded)="onDragEnded()">
+          <ng-template cdkDragPreview [matchSize]="true">
+            <div class="board__preview">
+              <app-task-card [task]="task" />
+            </div>
+          </ng-template>
+        </app-task-card>
+        } @empty {
+        <div class="board__empty">No tasks {{ column.title }}</div>
+        }
+      </div>
+    </section>
+    }
+  </div>
+  <app-toast-success #successToast />
+</section>
+<app-add-task-dialog />
+
+@if (selectedTask(); as task) {
+@if (editing()) {
+<app-task-edit-dialog [task]="task" (closed)="closeTask()"
+  (saved)="editing.set(false); closeTask(); successToast.show('Task updated successfully')" />
+} @else {
+<app-task-dialog [task]="task" (closed)="closeTask()" (edit)="editing.set(true)" (deleted)="closeTask()" />
+}
+}

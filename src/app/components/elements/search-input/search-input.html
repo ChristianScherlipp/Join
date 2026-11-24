@@ -1,0 +1,22 @@
+
+<section class="search" [class.is-error]="noResult()">
+    <input
+        class="search__input"
+        type="text"
+        placeholder="Find Task"
+        aria-label="Find Task"
+        autocomplete="off"
+        [value]="value()"
+        (input)="onInput($event)"
+        (keydown.enter)="search()"
+        (blur)="onBlur()"
+    >
+    <span class="search__divider" aria-hidden="true"></span>
+    <button type="button" class="search__btn" aria-label="Search" (click)="search()">
+        <img class="search__icon" src="./assets/icons/search.svg" alt="">
+    </button>
+
+    @if (tooShort()) {
+    <p class="search__hint" role="alert">Please enter at least 3 characters</p>
+    }
+</section>

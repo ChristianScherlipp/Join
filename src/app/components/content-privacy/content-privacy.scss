@@ -1,14 +1,18 @@
 @use 'abstract/variables' as *;
 @use 'abstract/mixins' as *;
 
+$page-max-width: 67.5rem;
+
 .privacy-policy {
   height: calc(100vh - 6rem);
   overflow-y: auto;
-  padding: fluid(48, 116) fluid(16, 96) fluid(24, 64) fluid(16, 96);
+  padding: fluid(48, 78) fluid(16, 96) fluid(24, 64) fluid(16, 96);
   font-size: 1rem;
+  overflow-wrap: anywhere;
+  padding-bottom: calc(6.5rem + 2rem);
 
-  @include respond-below(1000px) {
-    height: calc(100vh - 6rem - 7.5rem);
+  > * {
+    max-width: $page-max-width;
   }
 
   .page-head {
@@ -21,7 +25,7 @@
   .mobile-back {
     display: none;
 
-    @include respond-below(1000px) {
+    @include respond-below(1100px) {
       display: block;
     }
   }
@@ -33,7 +37,7 @@
   }
 
   h2 {
-    font-size: 1.6875rem;
+    font-size: fluid(20, 27);
     font-weight: 700;
     margin: fluid(16, 24) 0 fluid(4, 8) 0;
   }

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ButtonBack } from '../elements/button-back/button-back';
 
+/**
+ * Page with the legal notice.
+ */
 @Component({
   imports: [ButtonBack],
   selector: 'app-content-legal',

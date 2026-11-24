@@ -1,0 +1,95 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 19.5rem;
+    max-width: 100%;
+    height: 3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.625rem;
+    background: $background-primary;
+    box-shadow: inset 0 0 0 1px $search-border;
+    position: relative;
+
+    @include respond-below(1100px) {
+        width: 19.5rem;
+    }
+
+    @include respond-below(700px) {
+        width: 100%;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .search__hint {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin: 0.25rem 0 0;
+        color: $priority-high;
+        font-size: 0.875rem;
+        white-space: nowrap;
+    }
+
+    &:hover {
+        box-shadow: inset 0 0 0 1px $search-border-hover;
+    }
+
+    &:focus-within {
+        box-shadow: inset 0 0 0 1px $hover-primary;
+    }
+
+    &__input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $text-secondary;
+        font-family: inherit;
+        font-size: 1.25rem;
+
+        &::placeholder {
+            color: $border-color;
+            opacity: 1;
+        }
+    }
+
+    &.is-error &__input {
+        color: $priority-high;
+    }
+
+    &__divider {
+        flex-shrink: 0;
+        width: 1px;
+        height: 2rem;
+        background: $border-color;
+    }
+
+    &__btn {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border: none;
+        border-radius: 0.625rem;
+        background: transparent;
+        cursor: pointer;
+
+        &:hover {
+            background: $hover-list;
+        }
+    }
+
+    &__icon {
+        width: 1.0988rem;
+        height: 1.0988rem;
+    }
+
+}

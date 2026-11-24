@@ -1,0 +1,6 @@
+<button type="button" [attr.aria-label]="label()" [disabled]="isDisabled()" (click)="actionClicked.emit()">
+    <img [class.is-check]="typeStr() === 'save'" [src]="iconSrc()" alt="" />
+    @if (needText()) {
+    <span>{{ label() }}</span>
+    }
+</button>

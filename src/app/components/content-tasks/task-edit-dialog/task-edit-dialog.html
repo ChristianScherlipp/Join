@@ -1,0 +1,90 @@
+<dialog #dialog [class.is-closing]="isClosing()" aria-labelledby="task-edit-dialog-title" [attr.aria-busy]="taskService.saving()"
+    (cancel)="$event.preventDefault(); close()" (click)="closeOnOutsideClick($event)">
+    <header class="dialog-header">
+        <h1 id="task-edit-dialog-title">Edit Task</h1>
+
+        <button class="close-button" type="button" aria-label="Dialog schließen" [disabled]="taskService.saving()"
+            (click)="close()">
+            ×
+        </button>
+    </header>
+
+    <form class="task-form" #form="ngForm" (ngSubmit)="save(form)" novalidate>
+        <fieldset class="edit-fields" [disabled]="taskService.saving()">
+            <section class="form-column" aria-label="Aufgabendetails">
+                <label class="field">
+                    <span>Title<span class="required">*</span></span>
+
+                    <input type="text" name="title" [(ngModel)]="title" #titleField="ngModel"
+                        placeholder="Enter a title" required pattern=".*\S.*" />
+
+                    @if (
+                    (titleField.touched || submitted) &&
+                    (!title.trim() || titleField.invalid)
+                    ) {
+                    <span class="error">Bitte einen Titel eingeben.</span>
+                    }
+                </label>
+
+                <label class="field">
+                    <span>Description</span>
+
+                    <textarea name="description" [(ngModel)]="description" placeholder="Enter a Description"
+                        rows="4"></textarea>
+                </label>
+
+                <label class="field">
+                    <span>Due date<span class="required">*</span></span>
+
+                    <input type="date" name="date" [(ngModel)]="date" #dateField="ngModel" required />
+
+                    @if (
+                    (dateField.touched || submitted) &&
+                    dateField.invalid
+                    ) {
+                    <span class="error">Bitte ein gültiges Datum wählen.</span>
+                    }
+                </label>
+            </section>
+
+            <section class="form-column" aria-label="Zuordnung und Priorität">
+                <div class="priority-field">
+                    <app-button-priority [(selected)]="priority"></app-button-priority>
+
+                    @if (submitted && !priority) {
+                    <p class="error">Bitte eine Priorität wählen.</p>
+                    }
+                </div>
+
+                <fieldset class="contacts-field">
+                    <app-drop-down-assignedto [(selectedContacts)]="selectedContacts"></app-drop-down-assignedto>
+                </fieldset>
+
+                <section class="subtasks" aria-labelledby="subtasks-title">
+                    <app-subtask [(subtasks)]="subtasks"></app-subtask>
+                </section>
+            </section>
+        </fieldset>
+
+        @if (validationMessage) {
+        <p class="error" role="alert">{{ validationMessage }}</p>
+        }
+
+        @if (taskService.errorMessage()) {
+        <p class="error" role="alert">
+            {{ taskService.errorMessage() }}
+        </p>
+        }
+    </form>
+
+    <footer class="dialog-footer">
+        <p><span class="required">*</span>This field is required</p>
+
+        <div class="footer-actions">
+            <app-button-primary typeStr="createTask" buttonType="button" widthStr="5.5625rem"
+                [isDisabled]="taskService.saving()" (click)="save(form)">
+                {{ taskService.saving() ? 'Saving…' : 'Ok' }}
+            </app-button-primary>
+        </div>
+    </footer>
+</dialog>

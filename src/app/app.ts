@@ -2,8 +2,10 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBar } from './components/nav-bar/nav-bar';
 import { Header } from './components/header/header';
-import { ToastSuccess } from './components/elements/toast-succsess/toast-succsess';
 
+/**
+ * Root component with navigation, header and the outlet for the pages.
+ */
 @Component({
   imports: [Header, RouterOutlet, NavBar],
   selector: 'app-root',
@@ -12,5 +14,4 @@ import { ToastSuccess } from './components/elements/toast-succsess/toast-succses
 })
 export class App {
   protected readonly title = signal('join');
-
 }

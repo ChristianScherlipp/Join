@@ -1,0 +1,302 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+$column-width: 15.75rem;
+$column-gap: 1.5rem;
+$board-max-width: 4 * $column-width + 3 * $column-gap;
+
+.board {
+    height: calc(100vh - 6rem);
+    overflow: hidden;
+    padding: 4.96rem 4rem 4.96rem 4rem;
+    background-color: #f6f7f8;
+    display: flex;
+    flex-direction: column;
+
+    @include respond-below(1100px) {
+        overflow-y: auto;
+        padding-left: fluid(16, 64);
+        padding-right: fluid(16, 64);
+        padding-bottom: calc(6.5rem + 3rem);
+    }
+}
+
+.board__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: $board-max-width;
+    padding-right: 1.5rem;
+
+    h1 {
+        margin: 0;
+        font-size: 3.8rem;
+    }
+
+    @include respond-below(1100px) {
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding-right: 0;
+
+        h1 {
+            margin: 0;
+            font-size: fluid(36, 61);
+        }
+    }
+}
+
+.board__plus {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 2px solid $background-secondary;
+    border-radius: 0.5rem;
+    background: none;
+    cursor: pointer;
+    transition: transform 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
+    will-change: transform;
+
+    @include respond-below(1100px) {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+.board__plus-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: $background-secondary;
+    -webkit-mask: url('../../../../public/assets/icons/plus-dark.svg') center / contain no-repeat;
+    mask: url('../../../../public/assets/icons/plus-dark.svg') center / contain no-repeat;
+    transition: background-color 100ms ease;
+
+    @include respond-below(1100px) {
+        width: 0.875rem;                         
+        height: 0.875rem;
+    }
+}
+
+.board__plus:hover {
+    transform: scale(1.1);
+    border-color: $hover-primary;
+    box-shadow: 0 0 0 0.5px $hover-primary;
+}
+
+.board__plus:hover .board__plus-icon {
+    background-color: $hover-primary;
+}
+
+.board__add-mobile {
+    display: none;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: $background-secondary;
+    cursor: pointer;
+
+    @include respond-below(700px) {
+        display: flex;
+    }
+}
+
+.board__add-mobile-icon {
+    width: 1rem;
+    height: 1rem;
+    background-color: $background-primary;
+    -webkit-mask: url('../../../../public/assets/icons/plus-dark.svg') center / contain no-repeat;
+    mask: url('../../../../public/assets/icons/plus-dark.svg') center / contain no-repeat;
+}
+
+.board__column-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    min-height: 2.875rem;
+    padding-left: 0.625rem;
+    padding-right: 1rem;
+    margin-bottom: 0.72rem;
+
+    @include respond-below(1100px) {
+        min-height: auto;                        
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 1rem; 
+    }
+}
+
+.board__column-title {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: $text-blue;
+
+    @include respond-below(1100px) {
+        font-size: 1.6875rem;
+        font-weight: 700;
+    }
+}
+
+.board__actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @include respond-below(1100px) {
+        width: 100%;
+    }
+}
+
+.board__add-desktop {
+    @include respond-below(700px) {
+        display: none;
+    }
+}
+
+.board__actions app-search-input {
+    @include respond-below(1100px) {
+        flex: 1;
+        min-width: 0; 
+    }
+}
+
+.board__columns {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, $column-width));
+    gap: $column-gap;
+    margin-top: 3rem;
+    max-width: $board-max-width;
+    flex: 1;
+    min-height: 0;
+
+    @include respond-below(1100px) {
+        display: flex;
+        flex-direction: column;
+        flex: none;
+        gap: 2rem;
+        max-width: none;
+    }
+}
+
+.board__column {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+
+    @include respond-below(1100px) {
+        flex-shrink: 0;
+        min-height: auto;
+    }
+}
+
+.board__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+
+    margin: -1rem -0.9375rem -1rem -1rem;
+    padding: 1rem 0.5625rem 1rem 1rem;
+
+        @supports not selector(::-webkit-scrollbar) {
+        scrollbar-width: thin;
+        scrollbar-color: #c4c4c4 transparent;
+    }
+
+        &::-webkit-scrollbar {
+        width: 0.375rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #c4c4c4;
+        border-radius: 1rem;
+    }
+
+    &::-webkit-scrollbar-button {
+        display: none;
+    }
+
+    @include respond-below(1100px) {
+        flex-direction: row;
+        align-items: stretch;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    @include respond-below(1100px) {
+        flex: none;
+        flex-direction: row;
+        align-items: stretch;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    &::-webkit-scrollbar {
+        width: 0.375rem;
+        height: 0.375rem;
+    }
+}
+
+.board__cards>app-task-card,
+.board__cards>.board__empty {
+    @include respond-below(1100px) {
+        flex: 0 0 15.75rem;
+    }
+}
+
+.board__empty {
+    padding: 0.9rem 1rem;
+    border: 1px dashed $border-input;
+    border-radius: 0.625rem;
+    background-color: $background-grey;
+    color: $text-grey;
+    text-align: center;
+}
+
+.cdk-drag-placeholder {
+    position: relative;
+    visibility: hidden;
+}
+
+.cdk-drag-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    visibility: visible;
+    z-index: 1;
+    border: 1px dashed $border-input;
+    border-radius: 1.5rem;
+
+}
+
+.board__cards.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.board__preview>app-task-card {
+    display: block;
+    rotate: var(--drag-tilt, 0deg);
+    transition: rotate 400ms cubic-bezier(0.2, 0, 0, 1);
+    border-radius: 1.5rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}

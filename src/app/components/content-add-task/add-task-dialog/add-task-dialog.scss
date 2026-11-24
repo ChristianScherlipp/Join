@@ -1,0 +1,300 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+dialog {
+    margin: auto;
+    border: none;
+    border-radius: 2rem;
+    padding: 4rem 4.625rem;
+    box-sizing: border-box;
+    max-width: 95vw;
+    height: 870px;
+    max-height: 95vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+    box-shadow: 0px 0px 4px 0px #00000066;
+
+    @include respond-below(1175px) {
+        padding-inline: calc((95vw - 969px) / 2);
+    }
+
+    @include respond-below(1100px) {
+        width: 95vw;
+        height: auto;
+        padding: fluid(24, 64) fluid(16, 74);
+        border-radius: fluid(16, 32);
+    }
+
+    transform: translateX(100vw); 
+    transition:
+        transform 0.4s ease-out,
+        display 0.4s allow-discrete,
+        overlay 0.4s allow-discrete;
+
+    &[open] {
+        display: flex;
+        flex-direction: column;
+        transform: translateX(0);
+    }
+
+    section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @starting-style {
+        &[open] {
+            transform: translateX(100vw); 
+        }
+    }
+}
+
+.heading {
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+        margin: 0;
+        color: $text-secondary;
+        font-size: fluid(47, 61);
+        letter-spacing: -1px;
+    }
+
+    &__close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+
+        &:hover {
+            cursor: pointer;
+            background: #EEEEEE;
+        }
+
+        img {
+            filter: brightness(0);
+            width: 13.5px;
+            height: 13.5px;
+        }
+    }
+}
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 3.75rem;
+
+    @media (min-width: 1101px) {
+        max-width: calc(60.5rem + 1px);
+    }
+
+    @include respond-below(1100px) {
+        gap: 2rem;
+    }
+
+    &__columns {
+        display: flex;
+        gap: 2.75rem;
+
+        @include respond-below(1100px) {
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+
+        @include respond-below(1100px) {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        ::ng-deep .btn-primary {
+            font-family: inherit;
+        }
+
+        ::ng-deep .btn-cancel {
+            background: transparent;
+        }
+
+        p {
+            display: flex;
+            align-self: flex-end;
+            gap: 0.25rem;
+            margin: 0;
+            line-height: 1.2;
+            font-size: 1rem;
+
+            @include respond-below(1100px) {
+                align-self: flex-start;
+            }
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 2rem;
+
+        @include respond-below(1100px) {
+            gap: fluid(16, 32, 320, 1100);
+        }
+
+        ::ng-deep .btn-primary {
+            font-size: 1.31rem;
+
+            @include respond-below(1100px) {
+                height: fluid(40, 48, 320, 1100);
+                padding: 0 fluid(12, 16, 320, 1100);
+                font-size: fluid(16, 18, 320, 1100);
+
+                img {
+                    width: fluid(16, 20, 320, 1100);
+                    height: fluid(16, 20, 320, 1100);
+                }
+            }
+        }
+
+        ::ng-deep .btn-cancel {
+            width: 7.875rem;
+
+            @include respond-below(1100px) {
+                width: auto;
+            }
+        }
+
+        ::ng-deep .btn-createTask {
+            width: 13rem;
+
+            @include respond-below(1100px) {
+                width: auto;
+            }
+        }
+    }
+
+    &__column {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: 1101px) {
+            flex: 0 0 27.5rem;
+        }
+
+        &--left {
+            gap: 1.25rem;
+        }
+
+        &--right {
+            gap: 0.8rem;
+        }
+    }
+
+    &__divider {
+        width: 1px;
+        background-color: #686868;
+
+        @include respond-below(1100px) {
+            display: none;
+        }
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 1.25rem;
+        color: $text-darkblue;
+
+        @include respond-below(810px){
+            font-size: 1rem;
+        }
+    }
+
+    &__title {
+        display: flex;
+        gap: 0.25rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    &__required {
+        align-self: flex-start;
+        position: relative;
+        top: -0.01rem;
+        width: auto;
+        height: 0.7rem;
+        filter: brightness(0) saturate(100%) invert(37%) sepia(100%) saturate(5958%) hue-rotate(14deg) brightness(111%) contrast(100%);
+    }
+
+    &__group {
+        position: relative;
+    }
+
+    &__field-error {
+        position: absolute;
+        top: 100%;
+        left: 1.3rem;
+        margin-top: 0.25rem;
+        color: #E60026;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    &__input {
+        padding: 0.75rem 1.31rem;
+        border: 1px solid #686868;
+        border-radius: 0.625rem;
+        font-size: 1rem;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        outline: none;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &--error,
+        &--error:focus {
+            border-color: #E60026;
+        }
+
+        &--text {
+            font-family: inherit;
+            font-size: 1.25rem;
+            color: #000000;
+            font-weight: 400;
+
+            @include respond-below(810px) {
+                font-size: 1rem;
+            }
+
+            &::placeholder {
+                font-family: inherit;
+                font-size: 1.25rem;
+                color: #686868;
+
+                @include respond-below(810px) {
+                    font-size: 1rem;
+                }
+            }
+
+            &[type="date"]:invalid::-webkit-datetime-edit {
+                color: #686868;
+            }
+        }
+    }
+
+}
