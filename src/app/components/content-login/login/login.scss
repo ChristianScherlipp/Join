@@ -1,0 +1,91 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2.5rem 2rem 2.75rem;
+    border-radius: 1.875rem;
+    background-color: $background-primary;
+    box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+
+    &__title {
+        color: $text-secondary;
+        font-size: fluid(47, 61);
+        font-weight: 700;
+        line-height: 1.2;
+        text-align: center;
+
+        &::after {
+            content: '';
+            display: block;
+            width: 7.5rem;
+            height: 3px;
+            margin: 0.75rem auto 0;
+            background-color: $hover-secondary;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.635rem;
+        width: 100%;
+        max-width: 20.875rem;
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 2.375rem;
+        padding: 0 1rem;
+        border: 1px solid $border-input;
+        border-radius: 0.5rem;
+
+        &:focus-within {
+            border-color: $hover-primary;
+        }
+
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
+
+    &__input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $text-secondary;
+        font-size: 1rem;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        gap: 1.75rem;
+        margin-top: 1rem;
+    }
+
+    &__actions ::ng-deep .btn-primary {
+        height: 2.375rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    @include respond-below(600px) {
+        padding: 2rem 1rem;
+
+        &__actions {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+    }
+}

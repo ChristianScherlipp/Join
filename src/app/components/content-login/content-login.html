@@ -1,1 +1,12 @@
-<p>content-login works!</p>
+<main class="login-page">
+    <img class="login-page__logo" src="./assets/icons/join_logo.svg" alt="Join Logo" />
+    <section class="login-page__signup">
+        <p class="login-page__signup-text">Not a Join user?</p>
+        <app-button-primary typeStr="dark" widthStr="7.5rem">Sign up</app-button-primary>
+    </section>
+    <app-login class="login-page__login"></app-login>
+    <footer class="login-page__footer">
+        <a class="login-page__link" routerLink="/privacy-policy">Privca Poilicy</a>
+        <a class="login-page__link" routerLink="/legal-notice">Legal notice</a>
+    </footer>
+</main>
