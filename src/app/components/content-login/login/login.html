@@ -1,1 +1,18 @@
-<p>login works!</p>
+<section class="login">
+    <h1 class="login__title">Log in</h1>
+    <form class="login__form" novalidate>
+        <label class="login__field">
+            <input class="login__input" type="email" placeholder="Email" aria-label="Email" autocomplete="email">
+            <img class="input-icon" src="assets/icons/mail.svg" alt="Email Icon">
+        </label>
+        <label class="login__field">
+            <!-- Placeholder icon: lock.svg still has to be added to the icons folder -->
+            <input class="login__input" type="password" placeholder="Password" aria-label="Password" autocomplete="current-password">
+            <img class="input-icon" src="assets/icons/lock.svg" alt="Lock Icon">
+        </label>
+        <div class="login__actions">
+            <app-button-primary typeStr="dark" widthStr="5.5rem" buttonType="submit">Log in</app-button-primary>
+            <app-button-primary typeStr="light" widthStr="8.75rem">Guest Log in</app-button-primary>
+        </div>
+    </form>
+</section>

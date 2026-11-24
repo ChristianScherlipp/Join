@@ -1,0 +1,96 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+$background-login: #f6f7f8;
+
+:host {
+    display: block;
+    min-height: 100vh;
+    background-color: $background-login;
+}
+
+.login-page {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+        'logo signup'
+        'login login'
+        'footer footer';
+    align-items: start;
+    min-height: 100vh;
+    padding: 2.5rem 4.5rem 2.5rem 3rem;
+
+    &__logo {
+        grid-area: logo;
+        width: 5rem;
+    }
+
+    &__signup {
+        grid-area: signup;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    &__signup-text {
+        color: $text-secondary;
+        font-size: 1.25rem;
+    }
+
+    &__signup ::ng-deep .btn-primary {
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    &__login {
+        grid-area: login;
+        justify-self: center;
+        margin-top: 4rem;
+        width: 100%;
+        max-width: 32.375rem;
+    }
+
+    &__footer {
+        grid-area: footer;
+        justify-self: center;
+        align-self: end;
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    &__link {
+        color: $text-grey;
+        font-size: 1rem;
+        text-decoration: none;
+
+        &:hover {
+            color: $hover-secondary;
+        }
+    }
+
+    @include respond-below(600px) {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            'logo'
+            'login'
+            'signup'
+            'footer';
+        justify-items: center;
+        padding: 1.5rem 1rem;
+
+        &__logo {
+            justify-self: start;
+            width: 3.5rem;
+        }
+
+        &__login {
+            margin-top: 3rem;
+        }
+
+        &__signup {
+            margin-top: 3rem;
+        }
+    }
+}
