@@ -6,11 +6,17 @@ import { ContentHelp } from './components/content-help/content-help';
 import { AddTask } from './components/content-add-task/add-task/add-task';
 import { AddTaskDialog } from './components/content-add-task/add-task-dialog/add-task-dialog';
 import { ContentBoard } from './components/content-board/content-board';
+import { ContentSummary } from './components/content-summary/content-summary';
 
 /**
  * All pages of the application. The start page redirects to the contacts.
  */
 export const routes: Routes = [
+   {
+    path: 'summary',
+    component: ContentSummary,
+  },
+
   {
     path: 'board',
     component: ContentBoard,
