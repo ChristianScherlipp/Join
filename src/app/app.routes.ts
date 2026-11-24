@@ -9,21 +9,19 @@ import { ContentBoard } from './components/content-board/content-board';
 import { ContentLogin } from './components/content-login/content-login';
 import { ContentSummary } from './components/content-summary/content-summary';
 import { Login } from './components/content-login/login/login';
-import { ContentLogin } from './components/content-login/content-login';
 import { Signup } from './components/content-login/signup/signup';
 
 /**
  * All pages of the application. The start page redirects to the contacts.
  */
 export const routes: Routes = [
-   {
-    path: 'summary',
-    component: ContentSummary,
-  },
-
   {
     path: 'login',
     component: ContentLogin
+  },
+   {
+    path: 'summary',
+    component: ContentSummary,
   },
   {
     path: 'board',
