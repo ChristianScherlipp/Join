@@ -1,0 +1,224 @@
+@use 'abstract/variables' as *;
+@use 'abstract/mixins' as *;
+
+.summary {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    min-height: calc(100vh - 6rem);
+    padding: 4.96rem 4rem;
+    background-color: $background-main;
+
+    @include respond-below(1100px) {
+        padding-left: fluid(16, 64);
+        padding-right: fluid(16, 64);
+        padding-bottom: calc(6.5rem + 3rem);
+    }
+}
+
+.summary__head {
+    display: flex;
+    align-items: center;
+    gap: 1.875rem;
+}
+
+.summary__title {
+    margin: 0;
+    font-size: 3.8rem;
+
+    @include respond-below(1100px) {
+        font-size: fluid(36, 61);
+    }
+}
+
+.summary__divider {
+    flex-shrink: 0;
+    width: 3px;
+    height: 3.6875rem;
+    background-color: $hover-secondary;
+}
+
+.summary__subtitle {
+    margin: 0;
+    font-size: 1.6875rem;
+}
+
+.summary__content {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+.summary__grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.75rem;
+    width: 100%;
+    max-width: 35rem;
+    min-width: 0; 
+}
+
+.summary__card--half {
+    grid-column: span 3;
+}
+
+.summary__card--wide {
+    grid-column: span 6;
+}
+
+.summary__card--third {
+    grid-column: span 2;
+}
+
+.summary__greeting {
+    margin: 0;
+    font-size: 2.9375rem;
+    font-weight: 500;
+    white-space: nowrap;                                 
+    flex-shrink: 0; 
+}
+
+.summary__card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10.5rem;
+    border-radius: 1.875rem;
+    background-color: $background-primary;
+    gap: 1.125rem;
+    box-shadow: 0 0 0.25rem 0 rgba(0, 0, 0, 0.4);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+
+.summary__card--third {
+    flex-direction: column;
+    gap: 0;
+    text-align: center;
+}
+
+// Dunkler Kreis
+.summary__icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 4.3125rem; // 69px
+    height: 4.3125rem;
+    border-radius: 50%;
+    background-color: $background-secondary; // dunkel, wie im Board
+
+&::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 1.75rem;
+    height: 1.75rem;
+    background-color: $background-primary; 
+    -webkit-mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / contain no-repeat;
+}
+}
+
+.summary__icon--todo {
+  --icon: url('../../../../public/assets/icons/edit.svg');
+
+   &::after {
+        width: 2rem;       
+        height: 2rem;
+    }
+}
+
+.summary__icon--done {
+  --icon: url('../../../../public/assets/icons/summary-done.svg'); 
+
+    &::after {
+        width: 2.3125rem;  
+        height: 1.875rem;    
+    }
+}
+
+
+// Zahl + Text untereinander
+.summary__count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.summary__number {
+  font-size: 4rem;                           
+  font-weight: 600;
+  line-height: 1.2;                           
+}
+
+.summary__label {
+  font-size: 1.25rem;                         
+}
+
+.summary__card--third .summary__label {
+    max-width: 6rem;      // 96px → erzwingt den Umbruch
+}
+
+
+// ===== Breite Karte: Urgent + Deadline =====
+
+
+.summary__icon--urgent {
+    background-color:$priority-high;                  
+    --icon: url('../../../../public/assets/icons/prio-urgent.svg');
+
+    &::after {
+        width: 2.125rem;                          
+    }
+}
+
+.summary__prio-label {
+    font-size: 1rem;                      
+}
+
+.summary__card-divider {
+    flex-shrink: 0;
+    width: 2px;
+    height: 6.375rem;                       
+    margin: 0 2.6875rem;                     
+    background-color: $border-color;                  
+}
+
+
+.summary__deadline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.summary__date {
+    font-size: 1.3125rem;                    
+    font-weight: 700;
+}
+
+.summary__deadline-label {
+    font-size: 1rem;                         
+}
+
+// Karte wird dunkel, Text wird weiß
+.summary__card:hover {
+    background-color: $background-secondary;
+    color: $background-primary;
+}
+
+// Dunkle Kreise werden weiß ...
+.summary__card:hover .summary__icon:not(.summary__icon--urgent) {
+    background-color: $background-primary;
+}
+
+// ... und ihr Icon wird dunkel
+.summary__card:hover .summary__icon:not(.summary__icon--urgent)::after {
+    background-color: $background-secondary;
+}
+
+// Strich in der breiten Karte wird weiß
+.summary__card:hover .summary__card-divider {
+    background-color: $background-primary;
+}

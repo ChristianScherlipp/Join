@@ -1,1 +1,36 @@
-<p>signup works!</p>
+<section class="signup-card">
+    <header>
+        <app-button-back></app-button-back>
+        <h1>Sign up</h1>
+    </header>
+
+    <label class="input-row">
+        <form action=""><input type="text" placeholder="Name" aria-label="Name"></form>
+        <img class="input-icon" src="assets/icons/person.svg" alt="">
+    </label>
+
+    <label class="input-row">
+        <form action=""><input type="email" placeholder="Email" aria-label="Email"></form>
+        <img class="input-icon" src="assets/icons/mail.svg" alt="">
+    </label>
+
+    <label class="input-row">
+        <form action=""><input type="password" placeholder="Password" aria-label="Password"></form>
+        <img class="input-icon" src="assets/icons/lock.svg" alt="">
+    </label>
+
+    <label class="input-row">
+        <form action=""><input type="password" placeholder="Confirm Password" aria-label="Confirm Password"></form>
+        <img class="input-icon" src="assets/icons/lock.svg" alt="">
+    </label>
+
+    <div class="privacy-row">
+        <input type="checkbox" id="privacy">
+        <label for="privacy">
+            I accept the <a href="#">Privacy policy</a>
+        </label>
+    </div>
+
+    <app-button-primary widthStr="7.5rem" typeStr="dark" class="button-sing-up" buttonType="submit">Sign up</app-button-primary>
+
+</section>
