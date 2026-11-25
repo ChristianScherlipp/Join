@@ -105,6 +105,16 @@ function checkPassword(value: string): string {
 }
 
 /**
+ * Validates the password of the login: only required, the rules apply at sign up.
+ * 
+ * @param {string} value - The entered password.
+ * @returns {string} The error message or an empty string.
+ */
+function checkLoginPassword(value: string): string {
+    return value ? '' : REQUIRED;
+}
+
+/**
  * Checks whether the privacy policy was accepted. An empty value means not accepted.
  * 
  * @param { string } value - 'yes' if accepted, otherwise an empty string.
@@ -128,6 +138,7 @@ const addTaskRules: Record<string, Rule> = {
 
 const authRules: Record<string, Rule> = {
     password: checkPassword,
+    loginPassword: checkLoginPassword,
     privacy: checkPrivacy
 }
 
