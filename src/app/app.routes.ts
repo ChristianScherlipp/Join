@@ -52,8 +52,8 @@ export const routes: Routes = [
     component: AddTaskDialog,
   },
   {
-    path: 'login',
-    component: ContentLogin,
+    path: 'signup',
+    component: Signup,
   },
   {
     path: '',
