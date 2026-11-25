@@ -1,43 +1,36 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../enviroments/enviroments';
 
 /**
- * Provides the shared Supabase client.
+ *  Provides the shared Supabase client and the authentication.
+ * One client for everything, so the login session is known to the database access, too.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class Supabase {
-  private supabaseUrl = environment.supabaseUrl;
-  private supabaseKey = environment.supabaseKey;
 
-  /** The client for all database access. */
+  /** The client for all database access and the authentication. */
   readonly supabase = createClient(
-    this.supabaseUrl,
-    this.supabaseKey
+    environment.supabaseUrl,
+    environment.supabaseKey
   );
 
-  private ClientSupabase: SupabaseClient;
-
-  constructor() {
-    this.ClientSupabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-  }
-
   async signUp(email: string, password: string, name: string) {
-    return this.ClientSupabase.auth.signUp({ email, password, options: {data: {name} } });
+    return this.supabase.auth.signUp({ email, password, options: {data: {name} } });
   }
 
   async signIn(email: string, password: string) {
-    return this.ClientSupabase.auth.signInWithPassword({ email, password });
+    return this.supabase.auth.signInWithPassword({ email, password });
   }
 
   async signOut() {
-    return this.ClientSupabase.auth.signOut();
+    return this.supabase.auth.signOut();
   }
 
   getUser() {
-    return this.ClientSupabase.auth.getUser();
+    return this.supabase.auth.getUser();
   }
 
 }

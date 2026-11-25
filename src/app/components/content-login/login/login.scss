@@ -37,6 +37,7 @@
     }
 
     &__field {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -53,6 +54,27 @@
             width: 1.5rem;
             height: 1.5rem;
         }
+    }
+
+    &__field--error,
+    &__field--error:focus-within {
+        border-color: #e60026;
+    }
+
+    &__field-error {
+        position: absolute;
+        top: 100%;
+        left: 1rem;
+        margin-top: 0.25rem;
+        color: #e60026;
+        font-size: 0.875rem;
+        line-height: 1;
+    }
+
+    &__error {
+        margin: 0;
+        color: #e60026;
+        text-align: center;
     }
 
     &__input {
