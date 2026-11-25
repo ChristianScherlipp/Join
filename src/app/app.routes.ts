@@ -17,9 +17,15 @@ import { Signup } from './components/content-login/signup/signup';
 export const routes: Routes = [
   {
     path: 'login',
-    component: ContentLogin
+    component: ContentLogin,
+    data: { signup: false }
   },
-   {
+  {
+    path: 'signup',
+    component: ContentLogin,
+    data: { signup: true }
+  },
+  {
     path: 'summary',
     component: ContentSummary,
   },
@@ -50,10 +56,6 @@ export const routes: Routes = [
   {
     path: 'add-task-dialog',
     component: AddTaskDialog,
-  },
-  {
-    path: 'signup',
-    component: Signup,
   },
   {
     path: '',

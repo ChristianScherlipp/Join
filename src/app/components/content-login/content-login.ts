@@ -1,37 +1,28 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { map } from 'rxjs';
 import { ButtonPrimary } from '../elements/button-primary/button-primary';
 import { Login } from './login/login';
 import { Signup } from './signup/signup';
-import { RouterLink } from '@angular/router';
 
 /**
  *  Page frame of the login area with the logo, the sign up button and the login window and the links to the legal pages.
+ *  shows the login window on/login and the sign up window on /signup
  */
 @Component({
-  imports: [ButtonPrimary, Login,  Signup, RouterLink],
+  imports: [ButtonPrimary, Login, Signup, RouterLink],
   selector: 'app-content-login',
   styleUrl: './content-login.scss',
   templateUrl: './content-login.html',
 })
 export class ContentLogin {
-  /**True while the sign up window is shown instead of the login window. */
-  readonly isSignup = signal(false);
+  private readonly route = inject(ActivatedRoute);
 
   /**
-   * Replaces the login window with the sign up window.
-   * 
-   * @returns {void}
+   * True on the route /signup, read from the route data.
    */
-  showSignup(): void {
-    this.isSignup.set(true);
-  }
-
-  /**
-   * Replaces the sign up with the login window.
-   * 
-   * @return {void}
-   */
-  showLogin(): void {
-    this.isSignup.set(false);
-  }
+  readonly isSignup = toSignal(this.route.data.pipe(map((data) => !!data['signup'])), {
+    initialValue: false,
+  });
 }

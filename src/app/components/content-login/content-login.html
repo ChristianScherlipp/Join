@@ -3,11 +3,11 @@
     @if (!isSignup()) {
         <section class="login-page__signup">
             <p class="login-page__signup-text">Not a Join user?</p>
-            <app-button-primary typeStr="dark" widthStr="7.5rem" (click)="showSignup()" >Sign up</app-button-primary>
+            <app-button-primary typeStr="dark" widthStr="7.5rem" routerLink="/signup" >Sign up</app-button-primary>
         </section>
         <app-login class="login-page__login"></app-login>
     } @else {
-        <app-signup class="login-page__login" (back)="showLogin()"></app-signup>
+        <app-signup class="login-page__login"></app-signup>
     }
     <footer class="login-page__footer">
         <a class="login-page__link" routerLink="/privacy-policy">Privca Poilicy</a>
