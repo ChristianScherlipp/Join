@@ -33,6 +33,6 @@ export class App {
   /**True in the login area (start page "/" redirects there), where navigation and header are hidden. */
   protected readonly isLoginArea = computed(() => {
     const path = this.currentUrl().split('?')[0];
-    return path === '' || path === '/' || path.startsWith('/login');
+    return path === '' || path === '/' || path.startsWith('/login') || path.startsWith('/signup');
   });
 }
