@@ -100,7 +100,7 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     this.date = task.date ?? '';
     this.category = task.category ?? '';
     this.priority = task.priority;
-    this.status = task.status ?? '';
+    this.status = task.status;
     this.selectedContacts = this.mapAssignedContacts(task);
     this.subtasks.set(this.mapSubtasks(task));
     this.taskService.errorMessage.set('');
@@ -245,7 +245,7 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
       date: this.date,
       category: this.category || null,
       priority: this.priority,
-      status: this.status || null,
+      status: this.status || undefined,
       worker_id: this.selectedContacts.map(contact => contact.id),
       subtask: this.toSubtasks(),
     };

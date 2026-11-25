@@ -55,7 +55,7 @@
     gap: 1.75rem;
     width: 100%;
     max-width: 35rem;
-    min-width: 0; 
+    min-width: 0;
 }
 
 .summary__card--half {
@@ -74,8 +74,8 @@
     margin: 0;
     font-size: 2.9375rem;
     font-weight: 500;
-    white-space: nowrap;                                 
-    flex-shrink: 0; 
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .summary__card {
@@ -108,57 +108,57 @@
     border-radius: 50%;
     background-color: $background-secondary; // dunkel, wie im Board
 
-&::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 1.75rem;
-    height: 1.75rem;
-    background-color: $background-primary; 
-    -webkit-mask: var(--icon) center / contain no-repeat;
-    mask: var(--icon) center / contain no-repeat;
-}
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 1.75rem;
+        height: 1.75rem;
+        background-color: $background-primary;
+        -webkit-mask: var(--icon) center / contain no-repeat;
+        mask: var(--icon) center / contain no-repeat;
+    }
 }
 
 .summary__icon--todo {
-  --icon: url('../../../../public/assets/icons/edit.svg');
+    --icon: url('../../../../public/assets/icons/edit.svg');
 
-   &::after {
-        width: 2rem;       
+    &::after {
+        width: 2rem;
         height: 2rem;
     }
 }
 
 .summary__icon--done {
-  --icon: url('../../../../public/assets/icons/summary-done.svg'); 
+    --icon: url('../../../../public/assets/icons/summary-done.svg');
 
     &::after {
-        width: 2.3125rem;  
-        height: 1.875rem;    
+        width: 2.3125rem;
+        height: 1.875rem;
     }
 }
 
 
 // Zahl + Text untereinander
 .summary__count {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .summary__number {
-  font-size: 4rem;                           
-  font-weight: 600;
-  line-height: 1.2;                           
+    font-size: 4rem;
+    font-weight: 600;
+    line-height: 1.2;
 }
 
 .summary__label {
-  font-size: 1.25rem;                         
+    font-size: 1.25rem;
 }
 
 .summary__card--third .summary__label {
-    max-width: 6rem;      // 96px → erzwingt den Umbruch
+    max-width: 6rem; // 96px → erzwingt den Umbruch
 }
 
 
@@ -166,24 +166,98 @@
 
 
 .summary__icon--urgent {
-    background-color:$priority-high;                  
+    background-color: $priority-high;
     --icon: url('../../../../public/assets/icons/prio-urgent.svg');
 
     &::after {
-        width: 2.125rem;                          
+        width: 2.125rem;
+        height: 2.125rem;
+    }
+}
+
+.summary__icon--low {
+    background-color: $priority-low; // grün (#7AE229)
+    --icon: url('../../../../public/assets/icons/prio-low.svg');
+
+    &::after {
+        width: 2.125rem;
+        height: 2.125rem;
+    }
+}
+
+.summary__icon--medium {
+    background-color: $priority-medium; // orange (#FFA800)
+    --icon: url('../../../../public/assets/icons/prio-medium.svg');
+
+    &::after {
+        width: 2.125rem;
+        height: 2.125rem;
     }
 }
 
 .summary__prio-label {
-    font-size: 1rem;                      
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+.summary__priorities {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.summary__priority {
+    display: flex;
+    align-items: center;
+    gap: 1.125rem;                            
+}
+
+.summary__priorities--many .summary__priority {
+    flex-direction: column-reverse;           
+    gap: 0.5rem;
+}
+
+.summary__priorities--many .summary__prio-label {
+    display: none;                            
+}
+
+// Kleinere Kreise bei mehreren
+.summary__priorities--many .summary__icon {
+    width: 2.875rem;                          // 46px statt 69px
+    height: 2.875rem;
+}
+
+// Kleinere Icons in den Kreisen
+.summary__priorities--many .summary__icon::after {
+    width: 1.5rem;                            // 24px
+    height: 1.5rem;
+}
+
+// Kleinere Zahlen
+.summary__priorities--many .summary__number {
+    font-size: 3rem;                          // 48px statt 64px
+}
+
+// Weniger Abstand zwischen den Blöcken
+.summary__priorities--many {
+    gap: 1rem;
+}
+
+// Strich rückt näher, wenn es mehrere sind
+.summary__priorities--many + .summary__card-divider {
+    margin: 0 1.5rem;
+}
+
+// Datum nie umbrechen
+.summary__date {
+    white-space: nowrap;
 }
 
 .summary__card-divider {
     flex-shrink: 0;
     width: 2px;
-    height: 6.375rem;                       
-    margin: 0 2.6875rem;                     
-    background-color: $border-color;                  
+    height: 6.375rem;
+    margin: 0 2.6875rem;
+    background-color: $border-color;
 }
 
 
@@ -194,12 +268,12 @@
 }
 
 .summary__date {
-    font-size: 1.3125rem;                    
+    font-size: 1.3125rem;
     font-weight: 700;
 }
 
 .summary__deadline-label {
-    font-size: 1rem;                         
+    font-size: 1rem;
 }
 
 // Karte wird dunkel, Text wird weiß

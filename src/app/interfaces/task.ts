@@ -22,7 +22,7 @@ export interface Task {
   subtask: Subtask[] | null;
   category: TaskCategory | null;
   priority: TaskPriority | null;
-  status: TaskStatus | null;
+  status: TaskStatus;
   position: number | null;
 }
 
