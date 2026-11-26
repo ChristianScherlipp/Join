@@ -10,9 +10,11 @@
     background-color: $background-main;
 
     @include respond-below(1100px) {
+        gap: 2.5rem;
+        padding-top: fluid(48, 79);
         padding-left: fluid(16, 64);
         padding-right: fluid(16, 64);
-        padding-bottom: calc(6.5rem + 3rem);
+        padding-bottom: calc(6.5rem + 1.5rem);
     }
 }
 
@@ -20,6 +22,12 @@
     display: flex;
     align-items: center;
     gap: 1.875rem;
+
+    @include respond-below(1100px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
 }
 
 .summary__title {
@@ -36,6 +44,13 @@
     width: 3px;
     height: 3.6875rem;
     background-color: $hover-secondary;
+
+    @include respond-below(1100px) {
+        order: 1;
+        width: 5.625rem;
+        height: 3px;
+        margin-top: 0.5rem;
+    }
 }
 
 .summary__subtitle {
@@ -46,7 +61,11 @@
 .summary__content {
     display: flex;
     align-items: center;
-    gap: 5rem;
+    gap: clamp(2rem, 5vw, 5rem);
+
+    @include respond-below(1100px) {
+        display: block;
+    }
 }
 
 .summary__grid {
@@ -56,6 +75,74 @@
     width: 100%;
     max-width: 35rem;
     min-width: 0;
+
+    @include respond-below(1100px) {
+        gap: fluid(12, 28);
+        max-width: none;
+    }
+}
+
+.summary__greeting {
+    margin: 0;
+    font-size: clamp(2rem, 3.3vw, 2.9375rem);
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+    color: $text-darkblue;
+
+    @include respond-below(1100px) {
+        position: fixed;
+        inset: 6rem 0 6.5rem 0;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $background-main;
+        animation: greeting-hide 600ms ease-out 2s forwards;
+        font-size: fluid(40, 61);
+        white-space: normal;
+        text-align: center;
+        padding: 0 1rem;
+    }
+}
+
+@keyframes greeting-hide {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes summary-show {
+    from {
+        opacity: 0;
+        translate: 0 1rem;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+
+
+.summary__card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.125rem;
+    height: 10.5rem;
+    border-radius: 1.875rem;
+    background-color: $background-primary;
+    box-shadow: 0 0 0.25rem 0 rgba(0, 0, 0, 0.4);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 150ms ease, color 150ms ease;
+
+    @include respond-below(1100px) {
+        height: fluid(112, 168);
+    }
 }
 
 .summary__card--half {
@@ -64,49 +151,23 @@
 
 .summary__card--wide {
     grid-column: span 6;
+    padding: 0 1.5rem;
 }
 
 .summary__card--third {
     grid-column: span 2;
-}
-
-.summary__greeting {
-    margin: 0;
-    font-size: 2.9375rem;
-    font-weight: 500;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.summary__card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 10.5rem;
-    border-radius: 1.875rem;
-    background-color: $background-primary;
-    gap: 1.125rem;
-    box-shadow: 0 0 0.25rem 0 rgba(0, 0, 0, 0.4);
-    color: inherit;
-    text-decoration: none;
-    transition: background-color 150ms ease, color 150ms ease;
-}
-
-
-.summary__card--third {
     flex-direction: column;
     gap: 0;
     text-align: center;
 }
 
-// Dunkler Kreis
 .summary__icon {
     position: relative;
     flex-shrink: 0;
-    width: 4.3125rem; // 69px
+    width: 4.3125rem;
     height: 4.3125rem;
     border-radius: 50%;
-    background-color: $background-secondary; // dunkel, wie im Board
+    background-color: $background-secondary;
 
     &::after {
         content: '';
@@ -125,8 +186,8 @@
     --icon: url('../../../../public/assets/icons/edit.svg');
 
     &::after {
-        width: 2rem;
-        height: 2rem;
+        width: 46%;
+        height: 46%;
     }
 }
 
@@ -134,13 +195,41 @@
     --icon: url('../../../../public/assets/icons/summary-done.svg');
 
     &::after {
-        width: 2.3125rem;
-        height: 1.875rem;
+        width: 54%;
+        height: 43%;
     }
 }
 
+.summary__icon--urgent {
+    background-color: $priority-high;
+    --icon: url('../../../../public/assets/icons/prio-urgent.svg');
 
-// Zahl + Text untereinander
+    &::after {
+        width: 49%;
+        height: 49%;
+    }
+}
+
+.summary__icon--medium {
+    background-color: $priority-medium;
+    --icon: url('../../../../public/assets/icons/prio-medium.svg');
+
+    &::after {
+        width: 49%;
+        height: 49%;
+    }
+}
+
+.summary__icon--low {
+    background-color: $priority-low;
+    --icon: url('../../../../public/assets/icons/prio-low.svg');
+
+    &::after {
+        width: 49%;
+        height: 49%;
+    }
+}
+
 .summary__count {
     display: flex;
     flex-direction: column;
@@ -158,46 +247,7 @@
 }
 
 .summary__card--third .summary__label {
-    max-width: 6rem; // 96px → erzwingt den Umbruch
-}
-
-
-// ===== Breite Karte: Urgent + Deadline =====
-
-
-.summary__icon--urgent {
-    background-color: $priority-high;
-    --icon: url('../../../../public/assets/icons/prio-urgent.svg');
-
-    &::after {
-        width: 2.125rem;
-        height: 2.125rem;
-    }
-}
-
-.summary__icon--low {
-    background-color: $priority-low; // grün (#7AE229)
-    --icon: url('../../../../public/assets/icons/prio-low.svg');
-
-    &::after {
-        width: 2.125rem;
-        height: 2.125rem;
-    }
-}
-
-.summary__icon--medium {
-    background-color: $priority-medium; // orange (#FFA800)
-    --icon: url('../../../../public/assets/icons/prio-medium.svg');
-
-    &::after {
-        width: 2.125rem;
-        height: 2.125rem;
-    }
-}
-
-.summary__prio-label {
-    font-size: 1rem;
-    text-transform: capitalize;
+    max-width: 6rem;
 }
 
 .summary__priorities {
@@ -208,48 +258,12 @@
 .summary__priority {
     display: flex;
     align-items: center;
-    gap: 1.125rem;                            
+    gap: 1.125rem;
 }
 
-.summary__priorities--many .summary__priority {
-    flex-direction: column-reverse;           
-    gap: 0.5rem;
-}
-
-.summary__priorities--many .summary__prio-label {
-    display: none;                            
-}
-
-// Kleinere Kreise bei mehreren
-.summary__priorities--many .summary__icon {
-    width: 2.875rem;                          // 46px statt 69px
-    height: 2.875rem;
-}
-
-// Kleinere Icons in den Kreisen
-.summary__priorities--many .summary__icon::after {
-    width: 1.5rem;                            // 24px
-    height: 1.5rem;
-}
-
-// Kleinere Zahlen
-.summary__priorities--many .summary__number {
-    font-size: 3rem;                          // 48px statt 64px
-}
-
-// Weniger Abstand zwischen den Blöcken
-.summary__priorities--many {
-    gap: 1rem;
-}
-
-// Strich rückt näher, wenn es mehrere sind
-.summary__priorities--many + .summary__card-divider {
-    margin: 0 1.5rem;
-}
-
-// Datum nie umbrechen
-.summary__date {
-    white-space: nowrap;
+.summary__prio-label {
+    font-size: 1rem;
+    text-transform: capitalize;
 }
 
 .summary__card-divider {
@@ -260,7 +274,6 @@
     background-color: $border-color;
 }
 
-
 .summary__deadline {
     display: flex;
     flex-direction: column;
@@ -270,29 +283,123 @@
 .summary__date {
     font-size: 1.3125rem;
     font-weight: 700;
+
 }
 
 .summary__deadline-label {
     font-size: 1rem;
 }
 
-// Karte wird dunkel, Text wird weiß
+.summary__priorities--many {
+    flex: 1;
+    justify-content: space-evenly;
+    gap: 1rem;
+}
+
+.summary__priorities--many .summary__priority {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+}
+
+.summary__priorities--many .summary__prio-label {
+    display: none;
+}
+
+.summary__priorities--many .summary__icon {
+    width: 2.875rem;
+    height: 2.875rem;
+}
+
+.summary__priorities--many .summary__number {
+    font-size: 3rem;
+}
+
+.summary__priorities--many+.summary__card-divider {
+    margin: 0 1.5rem;
+}
+
+.summary__priorities--many~.summary__deadline {
+    flex: 1;
+    align-items: center;
+    text-align: center;
+}
+
 .summary__card:hover {
     background-color: $background-secondary;
     color: $background-primary;
 }
 
-// Dunkle Kreise werden weiß ...
-.summary__card:hover .summary__icon:not(.summary__icon--urgent) {
+.summary__card:hover .summary__icon--todo,
+.summary__card:hover .summary__icon--done {
     background-color: $background-primary;
 }
 
-// ... und ihr Icon wird dunkel
-.summary__card:hover .summary__icon:not(.summary__icon--urgent)::after {
+.summary__card:hover .summary__icon--todo::after,
+.summary__card:hover .summary__icon--done::after {
     background-color: $background-secondary;
 }
 
-// Strich in der breiten Karte wird weiß
 .summary__card:hover .summary__card-divider {
     background-color: $background-primary;
+}
+
+@include respond-below(1100px) {
+    .summary__title {
+        font-size: fluid(47, 61);
+    }
+
+    .summary__subtitle {
+        font-size: fluid(20, 27);
+    }
+
+    .summary__icon {
+        width: fluid(40, 69);
+        height: fluid(40, 69);
+    }
+
+    .summary__number {
+        font-size: fluid(40, 64);
+    }
+
+    .summary__label {
+        font-size: fluid(16, 20);
+    }
+
+    .summary__date {
+        font-size: fluid(16, 21);
+    }
+    
+
+    .summary__card--wide {
+        padding: 0 fluid(8, 24);
+    }
+
+    .summary__card-divider {
+        margin: 0 fluid(8, 43);
+    }
+
+    .summary__priorities--many {
+        gap: fluid(4, 16);
+    }
+
+    .summary__priorities--many .summary__icon {
+        width: fluid(28, 46);
+        height: fluid(28, 46);
+    }
+
+    .summary__priorities--many .summary__number {
+        font-size: fluid(28, 48);
+    }
+
+    .summary__priorities--many+.summary__card-divider {
+        margin: 0 fluid(8, 24);
+    }
+    
+}
+
+@include respond-below(500px) {
+    .summary__priorities--many ~ .summary__deadline {
+        align-items: flex-start;
+        text-align: left;
+    }
 }
