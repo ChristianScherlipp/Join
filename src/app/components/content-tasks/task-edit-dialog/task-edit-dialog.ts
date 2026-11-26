@@ -180,6 +180,14 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     if (success) {
       this.closeWithAnimation(() => this.saved.emit());
     }
+
+    if (this.date && this.date < this.today) {
+      form.control.markAllAsTouched();
+      this.validationMessage =
+        'Bitte heute oder ein Datum in der Zukunft wählen.';
+
+      return;
+    }
   }
 
   /**
@@ -278,5 +286,21 @@ export class TaskEditDialog implements OnInit, AfterViewInit, OnDestroy {
     this.isClosing.set(true);
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.closeTimer = setTimeout(action, reducedMotion ? 0 : 400);
+  }
+
+  // Das heutige Datum in lokaler Zeit für das Datumsfeld.
+  readonly today = this.getToday();
+
+  /**
+   * Returns today's local date in YYYY-MM-DD format.
+   */
+  private getToday(): string {
+    const date = new Date();
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 }
