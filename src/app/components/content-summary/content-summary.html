@@ -62,6 +62,13 @@
                 <span class="summary__label">Awaiting Feedback</span>
             </a>
         </div>
-        <p class="summary__greeting">{{ greeting }}</p>
+        <p class="summary__greeting">
+            @if (isGuest()) {
+            {{ greeting }}!
+            } @else {
+            {{ greeting }},
+            <span class="summary__name">{{ supabase.userName() }}</span>
+            }
+        </p>
     </div>
 </section>
