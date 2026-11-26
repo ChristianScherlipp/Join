@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { DatePipe, formatDate } from '@angular/common';
 import { TaskService } from '../../services/task-service';
 import { TaskPriority } from '../../interfaces/task';
+import { Supabase } from '../../services/supabase';
 
 @Component({
   imports: [RouterLink, DatePipe],
@@ -12,6 +13,7 @@ import { TaskPriority } from '../../interfaces/task';
 })
 export class ContentSummary {
   private readonly taskService = inject(TaskService);
+  readonly supabase = inject(Supabase);
 
   private readonly today = formatDate(new Date(), 'yyyy-MM-dd', 'en');
   private readonly priorities: TaskPriority[] = ['low', 'medium', 'urgent'];
@@ -57,6 +59,8 @@ export class ContentSummary {
 
   readonly greeting = this.getGreeting();
 
+  readonly isGuest = computed(() => this.supabase.userName() === 'Guest');
+
   constructor() {
     this.taskService.loadBoard();
   }
@@ -64,8 +68,8 @@ export class ContentSummary {
   private getGreeting(): string {
     const hour = new Date().getHours();
 
-    if (hour >= 5 && hour < 12) return 'Good morning!';
-    if (hour >= 12 && hour < 17) return 'Good afternoon!';
-    return 'Good evening!';
+    if (hour >= 5 && hour < 12) return 'Good morning';
+    if (hour >= 12 && hour < 17) return 'Good afternoon';
+    return 'Good evening';
   }
 }
