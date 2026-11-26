@@ -1,15 +1,61 @@
 <nav class="nav-bar">
     <div class="nav-logo">
-        <img src="./assets/icons/join-logo-white.svg" alt="Logo" class="logo">
+        <img src="assets/icons/join-logo-white.svg" alt="JOIN" class="logo" />
     </div>
+
     <ul class="menu">
-        <li><a routerLink="/summary" routerLinkActive="router-link-active" class="menu-link"> <img src="./assets/icons/summary.svg" alt="Summary"> <span>Summary</span></a></li>
-        <li><a routerLink="/add-task" routerLinkActive="router-link-active" class="menu-link"> <img src="./assets/icons/add_task.svg" alt="Add Task"> <span>Add&nbsp;Task</span></a></li>
-        <li><a routerLink="/board" routerLinkActive="router-link-active" class="menu-link"> <img src="./assets/icons/board.svg" alt="Board"> <span>Board</span></a></li>
-        <li><a routerLink="/contacts" routerLinkActive="router-link-active" class="menu-link"> <img src="./assets/icons/contacts.svg" alt="Contacts"> <span>Contacts</span></a></li>
+        @if (authReady()) {
+        @if (isLoggedIn()) {
+        <li>
+            <a routerLink="/summary" routerLinkActive="router-link-active" class="menu-link">
+                <img src="assets/icons/summary.svg" alt="" />
+                <span>Summary</span>
+            </a>
+        </li>
+
+        <li>
+            <a routerLink="/add-task" routerLinkActive="router-link-active" class="menu-link">
+                <img src="assets/icons/add_task.svg" alt="" />
+                <span>Add&nbsp;Task</span>
+            </a>
+        </li>
+
+        <li>
+            <a routerLink="/board" routerLinkActive="router-link-active" class="menu-link">
+                <img src="assets/icons/board.svg" alt="" />
+                <span>Board</span>
+            </a>
+        </li>
+
+        <li>
+            <a routerLink="/contacts" routerLinkActive="router-link-active" class="menu-link">
+                <img src="assets/icons/contacts.svg" alt="" />
+                <span>Contacts</span>
+            </a>
+        </li>
+        } @else {
+        <li>
+            <a routerLink="/login" routerLinkActive="router-link-active" class="menu-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 3h6v18h-6" />
+                    <path d="M3 12h12M10 7l5 5-5 5" />
+                </svg>
+
+                <span>Log In</span>
+            </a>
+        </li>
+        }
+        }
     </ul>
+
     <div class="legal-styles">
-        <a routerLink="/privacy-policy" routerLinkActive="router-link-active" class="legal-link">Privacy Policy</a>
-        <a routerLink="/legal-notice" routerLinkActive="router-link-active" class="legal-link">Legal notice</a>
+        <a routerLink="/privacy-policy" routerLinkActive="router-link-active" class="legal-link">
+            Privacy Policy
+        </a>
+
+        <a routerLink="/legal-notice" routerLinkActive="router-link-active" class="legal-link">
+            Legal notice
+        </a>
     </div>
 </nav>

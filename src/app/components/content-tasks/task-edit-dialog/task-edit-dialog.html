@@ -1,5 +1,6 @@
-<dialog #dialog [class.is-closing]="isClosing()" aria-labelledby="task-edit-dialog-title" [attr.aria-busy]="taskService.saving()"
-    (cancel)="$event.preventDefault(); close()" (click)="closeOnOutsideClick($event)">
+<dialog #dialog [class.is-closing]="isClosing()" aria-labelledby="task-edit-dialog-title"
+    [attr.aria-busy]="taskService.saving()" (cancel)="$event.preventDefault(); close()"
+    (click)="closeOnOutsideClick($event)">
     <header class="dialog-header">
         <h1 id="task-edit-dialog-title">Edit Task</h1>
 
@@ -36,7 +37,7 @@
                 <label class="field">
                     <span>Due date<span class="required">*</span></span>
 
-                    <input type="date" name="date" [(ngModel)]="date" #dateField="ngModel" required />
+                    <input type="date" name="date" [(ngModel)]="date" [min]="today" #dateField="ngModel" required />
 
                     @if (
                     (dateField.touched || submitted) &&

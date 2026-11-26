@@ -75,7 +75,43 @@ export class Login {
    */
   private messageFor(code: string | undefined): string {
     return code === 'invalid_credentials'
-    ? 'Email or password is wrong'
-    : 'Login failed. Please try again later.'
+      ? 'Email or password is wrong'
+      : 'Login failed. Please try again later.'
+  }
+
+  /**
+   * Creates a guest session and opens the summary page.
+   * The email and password fields are not validated.
+   */
+  async guestLogin(): Promise<void> {
+    if (this.saving()) {
+      return;
+    }
+
+    this.saving.set(true);
+    this.errorMessage.set('');
+
+    try {
+      const { error } = await this.supabase.signInAsGuest();
+
+      if (error) {
+        this.errorMessage.set(
+          'Gast-Login fehlgeschlagen. Bitte versuche es erneut.'
+        );
+
+        console.error('Gast-Login fehlgeschlagen:', error);
+        return;
+      }
+
+      await this.router.navigateByUrl('/summary');
+    } catch (error) {
+      console.error('Gast-Login fehlgeschlagen:', error);
+
+      this.errorMessage.set(
+        'Gast-Login fehlgeschlagen. Bitte prüfe deine Verbindung.'
+      );
+    } finally {
+      this.saving.set(false);
+    }
   }
 }
