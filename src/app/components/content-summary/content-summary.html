@@ -10,46 +10,58 @@
             <a class="summary__card summary__card--half" routerLink="/board">
                 <span class="summary__icon summary__icon--todo"></span>
                 <div class="summary__count">
-                    <span class="summary__number">1</span>
+                    <span class="summary__number">{{ todoCount() }}</span>
                     <span class="summary__label">To-do</span>
                 </div>
             </a>
             <a class="summary__card summary__card--half" routerLink="/board">
                 <span class="summary__icon summary__icon--done"></span>
                 <div class="summary__count">
-                    <span class="summary__number">1</span>
+                    <span class="summary__number">{{ doneCount() }}</span>
                     <span class="summary__label">Done</span>
                 </div>
             </a>
             <a class="summary__card summary__card--wide" routerLink="/board">
-                <span class="summary__icon summary__icon--urgent"></span>
-                <div class="summary__count">
-                    <span class="summary__number">1</span>
-                    <span class="summary__prio-label">Urgent</span>
+                @if (nextDeadline()) {
+                <div class="summary__priorities" [class.summary__priorities--many]="hasManyPriorities()">
+                    @for (item of deadlinePriorities(); track item.priority) {
+                    <div class="summary__priority">
+                        <span class="summary__icon summary__icon--{{ item.priority }}"></span>
+                        <div class="summary__count">
+                            <span class="summary__number">{{ item.count }}</span>
+                            <span class="summary__prio-label">{{ item.priority }}</span>
+                        </div>
+                    </div>
+                    }
                 </div>
 
                 <span class="summary__card-divider"></span>
 
                 <div class="summary__deadline">
-                    <span class="summary__date">November 24, 2026</span>
-                    <span class="summary__deadline-label">Upcoming Deadline</span>
+                    <span class="summary__date">{{ nextDeadline() | date: 'MMMM d, y' }}</span>
+                    <span class="summary__deadline-label">
+                        {{ isOverdue() ? 'Overdue Deadline' : 'Upcoming Deadline' }}
+                    </span>
                 </div>
+                } @else {
+                <span class="summary__deadline-label">No upcoming deadline</span>
+                }
             </a>
             <a class="summary__card summary__card--third" routerLink="/board">
-                <span class="summary__number">5</span>
+                <span class="summary__number">{{ totalCount() }}</span>
                 <span class="summary__label">Tasks in Board</span>
             </a>
 
             <a class="summary__card summary__card--third" routerLink="/board">
-                <span class="summary__number">2</span>
+                <span class="summary__number">{{ progressCount() }}</span>
                 <span class="summary__label">Tasks in Progress</span>
             </a>
 
             <a class="summary__card summary__card--third" routerLink="/board">
-                <span class="summary__number">2</span>
+                <span class="summary__number">{{ awaitCount() }}</span>
                 <span class="summary__label">Awaiting Feedback</span>
             </a>
         </div>
-        <p class="summary__greeting">Good morning!</p>
+        <p class="summary__greeting">{{ greeting }}</p>
     </div>
 </section>
