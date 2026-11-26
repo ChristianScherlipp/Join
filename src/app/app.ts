@@ -30,6 +30,9 @@ export class App {
     { initialValue: inject(Location).path() },
   );
 
-  /**True in the login area, where navigation and header are hidden. */
-  protected readonly isLoginArea = computed(() => this.currentUrl().startsWith('/login'));
+  /**True in the login area (start page "/" redirects there), where navigation and header are hidden. */
+  protected readonly isLoginArea = computed(() => {
+    const path = this.currentUrl().split('?')[0];
+    return path === '' || path === '/' || path.startsWith('/login') || path.startsWith('/signup');
+  });
 }

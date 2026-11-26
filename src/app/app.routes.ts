@@ -10,6 +10,7 @@ import { ContentLogin } from './components/content-login/content-login';
 import { ContentSummary } from './components/content-summary/content-summary';
 import { Login } from './components/content-login/login/login';
 import { Signup } from './components/content-login/signup/signup';
+import { supabaseAuthGuard } from './services/auth-guard';
 
 /**
  * All pages of the application. The start page redirects to the contacts.
@@ -17,19 +18,28 @@ import { Signup } from './components/content-login/signup/signup';
 export const routes: Routes = [
   {
     path: 'login',
-    component: ContentLogin
+    component: ContentLogin,
+    data: { signup: false }
   },
-   {
+  {
+    path: 'signup',
+    component: ContentLogin,
+    data: { signup: true }
+  },
+  {
     path: 'summary',
     component: ContentSummary,
+    canActivate: [supabaseAuthGuard],
   },
   {
     path: 'board',
     component: ContentBoard,
+    canActivate: [supabaseAuthGuard],
   },
   {
     path: 'contacts',
     component: ContentContacts,
+    canActivate: [supabaseAuthGuard],
   },
   {
     path: 'legal-notice',
@@ -46,14 +56,12 @@ export const routes: Routes = [
   {
     path: 'add-task',
     component: AddTask,
+    canActivate: [supabaseAuthGuard],
   },
   {
     path: 'add-task-dialog',
     component: AddTaskDialog,
-  },
-  {
-    path: 'login',
-    component: ContentLogin,
+    canActivate: [supabaseAuthGuard],
   },
   {
     path: '',

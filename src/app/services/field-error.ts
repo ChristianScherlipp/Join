@@ -91,6 +91,39 @@ function checkCategory(value: string): string {
     return value ? '' : REQUIRED;
 }
 
+/**
+ * Validates a password: required, at least 10 characters.
+ * 
+ * @param { string } value - The entered password.
+ * @returns { string } - The error message or empty string.
+ */
+function checkPassword(value: string): string {
+    if (!value) {
+        return REQUIRED;
+    }
+    return value.length >= 10 ? '' : 'Password must have at least 10 characters';
+}
+
+/**
+ * Validates the password of the login: only required, the rules apply at sign up.
+ * 
+ * @param {string} value - The entered password.
+ * @returns {string} The error message or an empty string.
+ */
+function checkLoginPassword(value: string): string {
+    return value ? '' : REQUIRED;
+}
+
+/**
+ * Checks whether the privacy policy was accepted. An empty value means not accepted.
+ * 
+ * @param { string } value - 'yes' if accepted, otherwise an empty string.
+ * @returns { string } The error message or an empty string.
+ */
+function checkPrivacy(value: string): string {
+    return value ? '' : 'Please accept the privacy policy'
+}
+
 const rules: Record<string, Rule> = {
     name: checkName,
     email: checkEmail,
@@ -101,6 +134,12 @@ const addTaskRules: Record<string, Rule> = {
     title: checkTitle,
     dueDate: checkDueDate,
     category: checkCategory
+}
+
+const authRules: Record<string, Rule> = {
+    password: checkPassword,
+    loginPassword: checkLoginPassword,
+    privacy: checkPrivacy
 }
 
 /**
@@ -119,7 +158,7 @@ export class FieldError {
      * @returns {boolean} true = valid, false = invalid.
      */
     check(field: string, value: string): boolean {
-        const rule = rules[field] ?? addTaskRules[field];
+        const rule = rules[field] ?? addTaskRules[field] ?? authRules[field];
         const message = rule(value);
 
         if (message) {
@@ -128,6 +167,27 @@ export class FieldError {
             this.hide(field);
         }
 
+        return !message;
+    }
+
+    /**
+     * Checks that the confirmation is filled and equals the password.
+     * @param {string} password - The entered password
+     * @param {string} confirm - The entered confirmaton.
+     * @returns {boolean} true = valid, false = invalid.
+     */
+    checkConfirm(password: string, confirm: string): boolean {
+        let message = '';
+        if (!confirm) {
+            message = REQUIRED;
+        } else if (confirm !== password) {
+            message = 'Password do not match';
+        }
+        if (message) {
+            this.show('confirmPassword', message);
+        } else {
+            this.hide('confirmPassword')
+        }
         return !message;
     }
 
@@ -160,7 +220,7 @@ export class FieldError {
      * @returns {boolean} true = valid, false = invalid.
      */
     isFieldValid(field: string, value: string): boolean {
-        const rule = rules[field] ?? addTaskRules[field];
+        const rule = rules[field] ?? addTaskRules[field] ?? authRules[field];
         return !rule(value);
     }
 

@@ -1,17 +1,25 @@
 <section class="login">
     <h1 class="login__title">Log in</h1>
-    <form class="login__form" novalidate>
-        <label class="login__field">
-            <input class="login__input" type="email" placeholder="Email" aria-label="Email" autocomplete="email">
+    <form class="login__form" #loginForm="ngForm" (ngSubmit)="submit()" novalidate>
+        <label class="login__field" [class.login__field--error]="fieldError.isVisible('email')" >
+            <input class="login__input" type="email" name="email" placeholder="Email" aria-label="Email" autocomplete="email" [(ngModel)]="form.email" (blur)="fieldError.check('email', form.email)">
             <img class="input-icon" src="assets/icons/mail.svg" alt="Email Icon">
+            @if (fieldError.isVisible('email')) {
+                <span class="login__field-error" role="alert">{{ fieldError.message('email') }}</span>
+            }
         </label>
-        <label class="login__field">
-            <!-- Placeholder icon: lock.svg still has to be added to the icons folder -->
-            <input class="login__input" type="password" placeholder="Password" aria-label="Password" autocomplete="current-password">
+        <label class="login__field" [class.login__field--error]="fieldError.isVisible('loginPassword')" >
+            <input class="login__input" type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password" [(ngModel)]="form.password" (blur)="fieldError.check('loginPassword', form.password)">
             <img class="input-icon" src="assets/icons/lock.svg" alt="Lock Icon">
+            @if (fieldError.isVisible('loginPassword')) {
+                <span class="login__field-error" role="alert">{{ fieldError.message('loginPassword') }}</span>
+            }
         </label>
+        @if (errorMessage()) {
+            <p class="login__error" role="alert">{{ errorMessage() }}</p>
+        }
         <div class="login__actions">
-            <app-button-primary typeStr="dark" widthStr="5.5rem" buttonType="submit">Log in</app-button-primary>
+            <app-button-primary typeStr="dark" widthStr="5.5rem" buttonType="submit" [isDisabled]="saving()">Log in</app-button-primary>
             <app-button-primary typeStr="light" widthStr="8.75rem">Guest Log in</app-button-primary>
         </div>
     </form>

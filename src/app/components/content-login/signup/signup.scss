@@ -2,7 +2,7 @@
 
 :host {
     width: 100%;
-    min-height: 100vh;
+    min-height: 50vh;
     display: grid;
     place-items: center;
     box-sizing: border-box;
@@ -10,7 +10,7 @@
 
 .signup-card {
     width: 598px;
-    height: 630px;
+    min-height: 630px;
     box-sizing: border-box;
     padding: 48px 88px;
 
@@ -93,7 +93,28 @@
         }
     }
 
+    .input-row--error input {
+        border-color: #E60026;
+    }
+
+    .field-error {
+        position: absolute;
+        top: 100%;
+        left: 12px;
+        margin-top: 4px;
+        color: #E60026;
+        font-size: 14px;
+        line-height: 1;
+    }
+
+    &__error {
+        margin: 0;
+        color: #E60026;
+        text-align: center;
+    }
+
     .privacy-row {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -101,6 +122,12 @@
         margin: 0;
         font-size: 16px;
         color: #777;
+
+        .field-error {
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
 
         input[type="checkbox"] {
             appearance: none;
