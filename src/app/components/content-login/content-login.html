@@ -1,16 +1,32 @@
-<main class="login-page">
-    <img class="login-page__logo" src="./assets/icons/join_logo.svg" alt="Join Logo" />
+<main class="login-page" [class.play-intro]="playIntro" [class.is-signup]="isSignup()">
+    <!-- Reserves the logo's final position during the animation. -->
+    <div class="login-page__logo-slot">
+        <img class="login-page__logo" src="assets/icons/join_logo.svg" alt="JOIN Logo" />
+    </div>
+
     @if (!isSignup()) {
-        <section class="login-page__signup">
-            <p class="login-page__signup-text">Not a Join user?</p>
-            <app-button-primary typeStr="dark" widthStr="7.5rem" routerLink="/signup" >Sign up</app-button-primary>
-        </section>
-        <app-login class="login-page__login"></app-login>
+    <section class="login-page__signup">
+        <p class="login-page__signup-text">
+            Not a Join user?
+        </p>
+
+        <app-button-primary typeStr="dark" widthStr="7.5rem" routerLink="/signup">
+            Sign up
+        </app-button-primary>
+    </section>
+
+    <app-login class="login-page__login" />
     } @else {
-        <app-signup class="login-page__login"></app-signup>
+    <app-signup class="login-page__login" />
     }
+
     <footer class="login-page__footer">
-        <a class="login-page__link" routerLink="/privacy-policy">Privca Poilicy</a>
-        <a class="login-page__link" routerLink="/legal-notice">Legal notice</a>
+        <a class="login-page__link" routerLink="/privacy-policy">
+            Privacy Policy
+        </a>
+
+        <a class="login-page__link" routerLink="/legal-notice">
+            Legal notice
+        </a>
     </footer>
 </main>

@@ -25,6 +25,8 @@ export class Signup {
   private readonly supabase = inject(Supabase);
   private readonly router = inject(Router);
   private readonly contactService = inject(ContactService);
+  readonly passwordVisible = signal(false);
+  readonly confirmPasswordVisible = signal(false);
 
   readonly fieldError = inject(FieldError);
 
@@ -95,7 +97,7 @@ export class Signup {
    * @returns {Omit<IUser, 'id'>} The contact data.
    */
   private contactData(): Omit<IUser, 'id'> {
-    return {name: this.form.name.trim(), email: this.cleanEmail(), phone: null};
+    return { name: this.form.name.trim(), email: this.cleanEmail(), phone: null };
   }
 
   /**
@@ -141,5 +143,19 @@ export class Signup {
    */
   private privacyValue(): string {
     return this.form.privacy ? 'yes' : '';
+  }
+
+  /**
+  * Toggles password visibility.
+  */
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update(visible => !visible);
+  }
+
+  /**
+ * Toggles password confirmation visibility.
+ */
+  toggleConfirmPasswordVisibility(): void {
+    this.confirmPasswordVisible.update(visible => !visible);
   }
 }

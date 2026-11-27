@@ -101,6 +101,42 @@
         font-weight: 700;
     }
 
+    .login__field {
+        position: relative;
+    }
+
+    .login__input {
+        padding-right: 48px;
+    }
+
+    .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        transform: translateY(-50%);
+
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        cursor: pointer;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #29abe2;
+            outline-offset: 2px;
+        }
+    }
+
     @include respond-below(600px) {
         padding: 2rem 1rem;
 

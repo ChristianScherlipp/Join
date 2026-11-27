@@ -23,10 +23,9 @@ export class Login {
   private readonly router = inject(Router);
 
   readonly fieldError = inject(FieldError);
-
+  readonly passwordVisible = signal(false);
   /**True while thhe request to Supabase is running. */
   readonly saving = signal(false);
-
   /** Error message below the form, e.g. when email or password are wrong. */
   readonly errorMessage = signal('');
 
@@ -113,5 +112,11 @@ export class Login {
     } finally {
       this.saving.set(false);
     }
+  }
+  /**
+ * Toggles password visibility.
+ */
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update(visible => !visible);
   }
 }
