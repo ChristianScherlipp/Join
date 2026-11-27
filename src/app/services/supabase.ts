@@ -17,6 +17,7 @@ export class Supabase implements OnDestroy {
   readonly isLoggedIn = signal(false);
   readonly userName = signal('Guest');
   readonly authReady = signal(false);
+  readonly showIntro = signal(false);
 
   private unsubscribeAuth?: () => void;
 

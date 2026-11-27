@@ -14,6 +14,7 @@ import { Supabase } from '../../services/supabase';
 export class ContentSummary {
   private readonly taskService = inject(TaskService);
   readonly supabase = inject(Supabase);
+  readonly showIntro = this.supabase.showIntro();
 
   private readonly today = formatDate(new Date(), 'yyyy-MM-dd', 'en');
   private readonly priorities: TaskPriority[] = ['low', 'medium', 'urgent'];
@@ -23,6 +24,7 @@ export class ContentSummary {
   readonly awaitCount = computed(() => this.taskService.tasksByStatus().await.length);
   readonly doneCount = computed(() => this.taskService.tasksByStatus().done.length);
   readonly totalCount = computed(() => this.taskService.tasksWithContacts().length);
+  
 
   readonly openDates = computed(() =>
     this.taskService.tasksWithContacts()
@@ -63,6 +65,7 @@ export class ContentSummary {
 
   constructor() {
     this.taskService.loadBoard();
+    this.supabase.showIntro.set(false); 
   }
 
   private getGreeting(): string {

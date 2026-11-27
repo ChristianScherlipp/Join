@@ -9,6 +9,10 @@
     padding: 4.96rem 4rem;
     background-color: $background-main;
 
+    @include respond-below(1330px) {
+        padding-right: 2rem;
+    }
+
     @include respond-below(1100px) {
         gap: 2.5rem;
         padding-top: fluid(48, 79);
@@ -35,7 +39,7 @@
     font-size: 3.8rem;
 
     @include respond-below(1100px) {
-        font-size: fluid(36, 61);
+        font-size: fluid(47, 61);
     }
 }
 
@@ -56,12 +60,20 @@
 .summary__subtitle {
     margin: 0;
     font-size: 1.6875rem;
+
+    @include respond-below(1100px) {
+        font-size: fluid(20, 27);
+    }
 }
 
 .summary__content {
     display: flex;
     align-items: center;
     gap: clamp(2rem, 5vw, 5rem);
+
+    @include respond-below(1330px) {
+        gap: 2rem;
+    }
 
     @include respond-below(1100px) {
         display: block;
@@ -72,37 +84,74 @@
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 1.75rem;
-    width: 100%;
-    max-width: 35rem;
+    flex: 0 1 35rem;
     min-width: 0;
+
+    @include respond-below(1330px) {
+        gap: 1rem;
+    }
 
     @include respond-below(1100px) {
         gap: fluid(12, 28);
+        flex: none;
+        width: 100%;
         max-width: none;
     }
 }
 
 .summary__greeting {
     margin: 0;
+    flex: 1 1 0;
     font-size: clamp(2rem, 3.3vw, 2.9375rem);
     font-weight: 500;
-    white-space: nowrap;
-    flex-shrink: 0;
-    color: $text-darkblue;
 
+    @include respond-below(1330px) {
+        font-size: 2rem;
+    }
+
+    @include respond-below(1100px) {
+        display: none;
+    }
+}
+
+.summary--intro .summary__greeting {
     @include respond-below(1100px) {
         position: fixed;
         inset: 6rem 0 6.5rem 0;
         z-index: 1;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: $background-main;
-        animation: greeting-hide 600ms ease-out 2s forwards;
-        font-size: fluid(40, 61);
-        white-space: normal;
-        text-align: center;
         padding: 0 1rem;
+        background-color: $background-main;
+        font-size: fluid(40, 61);
+        text-align: center;
+        animation: greeting-hide 600ms ease-out 2s forwards;
+    }
+}
+
+.summary__greeting-text {
+    display: block;
+    white-space: nowrap;
+
+    @include respond-below(1100px) {
+        white-space: normal;
+    }
+}
+
+.summary__name {
+    display: block;
+    font-size: 4rem;
+    font-weight: 700;
+    color: $hover-primary;
+
+    @include respond-below(1330px) {
+        font-size: 3rem;
+    }
+
+    @include respond-below(1100px) {
+        font-size: fluid(47, 64);
     }
 }
 
@@ -124,8 +173,6 @@
         translate: 0 0;
     }
 }
-
-
 
 .summary__card {
     display: flex;
@@ -152,6 +199,10 @@
 .summary__card--wide {
     grid-column: span 6;
     padding: 0 1.5rem;
+
+    @include respond-below(1100px) {
+        padding: 0 fluid(8, 24);
+    }
 }
 
 .summary__card--third {
@@ -179,6 +230,11 @@
         background-color: $background-primary;
         -webkit-mask: var(--icon) center / contain no-repeat;
         mask: var(--icon) center / contain no-repeat;
+    }
+
+    @include respond-below(1100px) {
+        width: fluid(40, 69);
+        height: fluid(40, 69);
     }
 }
 
@@ -240,10 +296,18 @@
     font-size: 4rem;
     font-weight: 600;
     line-height: 1.2;
+
+    @include respond-below(1100px) {
+        font-size: fluid(40, 64);
+    }
 }
 
 .summary__label {
     font-size: 1.25rem;
+
+    @include respond-below(1100px) {
+        font-size: fluid(16, 20);
+    }
 }
 
 .summary__card--third .summary__label {
@@ -272,6 +336,10 @@
     height: 6.375rem;
     margin: 0 2.6875rem;
     background-color: $border-color;
+
+    @include respond-below(1100px) {
+        margin: 0 fluid(8, 43);
+    }
 }
 
 .summary__deadline {
@@ -284,6 +352,17 @@
     font-size: 1.3125rem;
     font-weight: 700;
 
+    @include respond-below(1330px) {
+        font-size: 1.125rem;
+    }
+
+    @include respond-below(1100px) {
+        font-size: clamp(1rem, 4vw, 1.3125rem);
+    }
+}
+
+.summary__date-part {
+    white-space: nowrap;
 }
 
 .summary__deadline-label {
@@ -294,6 +373,10 @@
     flex: 1;
     justify-content: space-evenly;
     gap: 1rem;
+
+    @include respond-below(1100px) {
+        gap: fluid(4, 16);
+    }
 }
 
 .summary__priorities--many .summary__priority {
@@ -308,20 +391,42 @@
 .summary__priorities--many .summary__icon {
     width: 2.875rem;
     height: 2.875rem;
+
+    @include respond-below(1100px) {
+        width: fluid(28, 46);
+        height: fluid(28, 46);
+    }
 }
 
 .summary__priorities--many .summary__number {
     font-size: 3rem;
+
+    @include respond-below(1100px) {
+        font-size: fluid(28, 48);
+    }
 }
 
-.summary__priorities--many+.summary__card-divider {
+.summary__priorities--many + .summary__card-divider {
     margin: 0 1.5rem;
+
+    @include respond-below(1390px) {
+        margin: 0 0.5rem;          // vorher 1rem
+    }
+
+    @include respond-below(1100px) {
+        margin: 0 fluid(8, 24);
+    }
 }
 
 .summary__priorities--many~.summary__deadline {
     flex: 1;
     align-items: center;
     text-align: center;
+
+    @include respond-below(500px) {
+        align-items: flex-start;
+        text-align: left;
+    }
 }
 
 .summary__card:hover {
@@ -342,64 +447,9 @@
 .summary__card:hover .summary__card-divider {
     background-color: $background-primary;
 }
-
-@include respond-below(1100px) {
-    .summary__title {
-        font-size: fluid(47, 61);
-    }
-
-    .summary__subtitle {
-        font-size: fluid(20, 27);
-    }
-
-    .summary__icon {
-        width: fluid(40, 69);
-        height: fluid(40, 69);
-    }
-
-    .summary__number {
-        font-size: fluid(40, 64);
-    }
-
-    .summary__label {
-        font-size: fluid(16, 20);
-    }
-
-    .summary__date {
-        font-size: fluid(16, 21);
-    }
-    
-
-    .summary__card--wide {
-        padding: 0 fluid(8, 24);
-    }
-
-    .summary__card-divider {
-        margin: 0 fluid(8, 43);
-    }
-
-    .summary__priorities--many {
-        gap: fluid(4, 16);
-    }
-
-    .summary__priorities--many .summary__icon {
-        width: fluid(28, 46);
-        height: fluid(28, 46);
-    }
-
-    .summary__priorities--many .summary__number {
-        font-size: fluid(28, 48);
-    }
-
-    .summary__priorities--many+.summary__card-divider {
-        margin: 0 fluid(8, 24);
-    }
-    
-}
-
-@include respond-below(500px) {
-    .summary__priorities--many ~ .summary__deadline {
-        align-items: flex-start;
-        text-align: left;
+.summary--intro .summary__head,
+.summary--intro .summary__grid {
+    @include respond-below(1100px) {
+        animation: summary-show 600ms ease-out 2s both;
     }
 }
