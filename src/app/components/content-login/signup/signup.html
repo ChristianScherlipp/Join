@@ -1,56 +1,87 @@
 <form class="signup-card" #signupForm="ngForm" (ngSubmit)="submit()" novalidate>
     <header>
-        <app-button-back [useHistory]="false" routerLink="/login" ></app-button-back>
+        <app-button-back [useHistory]="false" routerLink="/login"></app-button-back>
         <h1>Sign up</h1>
     </header>
 
-    <label class="input-row" [class.input-row--error]="fieldError.isVisible('name')" >
-        <input type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="form.name" (blur)="fieldError.check('name', form.name)" >
+    <label class="input-row" [class.input-row--error]="fieldError.isVisible('name')">
+        <input type="text" name="name" placeholder="Name" aria-label="Name" autocomplete="name" [(ngModel)]="form.name"
+            (blur)="fieldError.check('name', form.name)">
         <img class="input-icon" src="assets/icons/person.svg" alt="">
         @if (fieldError.isVisible('name')) {
-            <span class="field-error" role="alert">{{ fieldError.message('name') }}</span>
+        <span class="field-error" role="alert">{{ fieldError.message('name') }}</span>
         }
     </label>
 
-    <label class="input-row" [class.input-row--error]="fieldError.isVisible('email')" >
-        <input type="email"  name="email" placeholder="Email" aria-label="Email" autocomplete="email" [(ngModel)]="form.email" (blur)="fieldError.check('email', form.email)" >
+    <label class="input-row" [class.input-row--error]="fieldError.isVisible('email')">
+        <input type="email" name="email" placeholder="Email" aria-label="Email" autocomplete="email"
+            [(ngModel)]="form.email" (blur)="fieldError.check('email', form.email)">
         <img class="input-icon" src="assets/icons/mail.svg" alt="">
         @if (fieldError.isVisible('email')) {
-            <span class="field-error" role="alert">{{ fieldError.message('email') }}</span>
+        <span class="field-error" role="alert">{{ fieldError.message('email') }}</span>
         }
     </label>
 
-    <label class="input-row" [class.input-row--error]="fieldError.isVisible('password')" >
-        <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="new-password" [(ngModel)]="form.password" (blur)="fieldError.check('password', form.password)" >
-        <img class="input-icon" src="assets/icons/lock.svg" alt="">
+    <label class="input-row" [class.input-row--error]="fieldError.isVisible('password')">
+        <input type="password" [type]="passwordVisible() ? 'text' : 'password'" name="password" placeholder="Password"
+            aria-label="Password" autocomplete="new-password" [(ngModel)]="form.password" />
+
+        @if (form.password.length > 0) {
+        <button class="password-toggle" type="button" [attr.aria-label]="
+      passwordVisible() ? 'Passwort verbergen' : 'Passwort anzeigen'
+    " [attr.aria-pressed]="passwordVisible()" (click)="togglePasswordVisibility()">
+            <img [src]="passwordVisible()
+        ? 'assets/icons/visibility.svg'
+        : 'assets/icons/visibility_off.svg'" alt="" />
+        </button>
+        } @else {
+        <img class="input-icon" src="assets/icons/lock.svg" alt="" />
+        }
         @if (fieldError.isVisible('password')) {
-            <span class="field-error" role="alert">{{ fieldError.message('password') }}</span>
+        <span class="field-error" role="alert">{{ fieldError.message('password') }}</span>
         }
     </label>
 
-    <label class="input-row" [class.input-row--error]="fieldError.isVisible('confirmPassword')" >
-        <input type="password" name="confirmPassword" placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="new-password" [(ngModel)]="form.confirmPassword" (blur)="fieldError.checkConfirm(form.password, form.confirmPassword)">
-        <img class="input-icon" src="assets/icons/lock.svg" alt="">
+    <label class="input-row" [class.input-row--error]="fieldError.isVisible('confirmPassword')">
+        <input [type]="confirmPasswordVisible() ? 'text' : 'password'" name="confirmPassword"
+            placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="new-password"
+            [(ngModel)]="form.confirmPassword" />
+
+        @if (form.confirmPassword.length > 0) {
+        <button class="password-toggle" type="button" [attr.aria-label]="
+      confirmPasswordVisible()
+        ? 'Passwortbestätigung verbergen'
+        : 'Passwortbestätigung anzeigen'
+    " [attr.aria-pressed]="confirmPasswordVisible()" (click)="toggleConfirmPasswordVisibility()">
+            <img [src]="confirmPasswordVisible()
+        ? 'assets/icons/visibility.svg'
+        : 'assets/icons/visibility_off.svg'" alt="" />
+        </button>
+        } @else {
+        <img class="input-icon" src="assets/icons/lock.svg" alt="" />
+        }
         @if (fieldError.isVisible('confirmPassword')) {
-            <span class="field-error" role="alert">{{ fieldError.message('confirmPassword') }}</span>
+        <span class="field-error" role="alert">{{ fieldError.message('confirmPassword') }}</span>
         }
     </label>
 
     <div class="privacy-row">
-        <input type="checkbox" id="privacy" name="privacy" [ngModel]="form.privacy" (ngModelChange)="setPrivacy($event)" >
+        <input type="checkbox" id="privacy" name="privacy" [ngModel]="form.privacy"
+            (ngModelChange)="setPrivacy($event)">
         <label for="privacy">
             I accept the <a href="#">Privacy policy</a>
         </label>
         @if (fieldError.isVisible('privacy')) {
-            <span class="field-error" role="alert">{{ fieldError.message('privacy') }}</span>
+        <span class="field-error" role="alert">{{ fieldError.message('privacy') }}</span>
         }
     </div>
 
     @if (errorMessage()) {
-        <p class="signup-card__error" role="alert">{{ errorMessage() }}</p>
+    <p class="signup-card__error" role="alert">{{ errorMessage() }}</p>
     }
 
-    <app-button-primary widthStr="7.5rem" typeStr="dark" class="button-sing-up" buttonType="submit" [isDisabled]="saving()" >Sign up</app-button-primary>
+    <app-button-primary widthStr="7.5rem" typeStr="dark" class="button-sing-up" buttonType="submit" [isDisabled]="saving()|| !form.name ||
+    !form.email.trim() || !form.password || !form.confirmPassword">Sign up</app-button-primary>
 
 </form>
 

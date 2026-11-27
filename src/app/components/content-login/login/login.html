@@ -10,10 +10,21 @@
             }
         </label>
         <label class="login__field" [class.login__field--error]="fieldError.isVisible('loginPassword')">
-            <input class="login__input" type="password" name="password" placeholder="Password" aria-label="Password"
-                autocomplete="current-password" [(ngModel)]="form.password"
-                (blur)="fieldError.check('loginPassword', form.password)">
-            <img class="input-icon" src="assets/icons/lock.svg" alt="Lock Icon">
+            <input class="login__input" [type]="passwordVisible() ? 'text' : 'password'" name="password"
+                placeholder="Password" aria-label="Password" autocomplete="current-password" [(ngModel)]="form.password"
+                (blur)="fieldError.check('loginPassword', form.password)" />
+
+            @if (form.password.length > 0) {
+            <button class="password-toggle" type="button" [attr.aria-label]="
+      passwordVisible() ? 'Passwort verbergen' : 'Passwort anzeigen'
+    " [attr.aria-pressed]="passwordVisible()" (click)="togglePasswordVisibility()">
+                <img [src]="passwordVisible()
+        ? 'assets/icons/visibility.svg'
+        : 'assets/icons/visibility_off.svg'" alt="" />
+            </button>
+            } @else {
+            <img class="input-icon" src="assets/icons/lock.svg" alt="" />
+            }
             @if (fieldError.isVisible('loginPassword')) {
             <span class="login__field-error" role="alert">{{ fieldError.message('loginPassword') }}</span>
             }
@@ -22,7 +33,8 @@
         <p class="login__error" role="alert">{{ errorMessage() }}</p>
         }
         <div class="login__actions">
-            <app-button-primary typeStr="dark" widthStr="5.5rem" buttonType="submit" [isDisabled]="saving()">Log
+            <app-button-primary typeStr="dark" widthStr="5.5rem" buttonType="submit"
+                [isDisabled]="saving() || !form.email.trim() || !form.password">Log
                 in</app-button-primary>
             <app-button-primary typeStr="light" widthStr="8.75rem" buttonType="button" [isDisabled]="saving()"
                 (click)="guestLogin()">Guest Log in</app-button-primary>

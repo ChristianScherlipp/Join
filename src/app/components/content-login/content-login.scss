@@ -5,25 +5,45 @@ $background-login: #f6f7f8;
 
 :host {
     display: block;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-color: $background-login;
 }
 
 .login-page {
+    /* Final logo position and size. */
+    --logo-left: 3rem;
+    --logo-top: 2.5rem;
+    --logo-width: 5rem;
+
+    position: relative;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto 1fr auto;
-    grid-template-areas: 
+    grid-template-areas:
         'logo signup'
         'login login'
         'footer footer';
+
     align-items: start;
-    min-height: 100vh;
+    box-sizing: border-box;
+    min-height: 100dvh;
     padding: 2.5rem 4.5rem 2.5rem 3rem;
 
-    &__logo {
+    &__logo-slot {
         grid-area: logo;
-        width: 5rem;
+        width: var(--logo-width);
+        aspect-ratio: 101 / 122;
+    }
+
+    &__logo {
+        position: absolute;
+        top: var(--logo-top);
+        left: var(--logo-left);
+        z-index: 2;
+
+        display: block;
+        width: var(--logo-width);
+        height: auto;
     }
 
     &__signup {
@@ -49,6 +69,7 @@ $background-login: #f6f7f8;
         justify-self: center;
         margin-top: 4rem;
         width: 100%;
+        min-width: 0;
         max-width: 32.375rem;
     }
 
@@ -70,19 +91,37 @@ $background-login: #f6f7f8;
         }
     }
 
-    @include respond-below(600px) {
+    /* The logo moves first, followed by the page content. */
+    &.play-intro {
+        .login-page__logo {
+            animation: logo-intro 2500ms ease-in-out both;
+        }
+
+        .login-page__signup,
+        .login-page__login,
+        .login-page__footer {
+            animation: content-intro 350ms ease-out 2500ms both;
+        }
+    }
+
+    @include respond-below(1100px) {
+        --logo-left: 1rem;
+        --logo-top: 1.5rem;
+        --logo-width: 3.5rem;
+
         grid-template-columns: 1fr;
-        grid-template-areas: 
+        grid-template-rows: auto 1fr auto auto;
+        grid-template-areas:
             'logo'
             'login'
             'signup'
             'footer';
+
         justify-items: center;
         padding: 1.5rem 1rem;
 
-        &__logo {
+        &__logo-slot {
             justify-self: start;
-            width: 3.5rem;
         }
 
         &__login {
@@ -91,6 +130,132 @@ $background-login: #f6f7f8;
 
         &__signup {
             margin-top: 3rem;
+        }
+    }
+}
+
+/* Holds the logo in the center, then moves it to its final position. */
+@keyframes logo-intro {
+
+    0%,
+    30% {
+        top: 50dvh;
+        left: 50%;
+        width: 10rem;
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        top: var(--logo-top);
+        left: var(--logo-left);
+        width: var(--logo-width);
+        transform: translate(0, 0);
+    }
+}
+
+/* Hides the content during the logo animation and fades it in afterwards. */
+@keyframes content-intro {
+    from {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+/* Shows the final layout immediately when reduced motion is requested. */
+@media (prefers-reduced-motion: reduce) {
+    .login-page.play-intro {
+
+        .login-page__logo,
+        .login-page__signup,
+        .login-page__login,
+        .login-page__footer {
+            animation: none;
+        }
+    }
+}
+
+@keyframes mobile-intro-background {
+
+    0%,
+    30% {
+        background-color: #2a3647;
+    }
+
+    100% {
+        background-color: #f6f7f8;
+    }
+}
+
+@keyframes mobile-intro-logo {
+
+    0%,
+    30% {
+        filter: brightness(0) invert(1);
+    }
+
+    100% {
+        filter: none;
+    }
+}
+
+@media (max-width: 1100px) {
+    .login-page.play-intro {
+        animation: mobile-intro-background 2500ms ease-in-out both;
+
+        .login-page__logo {
+            animation:
+                logo-intro 2500ms ease-in-out both,
+                mobile-intro-logo 2500ms ease-in-out both;
+        }
+    }
+}
+
+@media (max-width: 1100px) and (prefers-reduced-motion: reduce) {
+    .login-page.play-intro {
+        animation: none;
+        background-color: #f6f7f8;
+
+        .login-page__logo {
+            animation: none;
+            filter: none;
+        }
+    }
+}
+
+@media (max-width: 1100px) {
+    .login-page.is-signup {
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:
+            'logo'
+            'login'
+            'footer';
+
+        min-height: 100dvh;
+        padding: 24px 12px;
+        row-gap: 24px;
+
+        .login-page__login {
+            align-self: center;
+            width: 100%;
+            min-width: 0;
+            margin-top: 0;
+        }
+
+        .login-page__footer {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .login-page__link {
+            font-size: 13px;
         }
     }
 }
