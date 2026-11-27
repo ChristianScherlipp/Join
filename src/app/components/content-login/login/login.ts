@@ -51,6 +51,7 @@ export class Login {
       this.errorMessage.set(this.messageFor(error.code));
       return;
     }
+    this.supabase.showIntro.set(true);  
     void this.router.navigateByUrl('/summary')
   }
 
@@ -102,7 +103,7 @@ export class Login {
         console.error('Gast-Login fehlgeschlagen:', error);
         return;
       }
-
+      this.supabase.showIntro.set(true);  
       await this.router.navigateByUrl('/summary');
     } catch (error) {
       console.error('Gast-Login fehlgeschlagen:', error);
